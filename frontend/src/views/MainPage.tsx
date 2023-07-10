@@ -1,7 +1,15 @@
 import React from 'react';
 
+import Map from '../components/Map';
+import Header from '../components/utils/Header';
+
 const MainPage = () => {
-  return <div>MainPage</div>;
+  return (
+    <>
+      <Header />
+      <Map />
+    </>
+  );
 };
 
 export default MainPage;

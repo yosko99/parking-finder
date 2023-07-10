@@ -11,6 +11,7 @@ import {
 import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
+import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
 import ICoordinate from '../interfaces/ICoordinate';
 import LoadingPage from '../views/LoadingPage';
@@ -20,7 +21,7 @@ const Map = () => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
     libraries: ['places']
   });
-  useSetCurrentLocation(isLoaded);
+  useSetCurrentLocation();
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
@@ -45,13 +46,16 @@ const Map = () => {
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [currentLocation] = useAtom(currentLocationAtom);
+  const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
       const bounds = new window.google.maps.LatLngBounds(currentLocation);
       map.fitBounds(bounds);
+      map.setCenter(currentLocation);
 
       setMap(map);
+      setIsMapLoaded(true);
     },
     [currentLocation]
   );

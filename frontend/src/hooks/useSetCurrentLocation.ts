@@ -3,12 +3,14 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
+import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 
-const useSetCurrentLocation = (isLoaded: boolean) => {
+const useSetCurrentLocation = () => {
   const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
+  const [isMapLoaded] = useAtom(isMapLoadedAtom);
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isMapLoaded) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -24,7 +26,7 @@ const useSetCurrentLocation = (isLoaded: boolean) => {
         console.error('Geolocation is not supported by this browser.');
       }
     }
-  }, [isLoaded]);
+  }, [isMapLoaded]);
 };
 
 export default useSetCurrentLocation;

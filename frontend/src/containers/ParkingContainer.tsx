@@ -6,13 +6,13 @@ import { AiFillCar } from 'react-icons/ai';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import directionsAtom from '../atoms/directions.atom';
+import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
+import calculateDirections from '../functions/calculateDirections';
 import IParking from '../interfaces/IParking';
 
 interface Props {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;
   hoveredIndex: number;
-  setClickedIndex: React.Dispatch<React.SetStateAction<number>>;
-  clickedIndex: number;
   index: number;
   parking: IParking;
 }
@@ -21,42 +21,31 @@ const ParkingContainer = ({
   hoveredIndex,
   index,
   parking,
-  setHoveredIndex,
-  setClickedIndex,
-  clickedIndex
+  setHoveredIndex
 }: Props) => {
   const [directions, setDirections] = useAtom(directionsAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
-
-  const calculateRoute = (selectedDestination: string) => {
-    try {
-      // eslint-disable-next-line no-undef
-      const directionsService = new google.maps.DirectionsService();
-      directionsService
-        .route({
-          origin: currentLocation,
-          destination: selectedDestination,
-          // eslint-disable-next-line no-undef
-          travelMode: google.maps.TravelMode.DRIVING
-        })
-        .then((response) => {
-          setDirections(response);
-          setClickedIndex(index);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
+    selectedDirectionIndexAtom
+  );
 
   return (
     <div
       key={index}
-      onClick={() => calculateRoute(parking.address)}
+      onClick={() =>
+        calculateDirections(
+          currentLocation,
+          parking.address,
+          setDirections,
+          setSelectedDirectionIndex,
+          index
+        )
+      }
       role="button"
       onMouseOver={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(-1)}
       className={`${
-        clickedIndex === index
+        selectedDirectionIndex === index
           ? 'bg-info text-white'
           : hoveredIndex === index
           ? 'bg-primary text-white'

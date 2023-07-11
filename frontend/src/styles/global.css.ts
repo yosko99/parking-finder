@@ -16,6 +16,9 @@ const GlobalCSS = createGlobalStyle`
 		font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 			monospace;
 	}
+	button.gm-ui-hover-effect {
+    visibility: hidden;
+	}
     `;
 
 export default GlobalCSS;

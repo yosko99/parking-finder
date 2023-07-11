@@ -5,18 +5,21 @@ import { useAtom } from 'jotai';
 import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
+import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
 import ParkingContainer from '../containers/ParkingContainer';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 
 const ParkingSideBar = () => {
+  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
+    selectedDirectionIndexAtom
+  );
   const [currentLocation] = useAtom(currentLocationAtom);
 
   const { parkings } = useFetchParkingInformation();
   const [hoveredIndex, setHoveredIndex] = useState(-1);
-  const [clickedIndex, setClickedIndex] = useState(-1);
 
   useEffect(() => {
-    setClickedIndex(-1);
+    setSelectedDirectionIndex(-1);
   }, [currentLocation]);
 
   return (
@@ -29,8 +32,6 @@ const ParkingSideBar = () => {
       ) : (
         parkings.map((parking, index) => (
           <ParkingContainer
-            clickedIndex={clickedIndex}
-            setClickedIndex={setClickedIndex}
             hoveredIndex={hoveredIndex}
             setHoveredIndex={setHoveredIndex}
             index={index}

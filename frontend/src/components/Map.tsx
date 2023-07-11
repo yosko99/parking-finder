@@ -5,15 +5,17 @@ import React, { memo, useCallback, useState } from 'react';
 import {
   useJsApiLoader,
   GoogleMap,
-  DirectionsRenderer,
-  MarkerF
+  DirectionsRenderer
 } from '@react-google-maps/api';
 import { useAtom } from 'jotai';
 
-import closestParkingsAtom from '../atoms/closestParkings.atom';
+import CurrentLocationMarker from './markers/CurrentLocationMarker';
+import ParkingMarker from './markers/ParkingMarker';
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import directionsAtom from '../atoms/directions.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
+import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
+import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
 import LoadingPage from '../views/LoadingPage';
 
@@ -29,11 +31,14 @@ const Map = () => {
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
-  const [closestParkings] = useAtom(closestParkingsAtom);
+  const { parkings } = useFetchParkingInformation();
 
   const [currentLocation] = useAtom(currentLocationAtom);
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
-  const [directions] = useAtom(directionsAtom);
+  const [directions, setDirections] = useAtom(directionsAtom);
+  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
+    selectedDirectionIndexAtom
+  );
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -66,12 +71,25 @@ const Map = () => {
         onLoad={handleOnLoad}
         onUnmount={onUnmount}
       >
-        {currentLocation && <MarkerF position={currentLocation} />}
-
-        {closestParkings?.map((parkingPosition, index: number) => (
-          <MarkerF position={parkingPosition} key={index} />
+        {currentLocation && (
+          <CurrentLocationMarker currentLocation={currentLocation} />
+        )}
+        {parkings?.map((parking, index: number) => (
+          <ParkingMarker
+            currentLocation={currentLocation}
+            index={index}
+            parking={parking}
+            setDirections={setDirections}
+            key={index}
+            setSelectedDirectionIndex={setSelectedDirectionIndex}
+          />
         ))}
-        {directions && <DirectionsRenderer directions={directions} />}
+        {directions && (
+          <DirectionsRenderer
+            options={{ suppressMarkers: true }}
+            directions={directions}
+          />
+        )}
       </GoogleMap>
     </>
   ) : (

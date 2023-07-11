@@ -36,7 +36,8 @@ const useFetchParkingInformation = () => {
                   duration: element.duration.text,
                   distance: element.distance.text,
                   hourlyPrice: Math.floor(Math.random() * 10),
-                  reservable: true
+                  reservable: true,
+                  coordinates: closestParkings[index]
                 });
               }
             });

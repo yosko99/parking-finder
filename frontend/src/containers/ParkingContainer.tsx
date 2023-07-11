@@ -65,7 +65,7 @@ const ParkingContainer = ({
       )}
       <div className="d-flex justify-content-between">
         <div>
-          <p className="m-0">{parking.parkingFee}$</p>
+          <p className="m-0">{parking.hourlyPrice}$</p>
           <p className="text-muted m-0">parking fee</p>
         </div>
         <div style={{ textAlign: 'right' }}>

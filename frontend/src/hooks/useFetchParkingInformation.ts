@@ -35,7 +35,7 @@ const useFetchParkingInformation = () => {
                   address: response?.destinationAddresses[index] || '',
                   duration: element.duration.text,
                   distance: element.distance.text,
-                  parkingFee: Math.floor(Math.random() * 10),
+                  hourlyPrice: Math.floor(Math.random() * 10),
                   reservable: true
                 });
               }

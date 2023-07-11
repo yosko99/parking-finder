@@ -1,7 +1,7 @@
 interface IParking {
   address: string;
   reservable: boolean;
-  parkingFee: number;
+  hourlyPrice: number;
   duration: string;
   distance: string;
 }

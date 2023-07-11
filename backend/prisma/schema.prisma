@@ -6,3 +6,44 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
+model User {
+    id           Int           @id @default(autoincrement())
+    name         String
+    email        String        @unique
+    password     String
+    isCompany    Boolean
+    reservations Reservation[]
+    reviews      Review[]
+}
+
+model Parking {
+    id           Int           @id @default(autoincrement())
+    description  String
+    address      String
+    hourlyPrice  Float
+    lat          Float
+    lng          Float
+    reviews      Review[]
+    reservations Reservation[]
+}
+
+model Review {
+    id        Int     @id @default(autoincrement())
+    rating    Int
+    comment   String
+    user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int
+    parking   Parking @relation(fields: [parkingId], references: [id], onDelete: Cascade)
+    parkingId Int
+}
+
+model Reservation {
+    id        Int      @id @default(autoincrement())
+    startTime DateTime
+    endTime   DateTime
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int
+    parking   Parking  @relation(fields: [parkingId], references: [id], onDelete: Cascade)
+    parkingId Int
+}

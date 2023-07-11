@@ -11,15 +11,19 @@ import {
 import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
+import directionsAtom from '../atoms/directions.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
 import ICoordinate from '../interfaces/ICoordinate';
 import LoadingPage from '../views/LoadingPage';
 
+const libraries = ['places'];
+
 const Map = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
-    libraries: ['places']
+    // @ts-ignore
+    libraries
   });
   useSetCurrentLocation();
 
@@ -44,9 +48,9 @@ const Map = () => {
     }
   ]);
 
-  const [directionsResponse, setDirectionsResponse] = useState(null);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
+  const [directions] = useAtom(directionsAtom);
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -84,9 +88,7 @@ const Map = () => {
         {dummyParkings?.map((parkingPosition, index: number) => (
           <MarkerF position={parkingPosition} key={index} />
         ))}
-        {directionsResponse && (
-          <DirectionsRenderer directions={directionsResponse} />
-        )}
+        {directions && <DirectionsRenderer directions={directions} />}
       </GoogleMap>
     </>
   ) : (

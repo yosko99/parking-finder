@@ -11,10 +11,10 @@ const MainPage = () => {
     <>
       <Header />
       <Row>
-        <Col lg={9}>
+        <Col lg={9} className="p-0">
           <Map />
         </Col>
-        <Col lg={3} className="m-0 p-0">
+        <Col lg={3} className="m-0 p-0 bg-dark text-white">
           <ParkingSideBar />
         </Col>
       </Row>

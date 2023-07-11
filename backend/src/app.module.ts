@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { UserModule } from './modules/prisma/user/user.module';
+import { GlobalExceptionFilter } from './filters/globalException.filter';
 
 @Module({
-  imports: [],
+  imports: [UserModule],
   controllers: [],
-  providers: [],
+  providers: [GlobalExceptionFilter],
 })
 export class AppModule {}

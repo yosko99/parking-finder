@@ -4,6 +4,7 @@ import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
+import getCurrentLocation from '../functions/getCurrentLocation';
 
 const useSetCurrentLocation = () => {
   const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
@@ -11,20 +12,7 @@ const useSetCurrentLocation = () => {
 
   useEffect(() => {
     if (isMapLoaded) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            const location = { lat: latitude, lng: longitude };
-            setCurrentLocation(location);
-          },
-          (error) => {
-            console.error('Error getting current location:', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported by this browser.');
-      }
+      getCurrentLocation().then((value) => setCurrentLocation(value));
     }
   }, [isMapLoaded]);
 };

@@ -3,6 +3,8 @@ import React, { ReactNode } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import CurrentLocationInput from '../inputs/CurrentLocationInput';
+
 interface Props {
   children?: ReactNode;
 }
@@ -33,7 +35,8 @@ const Header = ({ children }: Props) => {
             Profile
           </Nav.Link>
         </Nav>
-        <Nav>
+        <Nav className="me-2">
+          <CurrentLocationInput />
           <Nav>{children} </Nav>
         </Nav>
       </Navbar.Collapse>

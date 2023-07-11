@@ -5,8 +5,11 @@ import { Col, Row } from 'react-bootstrap';
 import Map from '../components/Map';
 import ParkingSideBar from '../components/ParkingSideBar';
 import Header from '../components/utils/Header';
+import useAuth from '../hooks/useAuth';
 
 const MainPage = () => {
+  useAuth('/login');
+
   return (
     <>
       <Header />

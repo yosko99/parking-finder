@@ -10,11 +10,11 @@ import {
 } from '@react-google-maps/api';
 import { useAtom } from 'jotai';
 
+import closestParkingsAtom from '../atoms/closestParkings.atom';
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import directionsAtom from '../atoms/directions.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
-import ICoordinate from '../interfaces/ICoordinate';
 import LoadingPage from '../views/LoadingPage';
 
 const libraries = ['places'];
@@ -29,24 +29,7 @@ const Map = () => {
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
-  const [dummyParkings, setDummyParkings] = useState<ICoordinate[]>([
-    {
-      lat: 43.43909428809759,
-      lng: 26.179827615157926
-    },
-    {
-      lat: 43.30807623768245,
-      lng: 25.908259316818082
-    },
-    {
-      lat: 43.08331696300573,
-      lng: 26.275271340743863
-    },
-    {
-      lat: 42.91318228257439,
-      lng: 26.445251985166998
-    }
-  ]);
+  const [closestParkings] = useAtom(closestParkingsAtom);
 
   const [currentLocation] = useAtom(currentLocationAtom);
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
@@ -85,7 +68,7 @@ const Map = () => {
       >
         {currentLocation && <MarkerF position={currentLocation} />}
 
-        {dummyParkings?.map((parkingPosition, index: number) => (
+        {closestParkings?.map((parkingPosition, index: number) => (
           <MarkerF position={parkingPosition} key={index} />
         ))}
         {directions && <DirectionsRenderer directions={directions} />}

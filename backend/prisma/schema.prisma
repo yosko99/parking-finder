@@ -39,11 +39,12 @@ model Review {
 }
 
 model Reservation {
-    id        String   @id @default(uuid())
-    startTime DateTime
-    endTime   DateTime
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
-    parking   Parking  @relation(fields: [parkingId], references: [id], onDelete: Cascade)
-    parkingId String
+    id            String   @id @default(uuid())
+    startTime     DateTime
+    endTime       DateTime
+    totalDuration String
+    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        String
+    parking       Parking  @relation(fields: [parkingId], references: [id], onDelete: Cascade)
+    parkingId     String
 }

@@ -11,6 +11,8 @@ import IParking from '../interfaces/IParking';
 interface Props {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;
   hoveredIndex: number;
+  setClickedIndex: React.Dispatch<React.SetStateAction<number>>;
+  clickedIndex: number;
   index: number;
   parking: IParking;
 }
@@ -19,7 +21,9 @@ const ParkingContainer = ({
   hoveredIndex,
   index,
   parking,
-  setHoveredIndex
+  setHoveredIndex,
+  setClickedIndex,
+  clickedIndex
 }: Props) => {
   const [directions, setDirections] = useAtom(directionsAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
@@ -37,6 +41,7 @@ const ParkingContainer = ({
         })
         .then((response) => {
           setDirections(response);
+          setClickedIndex(index);
         });
     } catch (error) {
       console.log(error);
@@ -51,12 +56,15 @@ const ParkingContainer = ({
       onMouseOver={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(-1)}
       className={`${
-        hoveredIndex === index ? 'bg-primary text-white' : 'bg-light text-dark'
+        clickedIndex === index
+          ? 'bg-info text-white'
+          : hoveredIndex === index
+          ? 'bg-primary text-white'
+          : 'bg-light text-dark'
       } rounded p-3 my-3 mx-2`}
     >
       <p className="m-0 mb-1">
-        {parking.address}{' '}
-        <span className="text-muted">({parking.distance})</span>
+        {parking.address} <span>({parking.distance})</span>
       </p>
       {parking.reservable ? (
         <p className="text-success">RESERVABLE</p>
@@ -66,7 +74,7 @@ const ParkingContainer = ({
       <div className="d-flex justify-content-between">
         <div>
           <p className="m-0">{parking.hourlyPrice}$</p>
-          <p className="text-muted m-0">parking fee</p>
+          <p className="m-0">parking fee</p>
         </div>
         <div style={{ textAlign: 'right' }}>
           <p className="m-0">

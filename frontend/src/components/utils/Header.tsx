@@ -35,7 +35,7 @@ const Header = ({ children }: Props) => {
             Profile
           </Nav.Link>
         </Nav>
-        <Nav className="me-2">
+        <Nav className="mx-5">
           <CurrentLocationInput />
           <Nav>{children} </Nav>
         </Nav>

@@ -42,6 +42,7 @@ const CurrentLocationInput = () => {
 
   const handleClick = () => {
     setInputValue('');
+    setDirections(null);
     getCurrentLocation().then((value) => setCurrentLocation(value));
   };
 

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-    id           Int           @id @default(autoincrement())
+    id           String        @id @default(uuid())
     name         String
     email        String        @unique
     password     String
@@ -18,7 +18,7 @@ model User {
 }
 
 model Parking {
-    id           Int           @id @default(autoincrement())
+    id           String        @id @default(uuid())
     description  String
     address      String
     hourlyPrice  Float
@@ -29,21 +29,21 @@ model Parking {
 }
 
 model Review {
-    id        Int     @id @default(autoincrement())
+    id        String  @id @default(uuid())
     rating    Int
     comment   String
     user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    Int
+    userId    String
     parking   Parking @relation(fields: [parkingId], references: [id], onDelete: Cascade)
-    parkingId Int
+    parkingId String
 }
 
 model Reservation {
-    id        Int      @id @default(autoincrement())
+    id        String   @id @default(uuid())
     startTime DateTime
     endTime   DateTime
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    Int
+    userId    String
     parking   Parking  @relation(fields: [parkingId], references: [id], onDelete: Cascade)
-    parkingId Int
+    parkingId String
 }

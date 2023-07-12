@@ -3,7 +3,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import Map from '../components/Map';
-import ParkingSideBar from '../components/ParkingSideBar';
+import SideBar from '../components/SideBar';
 import Header from '../components/utils/Header';
 import useAuth from '../hooks/useAuth';
 
@@ -18,7 +18,7 @@ const MainPage = () => {
           <Map />
         </Col>
         <Col lg={3} className="m-0 p-0 bg-dark text-white">
-          <ParkingSideBar />
+          <SideBar />
         </Col>
       </Row>
     </>

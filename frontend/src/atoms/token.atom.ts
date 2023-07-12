@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
 
-const tokenAtom = atom('');
+const tokenAtom = atom<string | null>('');
 
 export default tokenAtom;

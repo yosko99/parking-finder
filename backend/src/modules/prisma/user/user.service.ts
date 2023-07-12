@@ -8,11 +8,11 @@ export interface UserService {
 
   loginUser({ email, password }: LoginUserDto);
 
-  getCurrentUser({ username }: IToken);
+  getCurrentUser({ email }: IToken);
 
-  getCurrentUserReservations({ username }: IToken);
+  getCurrentUserReservations({ email }: IToken);
 
-  getCurrentUserParkings({ username }: IToken);
+  getCurrentUserParkings({ email }: IToken);
 }
 
 export const UserService = Symbol('UserService');

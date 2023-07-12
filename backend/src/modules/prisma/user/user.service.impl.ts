@@ -53,13 +53,21 @@ export class UserServiceImpl implements UserService {
     };
   }
 
-  getCurrentUser({ username }: IToken) {
+  async getCurrentUser({ email }: IToken) {
+    const user = await this.retrieveUser({
+      where: { email },
+      select: {
+        isCompany: true,
+        name: true,
+      },
+    });
+
+    return user;
+  }
+  getCurrentUserReservations({ email }: IToken) {
     throw new Error('Method not implemented.');
   }
-  getCurrentUserReservations({ username }: IToken) {
-    throw new Error('Method not implemented.');
-  }
-  getCurrentUserParkings({ username }: IToken) {
+  getCurrentUserParkings({ email }: IToken) {
     throw new Error('Method not implemented.');
   }
 

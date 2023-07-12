@@ -24,6 +24,7 @@ model Parking {
     hourlyPrice  Float
     lat          Float
     lng          Float
+    parkingSize  Int
     reviews      Review[]
     reservations Reservation[]
 }

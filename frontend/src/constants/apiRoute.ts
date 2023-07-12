@@ -8,3 +8,5 @@ export const PUBLIC_IMAGES_PREFIX = PROXY_URL + '/public/';
 export const getUsersRoute = () => API_PREFIX + 'users';
 
 export const getLoginRoute = () => getUsersRoute() + '/login';
+
+export const getCurrentUserRoute = () => getUsersRoute() + '/current';

@@ -10,6 +10,7 @@ import { UserServiceImpl } from './user.service.impl';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { CheckExistingUserById } from 'src/middleware/user/checkExistingUserByID.middleware';
+import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
 
 @Module({
   imports: [],
@@ -27,6 +28,11 @@ export class UserModule implements NestModule {
     consumer.apply(CheckExistingUserById).forRoutes({
       path: '/users/:id',
       method: RequestMethod.DELETE,
+    });
+
+    consumer.apply(VerifyJWT).forRoutes({
+      path: '/users/current',
+      method: RequestMethod.GET,
     });
   }
 }

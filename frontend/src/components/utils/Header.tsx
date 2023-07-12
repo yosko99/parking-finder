@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import AddMarkerToggleButton from '../buttons/AddMarkerToggleButton';
 import CurrentLocationInput from '../inputs/CurrentLocationInput';
 
 interface Props {
@@ -29,11 +30,12 @@ const Header = ({ children }: Props) => {
           </Nav.Link>
           <Nav.Link
             disabled={pathname === '/profile'}
-            className={pathname === '/profile' ? 'text-dark' : ''}
+            className={pathname === '/profile' ? 'text-dark' : '' + ' me-1'}
             onClick={() => navigate('/profile')}
           >
             Profile
           </Nav.Link>
+          <AddMarkerToggleButton />
         </Nav>
         <Nav className="mx-5">
           <CurrentLocationInput />

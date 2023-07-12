@@ -9,7 +9,7 @@ import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
 import ParkingContainer from '../containers/ParkingContainer';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 
-const ParkingSideBar = () => {
+const SideBar = () => {
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
     selectedDirectionIndexAtom
   );
@@ -44,4 +44,4 @@ const ParkingSideBar = () => {
   );
 };
 
-export default ParkingSideBar;
+export default SideBar;

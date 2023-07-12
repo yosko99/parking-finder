@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Inject,
   Param,
@@ -10,13 +11,32 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiHeader,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
+import IToken from 'src/interfaces/IToken';
+import { RequestData } from 'src/decorators/requestData.decorator';
 
 @Controller('/users')
 @ApiTags('Users')
 export class UserController {
   constructor(@Inject(UserService) private readonly userService: UserService) {}
+
+  @Get('/current')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user profile data by token' })
+  @ApiResponse({ status: 200, description: 'Receive user data' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getCurrentUser(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.userService.getCurrentUser(tokenData);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create user' })

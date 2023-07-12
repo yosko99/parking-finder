@@ -3,7 +3,7 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import Map from '../components/Map';
-import SideBar from '../components/SideBar';
+import SideBar from '../components/sidebar/SideBar';
 import Header from '../components/utils/Header';
 import useAuth from '../hooks/useAuth';
 

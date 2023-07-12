@@ -4,6 +4,7 @@ interface IParking {
   address: string;
   reservable: boolean;
   hourlyPrice: number;
+  title: string;
   duration: string;
   distance: string;
   coordinates: ICoordinate;

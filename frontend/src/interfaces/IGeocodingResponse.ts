@@ -7,6 +7,7 @@ interface IGeocodingResponse {
     geometry: {
       location: ICoordinate;
     };
+    formatted_address: string;
   }[];
 }
 

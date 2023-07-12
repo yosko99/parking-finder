@@ -20,7 +20,7 @@ const calculateDirections = (
         travelMode: google.maps.TravelMode.DRIVING
       })
       .then((response) => {
-        setDirections(response);
+        setDirections({ ...response });
         setSelectedDirectionIndex(index);
       });
   } catch (error) {

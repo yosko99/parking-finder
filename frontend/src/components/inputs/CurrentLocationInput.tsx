@@ -10,6 +10,7 @@ import { FaLocationArrow } from 'react-icons/fa';
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
 import isMapLoadedAtom from '../../atoms/isMapLoaded.atom';
+import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 
@@ -21,13 +22,11 @@ const CurrentLocationInput = () => {
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = () => {
-    const address = inputRef.current?.value;
+    const address = inputRef.current?.value as string;
     setDirections(null);
 
     axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-      )
+      .get(getGeocodeRoute(address))
       .then((response) => {
         const data = response.data as IGeocodingResponse;
         if (data.status === 'OK') {

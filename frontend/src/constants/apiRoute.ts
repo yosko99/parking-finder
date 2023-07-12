@@ -10,3 +10,11 @@ export const getUsersRoute = () => API_PREFIX + 'users';
 export const getLoginRoute = () => getUsersRoute() + '/login';
 
 export const getCurrentUserRoute = () => getUsersRoute() + '/current';
+
+// GOOGLE
+
+export const getGeocodeRoute = (address: string) =>
+  `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+
+export const getReverseGeocodeRoute = (lat: number, lng: number) =>
+  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;

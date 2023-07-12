@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { InfoWindowF } from '@react-google-maps/api';
+import { useAtom } from 'jotai';
 
+import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
 import calculateDirections from '../../functions/calculateDirections';
 import ICoordinate from '../../interfaces/ICoordinate';
 import IParking from '../../interfaces/IParking';
@@ -21,20 +23,22 @@ const ParkingMarker = ({
   setDirections,
   setSelectedDirectionIndex
 }: Props) => {
+  const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+
+  const handleClick = () => {
+    if (!isAddMarkerToggled) {
+      calculateDirections(
+        currentLocation,
+        parking.address,
+        setDirections,
+        setSelectedDirectionIndex,
+        index
+      );
+    }
+  };
+
   return (
-    <div
-      onClick={() =>
-        calculateDirections(
-          currentLocation,
-          parking.address,
-          setDirections,
-          setSelectedDirectionIndex,
-          index
-        )
-      }
-      key={index}
-      role="button"
-    >
+    <div onClick={handleClick} key={index} role="button">
       <InfoWindowF position={parking.coordinates} key={index}>
         <div>{parking.hourlyPrice.toString()}$</div>
       </InfoWindowF>

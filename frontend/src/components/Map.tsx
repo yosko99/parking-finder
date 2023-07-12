@@ -10,11 +10,15 @@ import {
 import { useAtom } from 'jotai';
 
 import CurrentLocationMarker from './markers/CurrentLocationMarker';
+import NewMarker from './markers/NewMarker';
 import ParkingMarker from './markers/ParkingMarker';
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import directionsAtom from '../atoms/directions.atom';
+import isAddMarkerToggledAtom from '../atoms/isAddMarkerToggled.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
+import newMarkerAddressAtom from '../atoms/newMarkerAddressAtom.atom';
 import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
+import updateNewMarkerAddress from '../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
 import LoadingPage from '../views/LoadingPage';
@@ -30,15 +34,15 @@ const Map = () => {
   useSetCurrentLocation();
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
-
-  const { parkings } = useFetchParkingInformation();
-
   const [currentLocation] = useAtom(currentLocationAtom);
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
     selectedDirectionIndexAtom
   );
+  const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+  const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
+  const { parkings } = useFetchParkingInformation();
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -53,8 +57,19 @@ const Map = () => {
   );
 
   const onUnmount = useCallback(() => {
+    setDirections(null);
     setMap(null);
   }, []);
+
+  const handleMapClick = (e: google.maps.MapMouseEvent) => {
+    if (isAddMarkerToggled) {
+      updateNewMarkerAddress(
+        e.latLng!.lat(),
+        e.latLng!.lng(),
+        setNewMarkerAddress
+      );
+    }
+  };
 
   return isLoaded ? (
     <>
@@ -65,6 +80,7 @@ const Map = () => {
           mapTypeControl: false,
           fullscreenControl: false
         }}
+        onClick={handleMapClick}
         mapContainerStyle={{ width: '100%', height: '95vh' }}
         center={currentLocation}
         zoom={9}
@@ -89,6 +105,9 @@ const Map = () => {
             options={{ suppressMarkers: true }}
             directions={directions}
           />
+        )}
+        {newMarkerAddress !== null && (
+          <NewMarker position={newMarkerAddress.coords} />
         )}
       </GoogleMap>
     </>

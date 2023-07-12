@@ -53,7 +53,7 @@ const ParkingContainer = ({
       } rounded p-3 my-3 mx-2`}
     >
       <p className="m-0 mb-1">
-        {parking.address} <span>({parking.distance})</span>
+        {parking.title} <span>({parking.distance})</span>
       </p>
       {parking.reservable ? (
         <p className="text-success">RESERVABLE</p>

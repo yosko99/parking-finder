@@ -32,6 +32,7 @@ const useFetchParkingInformation = () => {
             responseElements?.forEach((element, index) => {
               if (element.status === 'OK') {
                 tempParking.push({
+                  title: 'Lorem ipsum',
                   address: response?.destinationAddresses[index] || '',
                   duration: element.duration.text,
                   distance: element.distance.text,
@@ -49,7 +50,7 @@ const useFetchParkingInformation = () => {
         }
       );
     }
-  }, [isMapLoaded, currentLocation]);
+  }, [isMapLoaded, currentLocation, closestParkings]);
 
   return { parkings, setParkings };
 };

@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-    id           String        @id @default(uuid())
-    name         String
-    email        String        @unique
-    password     String
-    isCompany    Boolean
-    reservations Reservation[]
-    reviews      Review[]
+    id            String        @id @default(uuid())
+    name          String
+    email         String        @unique
+    password      String
+    isCompany     Boolean
+    reservations  Reservation[]
+    reviews       Review[]
+    ownedParkings Parking[]
 }
 
 model Parking {
     id           String        @id @default(uuid())
+    title        String
     description  String
     address      String
     hourlyPrice  Float
@@ -27,6 +29,8 @@ model Parking {
     parkingSize  Int
     reviews      Review[]
     reservations Reservation[]
+    owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId      String
 }
 
 model Review {

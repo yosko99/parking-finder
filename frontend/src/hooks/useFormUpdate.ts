@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-type FormData = {
-  [key: string]: string | boolean;
-};
+interface FormData {
+  [key: string]: string | boolean | number;
+}
 
 const useFormUpdate = () => {
   const [formData, setFormData] = useState<FormData>({});
@@ -16,7 +16,7 @@ const useFormUpdate = () => {
 
       return {
         ...prevState,
-        [target.name]: value
+        [target.name]: target.type === 'number' ? Number(value) : value
       };
     });
   };

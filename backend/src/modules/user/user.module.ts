@@ -5,7 +5,7 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { UserServiceImpl } from './user.service.impl';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';

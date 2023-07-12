@@ -10,14 +10,17 @@ import PasswordInput from '../components/inputs/PasswordInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getUsersRoute } from '../constants/apiRoute';
 import useAuth from '../hooks/useAuth';
-import useAuthFormSubmit from '../hooks/useAuthFormSubmit';
+import useAuthenticatedFormSubmit from '../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../hooks/useFormUpdate';
 import CenteredItems from '../styles/CenteredItems';
 
 const RegisterPage = () => {
   useAuth('/register');
 
-  const { alert, handleSubmit, isLoading } = useAuthFormSubmit(getUsersRoute());
+  const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
+    getUsersRoute(),
+    true
+  );
   const { formData, handleChange } = useFormUpdate();
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {

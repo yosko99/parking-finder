@@ -11,7 +11,7 @@ const useMutationWithToken = (
 ) => {
   const [token] = useAtom(tokenAtom);
 
-  const uploadPost = async (data: any) => {
+  const mutate = async (data: any) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
@@ -24,7 +24,7 @@ const useMutationWithToken = (
     return response.data;
   };
 
-  return useMutation(uploadPost, { onMutate: onMutate && onMutate });
+  return useMutation(mutate, { onMutate: onMutate && onMutate });
 };
 
 export default useMutationWithToken;

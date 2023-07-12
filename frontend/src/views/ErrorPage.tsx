@@ -14,6 +14,7 @@ const ErrorPage = () => {
 
   useEffect(() => {
     setToken('null');
+    localStorage.removeItem('token');
   }, []);
 
   return (

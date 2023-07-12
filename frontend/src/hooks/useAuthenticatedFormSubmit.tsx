@@ -7,20 +7,18 @@ import CustomAlert from '../components/utils/CustomAlert';
 import setTokenAndRedirect from '../functions/setTokenAndRedirect';
 import ExtendedAxiosError from '../types/ExtendedAxiosError';
 
-interface FormData {
-  username?: string;
-  email?: string;
-  password?: string;
-}
-
-const useAuthFormSubmit = (routeURL: string) => {
+const useAuthenticatedFormSubmit = (
+  routeURL: string,
+  setToken: boolean,
+  onSuccess?: () => any
+) => {
   const [alert, setAlert] = useState<React.ReactNode>();
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutationWithToken(routeURL, false);
   const [loading, setLoading] = useState(isLoading);
 
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = (data: any) => {
     mutate(
       { ...data },
       {
@@ -30,7 +28,14 @@ const useAuthFormSubmit = (routeURL: string) => {
           setAlert(<CustomAlert variant="success" text={response.message} />);
 
           setLoading(false);
-          setTokenAndRedirect(response.token);
+
+          setTimeout(() => {
+            onSuccess && onSuccess();
+          }, 1000);
+
+          if (setToken) {
+            setTokenAndRedirect(response.token);
+          }
         },
         onError: (err) => {
           const { response } = err as ExtendedAxiosError;
@@ -46,4 +51,4 @@ const useAuthFormSubmit = (routeURL: string) => {
   return { alert, handleSubmit, isLoading: loading };
 };
 
-export default useAuthFormSubmit;
+export default useAuthenticatedFormSubmit;

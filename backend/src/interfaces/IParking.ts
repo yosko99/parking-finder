@@ -6,6 +6,8 @@ interface IParking {
   description: string;
   address: string;
   hourlyPrice: number;
+  title: string;
+  parkingSize: number;
   lat: number;
   lng: number;
   reviews: IReview[];

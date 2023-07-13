@@ -17,8 +17,14 @@ interface Props {
 const ReserverParkingCard = ({ parking }: Props) => {
   const [timeRange] = useAtom(timeRangeAtom);
 
+  const totalPrice = calculateTotalPrice(
+    timeRange.startTime,
+    timeRange.endTime,
+    parking.hourlyPrice
+  );
+
   return (
-    <Card className="px-2">
+    <Card className="px-2 shadow-sm border">
       <Card.Img variant="top" src={ReserveParkingIMG} />
       <Card.Body>
         <Card.Title>{parking.address}</Card.Title>
@@ -39,16 +45,11 @@ const ReserverParkingCard = ({ parking }: Props) => {
             </p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <p>${parking.hourlyPrice}</p>
-            <p>${parking.hourlyPrice}</p>
+            <p>${parking.hourlyPrice.toFixed(2)}</p>
+            <p>${totalPrice.toFixed(2)}</p>
             <p>${TRANSACTION_FEE.toFixed(2)}</p>
             <p className="fs-4" style={{ fontWeight: 'bold' }}>
-              $
-              {calculateTotalPrice(
-                timeRange.startTime,
-                timeRange.endTime,
-                parking.hourlyPrice
-              ).toFixed(2)}
+              ${(totalPrice + TRANSACTION_FEE).toFixed(2)}
             </p>
           </div>
         </Card.Text>

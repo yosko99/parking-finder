@@ -1,5 +1,3 @@
-import { TRANSACTION_FEE } from '../constants/prices';
-
 const calculateTotalPrice = (
   startDate: string,
   endDate: string,
@@ -13,11 +11,7 @@ const calculateTotalPrice = (
 
   const totalPrice = Math.ceil(hours * hourlyPrice * 100) / 100;
 
-  if (totalPrice === 0) {
-    return totalPrice;
-  } else {
-    return totalPrice + TRANSACTION_FEE;
-  }
+  return totalPrice;
 };
 
 export default calculateTotalPrice;

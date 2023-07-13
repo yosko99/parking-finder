@@ -11,8 +11,8 @@ const BookingDetails = () => {
   const [timeRange] = useAtom(timeRangeAtom);
 
   return (
-    <div className="shadow-sm border py-2">
-      <p className="fs-1 m-4">Booking details</p>
+    <div className="shadow-sm border py-2 mb-4">
+      <p className="fs-2 m-4">Booking details</p>
       <div className="d-flex m-4 justify-content-between">
         <div>
           <p className="fs-4 my-2">

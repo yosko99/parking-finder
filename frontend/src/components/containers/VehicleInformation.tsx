@@ -21,9 +21,9 @@ const VehicleInformation = ({
   };
 
   return (
-    <div className="shadow-sm border py-2 my-3">
+    <div className="shadow-sm border py-2 mb-4">
       <div className="d-flex justify-content-between align-items-center">
-        <p className="fs-1 m-4">Vehicle information</p>
+        <p className="fs-2 m-4">Vehicle information</p>
 
         {isSubmited && (
           <p
@@ -52,7 +52,7 @@ const VehicleInformation = ({
               maxLength={9}
             />
             <div className="d-flex justify-content-end w-100 mt-3">
-              <Button type="submit" variant="success w-25">
+              <Button type="submit" variant="success w-25 rounded">
                 Add
               </Button>
             </div>

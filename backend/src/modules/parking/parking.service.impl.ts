@@ -93,6 +93,7 @@ export class ParkingServiceImpl implements ParkingService {
         },
         include: {
           reservations: true,
+          reviews: true,
         },
       });
 

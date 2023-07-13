@@ -45,12 +45,16 @@ const useFetchParkingInformation = (
             responseElements?.forEach((element, index) => {
               if (element.status === 'OK') {
                 tempParking.push({
+                  reviews: closestParkings[index].reviews,
                   title: data[index].title,
                   address: response?.destinationAddresses[index] || '',
                   duration: element.duration.text,
                   distance: element.distance.text,
                   hourlyPrice: closestParkings[index].hourlyPrice,
                   reservable: true,
+                  description: closestParkings[index].description,
+                  freeSpaces: closestParkings[index].freeSpaces,
+                  parkingSize: closestParkings[index].parkingSize,
                   coordinates: {
                     lat: closestParkings[index].lat!,
                     lng: closestParkings[index].lng!

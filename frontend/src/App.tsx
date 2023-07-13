@@ -9,6 +9,7 @@ import ErrorPage from './views/ErrorPage';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
 import RegisterPage from './views/RegisterPage';
+import ReserveParkingPage from './views/ReserveParkingPage';
 
 const App = () => {
   useSetToken();
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/reserve-parking" element={<ReserveParkingPage />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </div>

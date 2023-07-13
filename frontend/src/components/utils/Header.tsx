@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import AddMarkerToggleButton from '../buttons/AddMarkerToggleButton';
 import CurrentLocationInput from '../inputs/CurrentLocationInput';
 
-interface Props {
-  children?: ReactNode;
-}
-
-const Header = ({ children }: Props) => {
+const Header = () => {
   const navigate = useNavigate();
 
   const pathname = window.location.pathname;
@@ -43,11 +39,10 @@ const Header = ({ children }: Props) => {
           >
             Profile
           </Nav.Link>
-          <AddMarkerToggleButton />
+          {pathname === '/' && <AddMarkerToggleButton />}
         </Nav>
         <Nav className="mx-5">
-          <CurrentLocationInput />
-          <Nav>{children} </Nav>
+          {pathname === '/' && <CurrentLocationInput />}
         </Nav>
       </Navbar.Collapse>
     </Navbar>

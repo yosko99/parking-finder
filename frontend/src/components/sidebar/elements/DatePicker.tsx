@@ -32,6 +32,7 @@ const DatePicker = () => {
       <Form.Group className="">
         <Form.Label>End date</Form.Label>
         <Form.Control
+          min={timeRange.startTime}
           type="datetime-local"
           defaultValue={timeRange.endTime}
           onChange={handleChange}

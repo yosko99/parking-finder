@@ -41,7 +41,11 @@ const AddMarkerForm = () => {
     });
   };
   return (
-    <Form onChange={handleChange} onSubmit={handleCreateMarker} className="p-4">
+    <Form
+      onChange={handleChange}
+      onSubmit={handleCreateMarker}
+      className="p-4 text-dark"
+    >
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>
         <Form.Control

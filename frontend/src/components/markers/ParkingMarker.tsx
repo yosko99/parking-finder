@@ -10,6 +10,9 @@ import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom'
 import calculateDirections from '../../functions/calculateDirections';
 import ICoordinate from '../../interfaces/ICoordinate';
 import IParking from '../../interfaces/IParking';
+import ReserveParkingButton from '../buttons/ReserveParkingButton';
+import ParkingInfoTabBody from '../modalBodies/ParkingInfoTabBody';
+import CustomModal from '../utils/CustomModal';
 
 interface Props {
   index: number;
@@ -49,9 +52,13 @@ const ParkingMarker = ({
             <>
               <div className="d-flex flex-column">
                 <span className="text-center fs-5 mb-2">{parking.title}</span>
-                <div>
-                  <Button variant="info">Info</Button>
-                  <Button variant="success">Reserve</Button>
+                <div className="d-flex">
+                  <CustomModal
+                    activateButtonElement={<Button variant="info">Info</Button>}
+                    modalHeader="Parking info"
+                    modalBody={<ParkingInfoTabBody parking={parking} />}
+                  />
+                  <ReserveParkingButton parking={parking} />
                 </div>
               </div>
             </>

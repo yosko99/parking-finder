@@ -44,7 +44,7 @@ const ParkingContainer = ({
       role="button"
       onMouseOver={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(-1)}
-      className={`${
+      className={`shadow ${
         selectedDirectionIndex === index
           ? 'bg-info text-white'
           : hoveredIndex === index

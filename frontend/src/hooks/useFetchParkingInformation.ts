@@ -27,7 +27,7 @@ const useFetchParkingInformation = (
   const [parkings, setParkings] = useState<IParking[]>([]);
 
   useEffect(() => {
-    if (isMapLoaded && !isLoading && closestParkings.length > 0) {
+    if (isMapLoaded && !isLoading) {
       const service = new window.google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
@@ -61,6 +61,7 @@ const useFetchParkingInformation = (
 
             setParkings(tempParking);
           } else {
+            setParkings([]);
             console.error('Error calculating distances:', status);
           }
         }

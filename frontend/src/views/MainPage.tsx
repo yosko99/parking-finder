@@ -17,7 +17,7 @@ const MainPage = () => {
         <Col lg={9} className="p-0">
           <Map />
         </Col>
-        <Col lg={3} className="m-0 p-0 bg-dark text-white">
+        <Col lg={3} className="m-0 p-0 text-white border">
           <SideBar />
         </Col>
       </Row>

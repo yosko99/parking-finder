@@ -16,21 +16,29 @@ const Header = ({ children }: Props) => {
   const pathname = window.location.pathname;
 
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary mb-0 p-1">
-      <Navbar.Brand className="ms-5 me-0">Parking finder</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      className="mb-0 p-1 shadow-sm bg-primary text-white"
+    >
+      <Navbar.Brand className="ms-5 me-0 text-white">
+        Parking finder
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" className="bg-white" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto ps-5">
           <Nav.Link
             disabled={pathname === '/'}
-            className={pathname === '/' ? 'text-dark' : ''}
+            className={pathname === '/' ? 'text-white' : 'text-muted'}
             onClick={() => navigate('/')}
           >
             Home
           </Nav.Link>
           <Nav.Link
             disabled={pathname === '/profile'}
-            className={pathname === '/profile' ? 'text-dark' : '' + ' me-1'}
+            className={
+              pathname === '/profile' ? 'text-white' : 'text-muted' + ' me-1'
+            }
             onClick={() => navigate('/profile')}
           >
             Profile

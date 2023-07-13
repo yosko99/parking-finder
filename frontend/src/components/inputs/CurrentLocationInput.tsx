@@ -55,7 +55,7 @@ const CurrentLocationInput = () => {
           ref={inputRef}
           placeholder="Your location..."
         />
-        <Button onClick={handleClick}>
+        <Button onClick={handleClick} variant="info">
           <FaLocationArrow size={20} role="button" />
         </Button>
       </Form.Group>

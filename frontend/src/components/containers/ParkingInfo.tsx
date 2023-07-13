@@ -4,11 +4,11 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { AiFillCar } from 'react-icons/ai';
 
-import currentLocationAtom from '../atoms/currentLocation.atom';
-import directionsAtom from '../atoms/directions.atom';
-import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
-import calculateDirections from '../functions/calculateDirections';
-import IParking from '../interfaces/IParking';
+import currentLocationAtom from '../../atoms/currentLocation.atom';
+import directionsAtom from '../../atoms/directions.atom';
+import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
+import calculateDirections from '../../functions/calculateDirections';
+import IParking from '../../interfaces/IParking';
 
 interface Props {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number>>;

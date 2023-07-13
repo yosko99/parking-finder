@@ -6,8 +6,8 @@ import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../../../atoms/currentLocation.atom';
 import selectedDirectionIndexAtom from '../../../atoms/selectedDirectionIndex.atom';
-import ParkingInfo from '../../../containers/ParkingInfo';
 import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
+import ParkingInfo from '../../containers/ParkingInfo';
 
 const ParkingsContainer = () => {
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(

@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { useAtom } from 'jotai';
 import { Col, Container, Row } from 'react-bootstrap';
-import { BiTimeFive } from 'react-icons/bi';
-import { TbCalendarUp, TbCalendarX } from 'react-icons/tb';
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import timeRangeAtom from '../atoms/timeRange.atom';
 import ReserverParkingCard from '../components/cards/ReserveParkingCard';
+import BookingDetails from '../components/containers/BookingDetails';
+import VehicleInformation from '../components/containers/VehicleInformation';
 import Header from '../components/utils/Header';
-import getDurationInWords from '../functions/getDurationInWords';
 import IParking from '../interfaces/IParking';
 
 const ReserveParkingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [timeRange] = useAtom(timeRangeAtom);
+  const [registrationNumber, setRegistrationNumber] = useState('');
 
   if (location.state === null || location.state?.parking === null) {
     navigate('/');
@@ -32,33 +31,18 @@ const ReserveParkingPage = () => {
 
         <Row>
           <Col lg={8}>
-            <div className="shadow-sm border py-2">
-              <p className="fs-1 m-4">Booking details</p>
-              <div className="d-flex m-4 justify-content-between">
-                <div>
-                  <p className="fs-4 my-2">
-                    <TbCalendarUp className="me-3 mb-1" /> Arriving on
-                  </p>
-                  <p className="fs-4 my-2">
-                    <TbCalendarX className="me-3 mb-1" /> Leaving on
-                  </p>
-                  <p className="fs-4 my-2">
-                    <BiTimeFive className="me-3 mb-1" /> Duration
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p className="fs-4 my-2">{timeRange.startTime}</p>
-                  <p className="fs-4 my-2">{timeRange.endTime}</p>
-                  <p className="fs-4 my-2">
-                    {getDurationInWords(timeRange.startTime, timeRange.endTime)}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 shadow-sm border"></div>
+            <Fade left>
+              <BookingDetails />
+              <VehicleInformation
+                registrationNumber={registrationNumber}
+                setRegistrationNumber={setRegistrationNumber}
+              />
+            </Fade>
           </Col>
           <Col lg={4}>
-            <ReserverParkingCard parking={parking} />
+            <Fade right>
+              <ReserverParkingCard parking={parking} />
+            </Fade>
           </Col>
         </Row>
       </Container>

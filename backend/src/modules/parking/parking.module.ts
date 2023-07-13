@@ -9,6 +9,8 @@ import { ParkingController } from './parking.controller';
 import { ParkingService } from './parking.service';
 import { ParkingServiceImpl } from './parking.service.impl';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
+import { DistanceService } from '../utils/distance.service';
+import { DistanceServiceImpl } from '../utils/distance.service.impl';
 
 @Module({
   imports: [],
@@ -17,6 +19,10 @@ import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
     {
       provide: ParkingService,
       useClass: ParkingServiceImpl,
+    },
+    {
+      provide: DistanceService,
+      useClass: DistanceServiceImpl,
     },
     PrismaService,
   ],

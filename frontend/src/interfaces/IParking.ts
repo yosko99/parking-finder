@@ -7,6 +7,8 @@ interface IParking {
   title: string;
   duration: string;
   distance: string;
+  lat?: number;
+  lng?: number;
   coordinates: ICoordinate;
 }
 

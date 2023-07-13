@@ -42,7 +42,10 @@ const Map = () => {
   );
   const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
-  const { parkings } = useFetchParkingInformation();
+  const { parkings } = useFetchParkingInformation(
+    '2023-07-13T07:04:26.572Z',
+    '2023-07-13T07:04:26.572Z'
+  );
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {

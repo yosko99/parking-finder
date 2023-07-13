@@ -17,7 +17,10 @@ const ParkingSideBar = () => {
   );
   const [currentLocation] = useAtom(currentLocationAtom);
 
-  const { parkings } = useFetchParkingInformation();
+  const { parkings } = useFetchParkingInformation(
+    '2023-07-13T07:04:26.572Z',
+    '2023-07-13T07:04:26.572Z'
+  );
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   useEffect(() => {

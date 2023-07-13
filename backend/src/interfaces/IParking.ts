@@ -12,6 +12,7 @@ interface IParking {
   lng: number;
   reviews: IReview[];
   reservations: IReservation[];
+  freeSpaces?: number;
 }
 
 export default IParking;

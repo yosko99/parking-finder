@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class CreateParkingDto {
   @IsNotEmpty()
@@ -35,4 +42,22 @@ export class CreateParkingDto {
   @IsNotEmpty()
   @IsNumber()
   lng: number;
+}
+
+export class ParkingsWithinRangeDto {
+  @IsNotEmpty()
+  @IsNumberString()
+  lat: number;
+
+  @IsNotEmpty()
+  @IsNumberString()
+  lng: number;
+
+  @IsNotEmpty()
+  @IsDateString()
+  startTime: Date;
+
+  @IsNotEmpty()
+  @IsDateString()
+  endTime: Date;
 }

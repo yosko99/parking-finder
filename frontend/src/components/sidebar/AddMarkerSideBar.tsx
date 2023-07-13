@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
+import { useQueryClient } from 'react-query';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
@@ -13,6 +14,8 @@ import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 const AddMarkerSideBar = () => {
+  const queryClient = useQueryClient();
+
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
     isAddMarkerToggledAtom
@@ -25,6 +28,7 @@ const AddMarkerSideBar = () => {
     () => {
       setIsAddMarkerToggled(false);
       setNewMarkerAddress(null);
+      queryClient.refetchQueries();
     }
   );
 

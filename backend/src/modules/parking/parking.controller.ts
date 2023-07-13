@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ParkingService } from './parking.service';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateParkingDto } from 'src/dto/parking.dto';
+import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
 import { RequestData } from 'src/decorators/requestData.decorator';
 
@@ -41,7 +41,11 @@ export class ParkingController {
   @ApiOperation({ summary: 'Get parkings within range' })
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 400, description: 'Invalid params' })
-  getCurrentUser(@Query('lat') lat: number, @Query('lng') lng: number) {
-    return this.parkingService.getParkingsWithinRange(lat, lng);
+  @UsePipes(ValidationPipe)
+  getCurrentUser(
+    @Query()
+    query: ParkingsWithinRangeDto,
+  ) {
+    return this.parkingService.getParkingsWithinRange(query);
   }
 }

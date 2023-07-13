@@ -2,24 +2,37 @@ import { useEffect, useState } from 'react';
 
 import { useAtom } from 'jotai';
 
-import closestParkingsAtom from '../atoms/closestParkings.atom';
+import useFetch from './useFetch';
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
+import { getParkingsWithinRangeRoute } from '../constants/apiRoute';
 import IParking from '../interfaces/IParking';
 
-const useFetchParkingInformation = () => {
+const useFetchParkingInformation = (
+  startTimeISOString: string,
+  endTimeISOString: string
+) => {
   const [currentLocation] = useAtom(currentLocationAtom);
-  const [closestParkings] = useAtom(closestParkingsAtom);
+  const fetchURL = getParkingsWithinRangeRoute(
+    currentLocation.lat,
+    currentLocation.lng,
+    startTimeISOString,
+    endTimeISOString
+  );
   const [isMapLoaded] = useAtom(isMapLoadedAtom);
+  const { data, isLoading } = useFetch(fetchURL, fetchURL, true, false);
+
+  const closestParkings = data as IParking[];
 
   const [parkings, setParkings] = useState<IParking[]>([]);
 
   useEffect(() => {
-    if (isMapLoaded) {
+    if (isMapLoaded && !isLoading && closestParkings.length > 0) {
       const service = new window.google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
           origins: [currentLocation],
+          // @ts-ignore
           destinations: closestParkings,
           // eslint-disable-next-line no-undef
           travelMode: google.maps.TravelMode.DRIVING
@@ -32,13 +45,16 @@ const useFetchParkingInformation = () => {
             responseElements?.forEach((element, index) => {
               if (element.status === 'OK') {
                 tempParking.push({
-                  title: 'Lorem ipsum',
+                  title: data[index].title,
                   address: response?.destinationAddresses[index] || '',
                   duration: element.duration.text,
                   distance: element.distance.text,
-                  hourlyPrice: Math.floor(Math.random() * 10),
+                  hourlyPrice: closestParkings[index].hourlyPrice,
                   reservable: true,
-                  coordinates: closestParkings[index]
+                  coordinates: {
+                    lat: closestParkings[index].lat!,
+                    lng: closestParkings[index].lng!
+                  }
                 });
               }
             });
@@ -50,7 +66,12 @@ const useFetchParkingInformation = () => {
         }
       );
     }
-  }, [isMapLoaded, currentLocation, closestParkings]);
+  }, [
+    currentLocation,
+    closestParkings?.length,
+    startTimeISOString,
+    endTimeISOString
+  ]);
 
   return { parkings, setParkings };
 };

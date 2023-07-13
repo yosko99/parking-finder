@@ -14,6 +14,15 @@ export const getCurrentUserRoute = () => getUsersRoute() + '/current';
 // PARKINGS
 export const getParkingsRoute = () => API_PREFIX + 'parkings';
 
+export const getParkingsWithinRangeRoute = (
+  lat: number,
+  lng: number,
+  startTimeISOString: string,
+  endTimeISOString: string
+) =>
+  API_PREFIX +
+  `parkings?lat=${lat}&lng=${lng}&startTime=${startTimeISOString}&endTime=${endTimeISOString}`;
+
 // GOOGLE
 export const getGeocodeRoute = (address: string) =>
   `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;

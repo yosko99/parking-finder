@@ -17,7 +17,7 @@ interface Props {
   parking: IParking;
 }
 
-const ParkingContainer = ({
+const ParkingInfo = ({
   hoveredIndex,
   index,
   parking,
@@ -76,4 +76,4 @@ const ParkingContainer = ({
   );
 };
 
-export default ParkingContainer;
+export default ParkingInfo;

@@ -6,7 +6,7 @@ import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../../../atoms/currentLocation.atom';
 import selectedDirectionIndexAtom from '../../../atoms/selectedDirectionIndex.atom';
-import ParkingContainer from '../../../containers/ParkingContainer';
+import ParkingInfo from '../../../containers/ParkingInfo';
 import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 
 const ParkingsContainer = () => {
@@ -34,7 +34,7 @@ const ParkingsContainer = () => {
         </div>
       ) : (
         parkings.map((parking, index) => (
-          <ParkingContainer
+          <ParkingInfo
             hoveredIndex={hoveredIndex}
             setHoveredIndex={setHoveredIndex}
             index={index}

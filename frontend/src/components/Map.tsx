@@ -17,7 +17,6 @@ import directionsAtom from '../atoms/directions.atom';
 import isAddMarkerToggledAtom from '../atoms/isAddMarkerToggled.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 import newMarkerAddressAtom from '../atoms/newMarkerAddressAtom.atom';
-import selectedDirectionIndexAtom from '../atoms/selectedDirectionIndex.atom';
 import updateNewMarkerAddress from '../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
@@ -37,9 +36,6 @@ const Map = () => {
   const [currentLocation] = useAtom(currentLocationAtom);
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
-  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
-    selectedDirectionIndexAtom
-  );
   const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const { parkings } = useFetchParkingInformation(
@@ -81,7 +77,18 @@ const Map = () => {
           zoomControl: true,
           streetViewControl: false,
           mapTypeControl: false,
-          fullscreenControl: false
+          fullscreenControl: false,
+          styles: [
+            {
+              featureType: 'poi',
+              elementType: 'labels.icon',
+              stylers: [
+                {
+                  visibility: 'off'
+                }
+              ]
+            }
+          ]
         }}
         onClick={handleMapClick}
         mapContainerStyle={{ width: '100%', height: '95vh' }}
@@ -100,7 +107,6 @@ const Map = () => {
             parking={parking}
             setDirections={setDirections}
             key={index}
-            setSelectedDirectionIndex={setSelectedDirectionIndex}
           />
         ))}
         {directions && (

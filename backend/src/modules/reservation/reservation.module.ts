@@ -11,8 +11,10 @@ import { ReservationService } from './reservation.service';
 import { ReservationServiceImpl } from './reservation.service.impl';
 import { ParkingService } from '../parking/parking.service';
 import { ParkingServiceImpl } from '../parking/parking.service.impl';
-import { DistanceService } from '../utils/distance.service';
-import { DistanceServiceImpl } from '../utils/distance.service.impl';
+import { DistanceServiceImpl } from '../utils/distance/distance.service.impl';
+import { MailService } from '../utils/mail/mail.service';
+import { MailServiceImpl } from '../utils/mail/mail.service.impl';
+import { DistanceService } from '../utils/distance/distance.service';
 
 @Module({
   imports: [],
@@ -29,6 +31,10 @@ import { DistanceServiceImpl } from '../utils/distance.service.impl';
     {
       provide: DistanceService,
       useClass: DistanceServiceImpl,
+    },
+    {
+      provide: MailService,
+      useClass: MailServiceImpl,
     },
     PrismaService,
   ],

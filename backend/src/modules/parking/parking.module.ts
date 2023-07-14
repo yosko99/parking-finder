@@ -9,8 +9,8 @@ import { ParkingController } from './parking.controller';
 import { ParkingService } from './parking.service';
 import { ParkingServiceImpl } from './parking.service.impl';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
-import { DistanceService } from '../utils/distance.service';
-import { DistanceServiceImpl } from '../utils/distance.service.impl';
+import { DistanceServiceImpl } from '../utils/distance/distance.service.impl';
+import { DistanceService } from '../utils/distance/distance.service';
 
 @Module({
   imports: [],

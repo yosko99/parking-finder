@@ -3,8 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ParkingService } from './parking.service';
 import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
-import { DistanceService } from '../utils/distance.service';
 import IParking from 'src/interfaces/IParking';
+import { DistanceService } from '../utils/distance/distance.service';
 
 @Injectable()
 export class ParkingServiceImpl implements ParkingService {

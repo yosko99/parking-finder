@@ -28,12 +28,13 @@ const PaymentInformation = () => {
         <Form.Group className="mb-3">
           <Form.Label>Card number</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             className="border"
             required
             name="cardNumber"
             placeholder="514038915711403"
             minLength={3}
+            maxLength={12}
           />
         </Form.Group>
         <Row>

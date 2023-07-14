@@ -5,12 +5,15 @@ import { CreateReservationDto } from 'src/dto/reservation.dto';
 import IToken from 'src/interfaces/IToken';
 import { ParkingService } from '../parking/parking.service';
 import IReservation from 'src/interfaces/IReservation';
+import { MailService } from '../utils/mail/mail.service';
+import { reservationCompleteTemplate } from '../utils/mail/htmlTemplates/reservationComplete.template';
 
 @Injectable()
 export class ReservationServiceImpl implements ReservationService {
   constructor(
     private readonly prisma: PrismaService,
     @Inject(ParkingService) private readonly parkingService: ParkingService,
+    @Inject(MailService) private readonly mailService: MailService,
   ) {}
 
   async createReservation(
@@ -21,7 +24,7 @@ export class ReservationServiceImpl implements ReservationService {
       startTime,
       totalDuration,
     }: CreateReservationDto,
-    tokenData: IToken,
+    { email }: IToken,
   ) {
     const parking = await this.parkingService.retrieveParkingById(parkingId);
 
@@ -49,13 +52,25 @@ export class ReservationServiceImpl implements ReservationService {
         registrationNumber,
         totalDuration,
         parking: { connect: { id: parking.id } },
-        user: { connect: { email: tokenData.email } },
+        user: { connect: { email } },
       },
+    });
+
+    this.mailService.sendEmailMessage({
+      to: email,
+      html: reservationCompleteTemplate(
+        registrationNumber,
+        startTime,
+        endTime,
+        totalDuration,
+      ),
+      subject: 'Reservation complete',
     });
 
     return {
       reservation: newReservation,
-      message: 'Reservation created successfully',
+      message:
+        'Reservation created successfully, we have sent you email with the reservation info',
     };
   }
 

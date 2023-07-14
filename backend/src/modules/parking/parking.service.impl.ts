@@ -3,8 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ParkingService } from './parking.service';
 import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
-import IReservation from 'src/interfaces/IReservation';
 import { DistanceService } from '../utils/distance.service';
+import IParking from 'src/interfaces/IParking';
 
 @Injectable()
 export class ParkingServiceImpl implements ParkingService {
@@ -99,36 +99,24 @@ export class ParkingServiceImpl implements ParkingService {
 
       return parkings;
     } catch (error) {
-      throw new HttpException('Something went wrong', error.message);
+      throw new HttpException('Something went wrong', 500);
     }
-  }
-
-  private getNumberOfOverlappingDates(
-    startTime: Date,
-    endTime: Date,
-    reservations: IReservation[],
-  ) {
-    let collisionCount = 0;
-
-    for (let i = 0; i < reservations.length; i++) {
-      const reservation = reservations[i];
-
-      if (
-        reservation.startTime === startTime &&
-        reservation.endTime === endTime
-      ) {
-        continue;
-      }
-
-      if (startTime < endTime && reservation.startTime < reservation.endTime) {
-        collisionCount++;
-      }
-    }
-
-    return collisionCount;
   }
 
   deleteParking(id: string) {
     throw new Error('Method not implemented.');
+  }
+
+  async retrieveParkingById(id: string) {
+    const parking = await this.prisma.parking.findUnique({
+      where: { id },
+      include: { reservations: true },
+    });
+
+    if (parking === null) {
+      throw new HttpException('Could not find parking with provided id', 404);
+    }
+
+    return parking as unknown as IParking;
   }
 }

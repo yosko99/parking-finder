@@ -28,8 +28,10 @@ export class ParkingController {
   @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
   @ApiResponse({ status: 409, description: 'Title already taken' })
   @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
   @UsePipes(ValidationPipe)
-  createUser(
+  createParking(
     @Body()
     createParkingDto: CreateParkingDto,
     @RequestData('userDataFromToken') tokenData: IToken,
@@ -42,7 +44,7 @@ export class ParkingController {
   @ApiResponse({ status: 200, description: 'Receive user data' })
   @ApiResponse({ status: 400, description: 'Invalid params' })
   @UsePipes(ValidationPipe)
-  getCurrentUser(
+  getParkingsWithinRange(
     @Query()
     query: ParkingsWithinRangeDto,
   ) {

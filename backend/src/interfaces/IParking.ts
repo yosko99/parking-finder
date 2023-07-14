@@ -2,7 +2,7 @@ import IReservation from './IReservation';
 import IReview from './IReview';
 
 interface IParking {
-  id: number;
+  id: string;
   description: string;
   address: string;
   hourlyPrice: number;

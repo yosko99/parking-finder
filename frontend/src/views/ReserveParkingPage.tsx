@@ -45,12 +45,12 @@ const ReserveParkingPage = () => {
 
         <Row>
           <Col lg={4}>
-            <Fade right>
+            <Fade left>
               <ReserverParkingCard parking={parking} />
             </Fade>
           </Col>
           <Col lg={8}>
-            <Fade left>
+            <Fade right>
               <BookingDetails />
               <VehicleInformation
                 registrationNumber={registrationNumber}

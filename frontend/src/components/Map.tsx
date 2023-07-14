@@ -20,6 +20,7 @@ import newMarkerAddressAtom from '../atoms/newMarkerAddressAtom.atom';
 import updateNewMarkerAddress from '../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
+import mapStyle from '../styles/googleMapStyle';
 import LoadingPage from '../views/LoadingPage';
 
 const libraries = ['places'];
@@ -78,17 +79,7 @@ const Map = () => {
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
-          styles: [
-            {
-              featureType: 'poi',
-              elementType: 'labels.icon',
-              stylers: [
-                {
-                  visibility: 'off'
-                }
-              ]
-            }
-          ]
+          styles: [mapStyle]
         }}
         onClick={handleMapClick}
         mapContainerStyle={{ width: '100%', height: '95vh' }}

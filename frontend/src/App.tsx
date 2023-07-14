@@ -8,6 +8,7 @@ import GlobalCSS from './styles/global.css';
 import ErrorPage from './views/ErrorPage';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
+import MyReservationsPage from './views/MyReservationsPage';
 import RegisterPage from './views/RegisterPage';
 import ReserveParkingPage from './views/ReserveParkingPage';
 
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/reserve-parking" element={<ReserveParkingPage />} />
+          <Route path="/my-reservations" element={<MyReservationsPage />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </div>

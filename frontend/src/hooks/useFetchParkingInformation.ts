@@ -45,8 +45,9 @@ const useFetchParkingInformation = (
             responseElements?.forEach((element, index) => {
               if (element.status === 'OK') {
                 tempParking.push({
+                  id: closestParkings[index].id,
                   reviews: closestParkings[index].reviews,
-                  title: data[index].title,
+                  title: closestParkings[index].title,
                   address: response?.destinationAddresses[index] || '',
                   duration: element.duration.text,
                   distance: element.distance.text,

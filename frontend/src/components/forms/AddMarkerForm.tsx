@@ -4,12 +4,12 @@ import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 
-import isAddMarkerToggledAtom from '../../../atoms/isAddMarkerToggled.atom';
-import newMarkerAddressAtom from '../../../atoms/newMarkerAddressAtom.atom';
-import { getParkingsRoute } from '../../../constants/apiRoute';
-import useAuthenticatedFormSubmit from '../../../hooks/useAuthenticatedFormSubmit';
-import useFormUpdate from '../../../hooks/useFormUpdate';
-import LoadingSpinner from '../../utils/LoadingSpinner';
+import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
+import { getParkingsRoute } from '../../constants/apiRoute';
+import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
+import useFormUpdate from '../../hooks/useFormUpdate';
+import LoadingSpinner from '../utils/LoadingSpinner';
 
 const AddMarkerForm = () => {
   const queryClient = useQueryClient();
@@ -84,6 +84,7 @@ const AddMarkerForm = () => {
           required
           type="number"
           name="hourlyPrice"
+          min={0}
           placeholder="10"
         />
       </Form.Group>
@@ -93,6 +94,7 @@ const AddMarkerForm = () => {
           required
           type="number"
           name="parkingSize"
+          min={1}
           placeholder="50"
         />
       </Form.Group>

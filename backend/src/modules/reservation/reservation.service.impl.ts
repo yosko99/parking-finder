@@ -37,7 +37,7 @@ export class ReservationServiceImpl implements ReservationService {
       ) >= parking.parkingSize
     ) {
       throw new HttpException(
-        'We are really sorry, the parking is full at the moment!',
+        'We are really sorry, the parking is full at the moment.',
         503,
       );
     }
@@ -55,7 +55,7 @@ export class ReservationServiceImpl implements ReservationService {
 
     return {
       reservation: newReservation,
-      message: 'Message created successfully',
+      message: 'Reservation created successfully',
     };
   }
 

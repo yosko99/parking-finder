@@ -2,6 +2,7 @@ import ICoordinate from './ICoordinate';
 import IReview from './IReview';
 
 interface IParking {
+  id: string;
   address: string;
   reservable: boolean;
   hourlyPrice: number;

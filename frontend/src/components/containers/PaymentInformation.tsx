@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Col, Form, Image, Row } from 'react-bootstrap';
+import { Col, Form, Image, Row } from 'react-bootstrap';
 
 import acceptedCardsIMG from '../../assets/accepted-cards.jpg';
 import countryList from '../../constants/countries';
@@ -13,7 +13,7 @@ const PaymentInformation = () => {
         <p className="mb-1">Accepted payments</p>
         <Image src={acceptedCardsIMG} fluid />
       </div>
-      <Form className="mx-4">
+      <div className="mx-4">
         <Form.Group className="mb-3">
           <Form.Label>Cardholder name</Form.Label>
           <Form.Control
@@ -55,7 +55,7 @@ const PaymentInformation = () => {
               <Form.Label>CVV</Form.Label>
               <Form.Control
                 type="text"
-                pattern="[0-9\s]{13,19}"
+                maxLength={3}
                 className="border"
                 required
                 name="cvv"
@@ -74,6 +74,7 @@ const PaymentInformation = () => {
                 required
                 name="postCode"
                 placeholder="1234"
+                maxLength={4}
                 minLength={3}
               />
             </Form.Group>
@@ -81,8 +82,7 @@ const PaymentInformation = () => {
           <Col>
             <Form.Group className="mb-3">
               <Form.Label>Country</Form.Label>
-              <Form.Select>
-                <option>Select your country</option>
+              <Form.Select name="country">
                 {countryList.map((country, index) => (
                   <option value={country} key={index}>
                     {country}
@@ -92,7 +92,7 @@ const PaymentInformation = () => {
             </Form.Group>
           </Col>
         </Row>
-      </Form>
+      </div>
     </div>
   );
 };

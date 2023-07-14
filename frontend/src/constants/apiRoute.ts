@@ -23,6 +23,9 @@ export const getParkingsWithinRangeRoute = (
   API_PREFIX +
   `parkings?lat=${lat}&lng=${lng}&startTime=${startTimeISOString}&endTime=${endTimeISOString}`;
 
+// RESERVATIONS
+export const getReservationsRoute = () => API_PREFIX + 'reservations';
+
 // GOOGLE
 export const getGeocodeRoute = (address: string) =>
   `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;

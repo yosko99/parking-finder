@@ -3,7 +3,7 @@ import React from 'react';
 // @ts-ignore
 import Fade from 'react-reveal/Fade';
 
-import AddMarkerForm from './elements/AddMarkerForm';
+import AddMarkerForm from '../forms/AddMarkerForm';
 
 const AddMarkerSideBar = () => {
   return (

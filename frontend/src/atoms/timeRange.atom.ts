@@ -1,8 +1,10 @@
 import { atom } from 'jotai';
 
+import getFormattedCurrentDate from '../functions/getFormattedCurrentDate';
+
 const timeRangeAtom = atom<{ startTime: string; endTime: string }>({
-  startTime: '2023-07-13T12:15',
-  endTime: '2023-07-13T13:45'
+  startTime: getFormattedCurrentDate(0),
+  endTime: getFormattedCurrentDate(1)
 });
 
 export default timeRangeAtom;

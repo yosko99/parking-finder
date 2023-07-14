@@ -12,7 +12,7 @@ const useAuthenticatedFormSubmit = (
   setToken: boolean,
   onSuccess?: () => any
 ) => {
-  const [alert, setAlert] = useState<React.ReactNode>();
+  const [alert, setAlert] = useState<React.ReactNode>(null);
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutationWithToken(routeURL, false);

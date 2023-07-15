@@ -2,10 +2,10 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReservationDto } from 'src/dto/reservation.dto';
 import IToken from 'src/interfaces/IToken';
-import IReservation from 'src/interfaces/IReservation';
 import { reservationCompleteTemplate } from '../utils/mail/htmlTemplates/reservationComplete.template';
 import { MailService } from '../utils/mail/mail.service';
 import { ParkingService } from '../parking/parking.service';
+import getNumberOfOverlappingReservations from 'src/functions/getNumberOfOverlappingReservations';
 
 @Injectable()
 export class ReservationService {
@@ -32,7 +32,7 @@ export class ReservationService {
     }
 
     if (
-      this.getNumberOfOverlappingReservations(
+      getNumberOfOverlappingReservations(
         startTime,
         endTime,
         parking.reservations,
@@ -71,33 +71,5 @@ export class ReservationService {
       message:
         'Reservation created successfully, we have sent you email with the reservation info',
     };
-  }
-
-  getNumberOfOverlappingReservations(
-    startTime: string,
-    endTime: string,
-    reservations: IReservation[],
-  ) {
-    let collisionCount = 0;
-
-    for (let i = 0; i < reservations.length; i++) {
-      const reservation = reservations[i];
-
-      if (
-        new Date(reservation.startTime) === new Date(startTime) &&
-        new Date(reservation.endTime) === new Date(endTime)
-      ) {
-        continue;
-      }
-
-      if (
-        new Date(startTime) < new Date(endTime) &&
-        new Date(reservation.startTime) < new Date(reservation.endTime)
-      ) {
-        collisionCount++;
-      }
-    }
-
-    return collisionCount;
   }
 }

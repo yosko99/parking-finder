@@ -6,6 +6,7 @@ import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../../../atoms/currentLocation.atom';
 import selectedDirectionIndexAtom from '../../../atoms/selectedDirectionIndex.atom';
+import timeRangeAtom from '../../../atoms/timeRange.atom';
 import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 import ParkingInfo from '../../containers/ParkingInfo';
 
@@ -14,16 +15,18 @@ const ParkingsContainer = () => {
     selectedDirectionIndexAtom
   );
   const [currentLocation] = useAtom(currentLocationAtom);
+  const [timeRange] = useAtom(timeRangeAtom);
 
   const { parkings } = useFetchParkingInformation(
-    '2023-07-13T07:04:26.572Z',
-    '2023-07-13T07:04:26.572Z'
+    timeRange.startTime,
+    timeRange.endTime
   );
+
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   useEffect(() => {
     setSelectedDirectionIndex(-1);
-  }, [currentLocation]);
+  }, [currentLocation, timeRange.startTime, timeRange.endTime]);
 
   return (
     <>

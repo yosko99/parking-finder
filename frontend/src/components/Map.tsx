@@ -17,6 +17,7 @@ import directionsAtom from '../atoms/directions.atom';
 import isAddMarkerToggledAtom from '../atoms/isAddMarkerToggled.atom';
 import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
 import newMarkerAddressAtom from '../atoms/newMarkerAddressAtom.atom';
+import timeRangeAtom from '../atoms/timeRange.atom';
 import updateNewMarkerAddress from '../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
@@ -38,10 +39,11 @@ const Map = () => {
   const [isMapLoaded, setIsMapLoaded] = useAtom(isMapLoadedAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
   const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+  const [timeRange] = useAtom(timeRangeAtom);
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const { parkings } = useFetchParkingInformation(
-    '2023-07-13T07:04:26.572Z',
-    '2023-07-13T07:04:26.572Z'
+    timeRange.startTime,
+    timeRange.endTime
   );
 
   const handleOnLoad = useCallback(

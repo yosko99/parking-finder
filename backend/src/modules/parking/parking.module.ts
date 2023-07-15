@@ -8,12 +8,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ParkingController } from './parking.controller';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
 import { ParkingService } from './parking.service';
-import { DistanceModule } from '../utils/distance/distance.module';
+import { DistanceService } from '../utils/distance/distance.service';
 
 @Module({
-  imports: [DistanceModule],
+  imports: [],
   controllers: [ParkingController],
-  providers: [ParkingService, PrismaService],
+  providers: [ParkingService, PrismaService, DistanceService],
 })
 export class ParkingModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

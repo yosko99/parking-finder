@@ -3,8 +3,8 @@ import IUser from './IUser';
 
 interface IReservation {
   id: number;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   user: IUser;
   userId: number;
   parking: IParking;

@@ -3,18 +3,28 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { Form } from 'react-bootstrap';
 
+import directionsAtom from '../../../atoms/directions.atom';
 import timeRangeAtom from '../../../atoms/timeRange.atom';
 
 const DatePicker = () => {
+  const [directions, setDirections] = useAtom(directionsAtom);
   const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTimeRange((time) => {
-      return {
-        ...time,
-        [e.target.name]: e.target.value
-      };
+      if (e.target.name === 'startTime') {
+        return {
+          endTime: e.target.value,
+          [e.target.name]: e.target.value
+        };
+      } else {
+        return {
+          ...time,
+          [e.target.name]: e.target.value
+        };
+      }
     });
+    setDirections(null);
   };
 
   return (

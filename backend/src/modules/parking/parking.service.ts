@@ -4,6 +4,8 @@ import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
 import IParking from 'src/interfaces/IParking';
 import { DistanceService } from '../utils/distance/distance.service';
+import getNumberOfOverlappingReservations from 'src/functions/getNumberOfOverlappingReservations';
+import { DISTANCE_IN_KM } from 'src/constants/distance';
 
 @Injectable()
 export class ParkingService {
@@ -58,45 +60,36 @@ export class ParkingService {
     lng,
     startTime,
   }: ParkingsWithinRangeDto) {
-    const beginTime = startTime || new Date();
+    const beginTime = startTime || new Date().toISOString();
     const exitTime =
-      endTime || new Date(new Date().setHours(new Date().getHours() + 1));
-
-    const distanceInKilometers = 5;
+      endTime ||
+      new Date(new Date().setHours(new Date().getHours() + 1)).toISOString();
 
     try {
-      const parkings = await this.prisma.parking.findMany({
+      const parkings = (await this.prisma.parking.findMany({
         where: {
           lat: {
             gte:
-              Number(lat) -
-              this.distanceService.convertToLat(distanceInKilometers),
+              Number(lat) - this.distanceService.convertToLat(DISTANCE_IN_KM),
             lte:
-              Number(lat) +
-              this.distanceService.convertToLat(distanceInKilometers),
+              Number(lat) + this.distanceService.convertToLat(DISTANCE_IN_KM),
           },
           lng: {
             gte:
               Number(lng) -
-              this.distanceService.convertToLng(
-                Number(lat),
-                distanceInKilometers,
-              ),
+              this.distanceService.convertToLng(Number(lat), DISTANCE_IN_KM),
             lte:
               Number(lng) +
-              this.distanceService.convertToLng(
-                Number(lat),
-                distanceInKilometers,
-              ),
+              this.distanceService.convertToLng(Number(lat), DISTANCE_IN_KM),
           },
         },
         include: {
           reservations: true,
           reviews: true,
         },
-      });
+      })) as unknown as IParking[];
 
-      return parkings;
+      return this.getParkingsWithOpenSpaces(beginTime, exitTime, parkings);
     } catch (error) {
       throw new HttpException('Something went wrong', 500);
     }
@@ -117,5 +110,34 @@ export class ParkingService {
     }
 
     return parking as unknown as IParking;
+  }
+
+  private getParkingsWithOpenSpaces(
+    startTime: string,
+    endTime: string,
+    parkings: IParking[],
+  ) {
+    const parkingsWithSpaces: IParking[] = [];
+
+    parkings.forEach((parking) => {
+      const numberOfOverlappingReservations =
+        getNumberOfOverlappingReservations(
+          startTime,
+          endTime,
+          parking.reservations,
+        );
+
+      if (
+        numberOfOverlappingReservations < parking.parkingSize &&
+        parking.parkingSize >= parking.reservations.length
+      ) {
+        parkingsWithSpaces.push({
+          ...parking,
+          freeSpaces: parking.parkingSize - numberOfOverlappingReservations,
+        });
+      }
+    });
+
+    return parkingsWithSpaces;
   }
 }

@@ -6,22 +6,15 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { UserServiceImpl } from './user.service.impl';
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
 import { CheckExistingUserById } from 'src/middleware/user/checkExistingUserByID.middleware';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
+import { UserService } from './user.service';
 
 @Module({
   imports: [],
   controllers: [UserController],
-  providers: [
-    {
-      provide: UserService,
-      useClass: UserServiceImpl,
-    },
-    PrismaService,
-  ],
+  providers: [UserService, PrismaService],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

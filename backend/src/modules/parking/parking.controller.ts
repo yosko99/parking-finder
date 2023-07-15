@@ -2,24 +2,21 @@ import {
   Body,
   Controller,
   Get,
-  Inject,
   Post,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ParkingService } from './parking.service';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
 import { RequestData } from 'src/decorators/requestData.decorator';
+import { ParkingService } from './parking.service';
 
 @Controller('/parkings')
 @ApiTags('Parkings')
 export class ParkingController {
-  constructor(
-    @Inject(ParkingService) private readonly parkingService: ParkingService,
-  ) {}
+  constructor(private readonly parkingService: ParkingService) {}
 
   @Post()
   @ApiHeader({ name: 'Authorization', required: true })

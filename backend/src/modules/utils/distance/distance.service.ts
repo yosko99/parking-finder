@@ -1,9 +1,21 @@
-export interface DistanceService {
-  toRadians(degrees: number): number;
+import { Injectable } from '@nestjs/common';
 
-  convertToLng(lat: number, distance: number): number;
+@Injectable()
+export class DistanceService {
+  private earthRadius = 6371;
 
-  convertToLat(distance: number): number;
+  toRadians = (degrees: number) => {
+    return degrees * (Math.PI / 180);
+  };
+
+  convertToLng = (lat: number, distance: number): number => {
+    const latRadians = this.toRadians(lat);
+    return (
+      ((distance / this.earthRadius) * (180 / Math.PI)) / Math.cos(latRadians)
+    );
+  };
+
+  convertToLat = (distance: number) => {
+    return (distance / this.earthRadius) * (180 / Math.PI);
+  };
 }
-
-export const DistanceService = Symbol('DistanceService');

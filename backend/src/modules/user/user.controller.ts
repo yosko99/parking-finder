@@ -4,13 +4,11 @@ import {
   Delete,
   Get,
   HttpCode,
-  Inject,
   Param,
   Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import {
   ApiHeader,
   ApiOperation,
@@ -21,11 +19,12 @@ import {
 import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
 import IToken from 'src/interfaces/IToken';
 import { RequestData } from 'src/decorators/requestData.decorator';
+import { UserService } from './user.service';
 
 @Controller('/users')
 @ApiTags('Users')
 export class UserController {
-  constructor(@Inject(UserService) private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get('/current')
   @ApiHeader({ name: 'Authorization', required: true })

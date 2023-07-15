@@ -7,37 +7,15 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
 import { ReservationController } from './reservation.controller';
-import { ReservationService } from './reservation.service';
-import { ReservationServiceImpl } from './reservation.service.impl';
 import { ParkingService } from '../parking/parking.service';
-import { ParkingServiceImpl } from '../parking/parking.service.impl';
-import { DistanceServiceImpl } from '../utils/distance/distance.service.impl';
-import { MailService } from '../utils/mail/mail.service';
-import { MailServiceImpl } from '../utils/mail/mail.service.impl';
-import { DistanceService } from '../utils/distance/distance.service';
+import { ReservationService } from './reservation.service';
+import { DistanceModule } from '../utils/distance/distance.module';
+import { MailModule } from '../utils/mail/mail.module';
 
 @Module({
-  imports: [],
+  imports: [DistanceModule, MailModule],
   controllers: [ReservationController],
-  providers: [
-    {
-      provide: ReservationService,
-      useClass: ReservationServiceImpl,
-    },
-    {
-      provide: ParkingService,
-      useClass: ParkingServiceImpl,
-    },
-    {
-      provide: DistanceService,
-      useClass: DistanceServiceImpl,
-    },
-    {
-      provide: MailService,
-      useClass: MailServiceImpl,
-    },
-    PrismaService,
-  ],
+  providers: [ReservationService, PrismaService, ParkingService],
 })
 export class ReservationModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

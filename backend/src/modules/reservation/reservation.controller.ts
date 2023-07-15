@@ -1,24 +1,20 @@
 import {
   Body,
   Controller,
-  Inject,
   Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from 'src/dto/reservation.dto';
 import { RequestData } from 'src/decorators/requestData.decorator';
 import IToken from 'src/interfaces/IToken';
+import { ReservationService } from './reservation.service';
 
 @Controller('/reservations')
 @ApiTags('Reservations')
 export class ReservationController {
-  constructor(
-    @Inject(ReservationService)
-    private readonly reservationService: ReservationService,
-  ) {}
+  constructor(private readonly reservationService: ReservationService) {}
 
   @Post()
   @ApiHeader({ name: 'Authorization', required: true })

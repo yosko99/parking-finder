@@ -7,33 +7,41 @@ export class TaskService {
   constructor(private readonly prisma: PrismaService) {}
   private readonly logger = new Logger(TaskService.name);
 
-  async cleanOldReservations() {
+  async deactivateOldReservations() {
     const currentDate = new Date();
 
     try {
       const reservations = await this.prisma.reservation.findMany({});
-      let deletedReservations = 0;
+      let deactivatedReservations = 0;
 
       for (const reservation of reservations) {
-        if (new Date(reservation.endTime) < currentDate) {
-          await this.prisma.reservation.delete({
+        if (
+          new Date(reservation.endTime) < currentDate &&
+          reservation.isActive
+        ) {
+          await this.prisma.reservation.update({
             where: {
               id: reservation.id,
             },
+            data: {
+              isActive: false,
+            },
           });
-          deletedReservations++;
+          deactivatedReservations++;
         }
       }
 
-      this.logger.log(`Deleted ${deletedReservations} expired reservations.`);
+      this.logger.log(
+        `Deactivated ${deactivatedReservations} expired reservations.`,
+      );
     } catch (error) {
-      this.logger.error('Error deleting expired reservations:', error);
+      this.logger.error('Error updating expired reservations:', error);
     }
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
   async handleCron() {
-    await this.cleanOldReservations();
-    this.logger.log('Old reservations cleared up');
+    await this.deactivateOldReservations();
+    this.logger.log('Old reservations deactivated');
   }
 }

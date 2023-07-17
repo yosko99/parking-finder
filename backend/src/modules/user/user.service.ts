@@ -1,10 +1,15 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  UserDashboardDto,
+} from 'src/dto/user.dto';
 import IToken from 'src/interfaces/IToken';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Prisma } from '@prisma/client';
+import IUser from 'src/interfaces/IUser';
 
 @Injectable()
 export class UserService {
@@ -73,11 +78,30 @@ export class UserService {
 
     return user;
   }
+
+  async getCurrentUserDashboard(
+    { timeRange }: UserDashboardDto,
+    { email }: IToken,
+  ) {
+    this.logger.log(
+      `Fetching dashboard information of user with email (${email})`,
+    );
+    // TODO: Implement this method
+  }
+
   getCurrentUserReservations({ email }: IToken) {
     throw new Error('Method not implemented.');
   }
-  getCurrentUserParkings({ email }: IToken) {
-    throw new Error('Method not implemented.');
+
+  async getCurrentUserParkings({ email }: IToken) {
+    this.logger.log(`Fetching current user (${email}) parkings`);
+    const user = (await this.retrieveUser({
+      where: { email },
+      select: { ownedParkings: true, isCompany: true, email: true },
+    })) as unknown as IUser;
+
+    this.checkIsUserCompany(user);
+    return user.ownedParkings;
   }
 
   private generateToken(email: string, password: string) {
@@ -97,5 +121,17 @@ export class UserService {
     }
 
     return user;
+  }
+
+  private checkIsUserCompany(user: IUser) {
+    if (!user.isCompany) {
+      this.logger.error(
+        `User with email (${user.email}) does not have access to company account functionality`,
+      );
+      throw new HttpException(
+        'Sorry your account does not have the access to this functionality',
+        401,
+      );
+    }
   }
 }

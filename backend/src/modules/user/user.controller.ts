@@ -6,6 +6,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,7 +17,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDto, LoginUserDto } from 'src/dto/user.dto';
+import {
+  UserDashboardDto,
+  CreateUserDto,
+  LoginUserDto,
+} from 'src/dto/user.dto';
 import IToken from 'src/interfaces/IToken';
 import { RequestData } from 'src/decorators/requestData.decorator';
 import { UserService } from './user.service';
@@ -35,6 +40,38 @@ export class UserController {
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
   getCurrentUser(@RequestData('userDataFromToken') tokenData: IToken) {
     return this.userService.getCurrentUser(tokenData);
+  }
+
+  @Get('/current/parkings')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user parkings' })
+  @ApiResponse({ status: 200, description: 'Receive user parkings' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 401, description: 'User is not "company"' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  @UsePipes(ValidationPipe)
+  getCurrentUserParkings(@RequestData('userDataFromToken') tokenData: IToken) {
+    return this.userService.getCurrentUserParkings(tokenData);
+  }
+
+  @Get('/current/dashboard')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user dashboard' })
+  @ApiResponse({ status: 200, description: 'Receive dashboard information' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 401, description: 'User is not "company"' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  @UsePipes(ValidationPipe)
+  getCurrentUserDashboard(
+    @RequestData('userDataFromToken') tokenData: IToken,
+    @Query() userDashboardDto: UserDashboardDto,
+  ) {
+    return this.userService.getCurrentUserDashboard(
+      userDashboardDto,
+      tokenData,
+    );
   }
 
   @Post()

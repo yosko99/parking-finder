@@ -53,4 +53,5 @@ model Reservation {
     userId             String
     parking            Parking @relation(fields: [parkingId], references: [id], onDelete: Cascade)
     parkingId          String
+    isActive           Boolean @default(true)
 }

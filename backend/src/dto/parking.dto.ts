@@ -5,42 +5,53 @@ import {
   IsNumber,
   IsNumberString,
   IsString,
+  Max,
+  Min,
+  MinLength,
 } from 'class-validator';
 
 export class CreateParkingDto {
   @IsNotEmpty()
   @IsString()
+  @MinLength(3)
   @ApiProperty({ minLength: 3 })
   title: string;
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(3)
   @ApiProperty({ minLength: 3 })
   address: string;
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(3)
   @ApiProperty({ minLength: 3 })
   description: string;
 
   @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
+  @Min(0)
   hourlyPrice: number;
 
   @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
+  @Min(0)
   parkingSize: number;
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(-90)
+  @Max(90)
   @ApiProperty({ maximum: 90, minimum: -90 })
   lat: number;
 
   @IsNotEmpty()
   @IsNumber()
-  @ApiProperty()
+  @Min(-90)
+  @Max(90)
   @ApiProperty({ maximum: 90, minimum: -90 })
   lng: number;
 }

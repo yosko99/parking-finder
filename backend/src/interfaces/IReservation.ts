@@ -9,6 +9,7 @@ interface IReservation {
   userId: number;
   parking: IParking;
   parkingId: number;
+  isActive: boolean;
 }
 
 export default IReservation;

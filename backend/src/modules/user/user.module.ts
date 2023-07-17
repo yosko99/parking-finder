@@ -23,9 +23,19 @@ export class UserModule implements NestModule {
       method: RequestMethod.DELETE,
     });
 
-    consumer.apply(VerifyJWT).forRoutes({
-      path: '/users/current',
-      method: RequestMethod.GET,
-    });
+    consumer.apply(VerifyJWT).forRoutes(
+      {
+        path: '/users/current',
+        method: RequestMethod.GET,
+      },
+      {
+        path: '/users/current/dashboard',
+        method: RequestMethod.GET,
+      },
+      {
+        path: '/users/current/parkings',
+        method: RequestMethod.GET,
+      },
+    );
   }
 }

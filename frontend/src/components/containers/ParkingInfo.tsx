@@ -29,18 +29,25 @@ const ParkingInfo = ({
     selectedDirectionIndexAtom
   );
 
+  const handleClick = () => {
+    if (selectedDirectionIndex === index) {
+      setDirections(null);
+      setSelectedDirectionIndex(-1);
+    } else {
+      calculateDirections(
+        currentLocation,
+        parking.address,
+        setDirections,
+        setSelectedDirectionIndex,
+        index
+      );
+    }
+  };
+
   return (
     <div
       key={index}
-      onClick={() =>
-        calculateDirections(
-          currentLocation,
-          parking.address,
-          setDirections,
-          setSelectedDirectionIndex,
-          index
-        )
-      }
+      onClick={handleClick}
       role="button"
       onMouseOver={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(-1)}

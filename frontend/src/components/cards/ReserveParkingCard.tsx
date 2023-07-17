@@ -62,7 +62,7 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
             </p>
             <p className="fs-4" style={{ fontWeight: 'bold' }}>
               {totalPrice !== 0
-                ? `${(totalPrice + TRANSACTION_FEE).toFixed(2)}`
+                ? `$${(totalPrice + TRANSACTION_FEE).toFixed(2)}`
                 : 'FREE'}
             </p>
           </div>

@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useAtom } from 'jotai';
-import { Form } from 'react-bootstrap';
+import { Alert, Form } from 'react-bootstrap';
 
 import directionsAtom from '../../../atoms/directions.atom';
 import timeRangeAtom from '../../../atoms/timeRange.atom';
+import getFormattedCurrentDate from '../../../functions/getFormattedCurrentDate';
 
 const DatePicker = () => {
   const [directions, setDirections] = useAtom(directionsAtom);
+  const [alert, setAlert] = useState<React.ReactNode>(null);
   const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const setTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTimeRange((time) => {
       if (e.target.name === 'startTime') {
         return {
@@ -24,7 +26,29 @@ const DatePicker = () => {
         };
       }
     });
-    setDirections(null);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (
+      e.target.name === 'endTime' &&
+      new Date(e.target.value) < new Date(timeRange.startTime)
+    ) {
+      setAlert(
+        <Alert variant="warning" className="m-0 mt-3">
+          Please select valid date
+        </Alert>
+      );
+    } else if (e.target.value === '') {
+      setAlert(
+        <Alert variant="warning" className="m-0 mt-3">
+          Please do not clear the time frame
+        </Alert>
+      );
+    } else {
+      setTime(e);
+      setDirections(null);
+      setAlert(null);
+    }
   };
 
   return (
@@ -34,22 +58,26 @@ const DatePicker = () => {
         <Form.Control
           onChange={handleChange}
           type="datetime-local"
-          defaultValue={timeRange.startTime}
+          min={getFormattedCurrentDate()}
+          value={timeRange.startTime}
           className="border"
           name="startTime"
+          required
         />
       </Form.Group>
-      <Form.Group className="">
+      <Form.Group className="mb-3">
         <Form.Label>End date</Form.Label>
         <Form.Control
+          required
           min={timeRange.startTime}
           type="datetime-local"
-          defaultValue={timeRange.endTime}
+          value={timeRange.endTime}
           onChange={handleChange}
           className="border"
           name="endTime"
         />
       </Form.Group>
+      {alert}
     </div>
   );
 };

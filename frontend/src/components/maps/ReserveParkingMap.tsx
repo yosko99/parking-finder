@@ -1,6 +1,6 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undef */
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
@@ -56,4 +56,4 @@ const ReserveParkingMap = ({ coordinates }: Props) => {
   );
 };
 
-export default ReserveParkingMap;
+export default memo(ReserveParkingMap);

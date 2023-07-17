@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReservationDto } from 'src/dto/reservation.dto';
 import IToken from 'src/interfaces/IToken';
@@ -6,6 +6,7 @@ import { reservationCompleteTemplate } from '../utils/mail/htmlTemplates/reserva
 import { MailService } from '../utils/mail/mail.service';
 import { ParkingService } from '../parking/parking.service';
 import getNumberOfOverlappingReservations from 'src/functions/getNumberOfOverlappingReservations';
+import IParking from 'src/interfaces/IParking';
 
 @Injectable()
 export class ReservationService {
@@ -14,6 +15,8 @@ export class ReservationService {
     private readonly parkingService: ParkingService,
     private readonly mailService: MailService,
   ) {}
+
+  private readonly logger = new Logger(ReservationService.name);
 
   async createReservation(
     {
@@ -25,27 +28,19 @@ export class ReservationService {
     }: CreateReservationDto,
     { email }: IToken,
   ) {
+    this.logger.log(`Creating reservation for (${registrationNumber})`);
+
     const parking = await this.parkingService.retrieveParkingById(
       parkingId,
       true,
     );
 
     if (new Date(startTime) > new Date(endTime)) {
+      this.logger.error('End date cannot be before start date!');
       throw new HttpException('End date cannot be before start date!', 400);
     }
 
-    if (
-      getNumberOfOverlappingReservations(
-        startTime,
-        endTime,
-        parking.reservations,
-      ) >= parking.parkingSize
-    ) {
-      throw new HttpException(
-        'We are really sorry, the parking is full at the moment.',
-        503,
-      );
-    }
+    this.checkIsParkingFull(startTime, endTime, parking);
 
     const newReservation = await this.prisma.reservation.create({
       data: {
@@ -57,6 +52,7 @@ export class ReservationService {
         user: { connect: { email } },
       },
     });
+    this.logger.log(`Reservation for (${registrationNumber}) created`);
 
     this.mailService.sendEmailMessage({
       to: email,
@@ -68,11 +64,32 @@ export class ReservationService {
       ),
       subject: 'Reservation complete',
     });
+    this.logger.log('Email for reservation sent');
 
     return {
       reservation: newReservation,
       message:
         'Reservation created successfully, we have sent you email with the reservation info',
     };
+  }
+
+  private checkIsParkingFull(
+    startTime: string,
+    endTime: string,
+    parking: IParking,
+  ) {
+    if (
+      getNumberOfOverlappingReservations(
+        startTime,
+        endTime,
+        parking.reservations,
+      ) >= parking.parkingSize
+    ) {
+      this.logger.error('Parking is full of capacity');
+      throw new HttpException(
+        'We are really sorry, the parking is full at the moment.',
+        503,
+      );
+    }
   }
 }

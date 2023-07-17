@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateParkingDto,
@@ -18,6 +18,8 @@ export class ParkingService {
     private readonly distanceService: DistanceService,
   ) {}
 
+  private readonly logger = new Logger(ParkingService.name);
+
   async createParking(
     {
       address,
@@ -30,12 +32,14 @@ export class ParkingService {
     }: CreateParkingDto,
     { email }: IToken,
   ) {
+    this.logger.log(`Creating parkings with title (${title})`);
     const doestParkingExist =
       (await this.prisma.parking.findFirst({
         where: { title },
       })) !== null;
 
     if (doestParkingExist) {
+      this.logger.error(`Title already taken (${title})`);
       throw new HttpException('Title is already taken', 409);
     }
 
@@ -52,6 +56,7 @@ export class ParkingService {
       },
     });
 
+    this.logger.log(`Parking created`);
     return {
       message: 'Parking created successfully',
       parking: newParking,
@@ -70,6 +75,8 @@ export class ParkingService {
       new Date(new Date().setHours(new Date().getHours() + 1)).toISOString();
 
     try {
+      this.logger.log('Fetching parkings within range');
+
       const parkings = (await this.prisma.parking.findMany({
         where: {
           lat: {
@@ -95,6 +102,9 @@ export class ParkingService {
 
       return this.getParkingsWithOpenSpaces(beginTime, exitTime, parkings);
     } catch (error) {
+      this.logger.error(
+        `Fetching parkings withing range failed ${error.message}`,
+      );
       throw new HttpException('Something went wrong', 500);
     }
   }
@@ -107,6 +117,8 @@ export class ParkingService {
     id: string,
     { endTime, startTime }: ParkingFreeSpacesDto,
   ) {
+    this.logger.log(`Fetching free spaces of (${id})`);
+
     const parking = await this.retrieveParkingById(id, true);
     const takenSpaces = getNumberOfOverlappingReservations(
       startTime,
@@ -122,12 +134,15 @@ export class ParkingService {
   }
 
   async retrieveParkingById(id: string, includeReservations: boolean) {
+    this.logger.log(`Fetching parking with id (${id})`);
+
     const parking = await this.prisma.parking.findUnique({
       where: { id },
       include: { reservations: includeReservations },
     });
 
     if (parking === null) {
+      this.logger.error(`Could not find parking with id (${id})`);
       throw new HttpException('Could not find parking with provided id', 404);
     }
 

@@ -2,7 +2,7 @@ import IParking from './IParking';
 import IUser from './IUser';
 
 interface IReservation {
-  id: number;
+  id: string;
   startTime: string;
   endTime: string;
   user: IUser;

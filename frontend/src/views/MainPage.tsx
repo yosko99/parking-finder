@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
-import Map from '../components/Map';
+import MainMap from '../components/maps/MainMap';
 import SideBar from '../components/sidebar/SideBar';
 import Header from '../components/utils/Header';
 import useAuth from '../hooks/useAuth';
@@ -15,7 +15,7 @@ const MainPage = () => {
       <Header />
       <Row>
         <Col lg={9} className="p-0">
-          <Map />
+          <MainMap />
         </Col>
         <Col lg={3} className="m-0 p-0 text-white border">
           <SideBar />

@@ -3,11 +3,11 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { Alert, Card } from 'react-bootstrap';
 
-import ReserveParkingIMG from '../../assets/reserve-parking.webp';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import { TRANSACTION_FEE } from '../../constants/prices';
 import calculateTotalPrice from '../../functions/calculateTotalPrice';
 import IParking from '../../interfaces/IParking';
+import ReserveParkingMap from '../maps/ReserveParkingMap';
 import CustomRating from '../utils/CustomRating';
 
 interface Props {
@@ -26,7 +26,7 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
 
   return (
     <Card className="px-2 shadow-sm border">
-      <Card.Img variant="top" src={ReserveParkingIMG} />
+      <ReserveParkingMap coordinates={parking.coordinates} />
       <Card.Body>
         <Alert
           variant={freeSpaces !== 0 ? 'info' : 'danger'}
@@ -35,7 +35,6 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
           Free spaces: {freeSpaces}
         </Alert>
         <Card.Title>{parking.address}</Card.Title>
-
         <CustomRating
           ratingRate={3}
           readonly
@@ -43,7 +42,7 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
           starSize={20}
           className="mb-2"
         />
-        <Card.Text className="d-flex mt-4 justify-content-between">
+        <div className="d-flex mt-4 justify-content-between">
           <div>
             <p>Hourly price:</p>
             <p>Total price:</p>
@@ -67,7 +66,7 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
                 : 'FREE'}
             </p>
           </div>
-        </Card.Text>
+        </div>
       </Card.Body>
     </Card>
   );

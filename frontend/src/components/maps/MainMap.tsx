@@ -9,24 +9,24 @@ import {
 } from '@react-google-maps/api';
 import { useAtom } from 'jotai';
 
-import CurrentLocationMarker from './markers/CurrentLocationMarker';
-import NewMarker from './markers/NewMarker';
-import ParkingMarker from './markers/ParkingMarker';
-import currentLocationAtom from '../atoms/currentLocation.atom';
-import directionsAtom from '../atoms/directions.atom';
-import isAddMarkerToggledAtom from '../atoms/isAddMarkerToggled.atom';
-import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
-import newMarkerAddressAtom from '../atoms/newMarkerAddressAtom.atom';
-import timeRangeAtom from '../atoms/timeRange.atom';
-import updateNewMarkerAddress from '../functions/updateNewMarkerAddress';
-import useFetchParkingInformation from '../hooks/useFetchParkingInformation';
-import useSetCurrentLocation from '../hooks/useSetCurrentLocation';
-import mapStyle from '../styles/googleMapStyle';
-import LoadingPage from '../views/LoadingPage';
+import currentLocationAtom from '../../atoms/currentLocation.atom';
+import directionsAtom from '../../atoms/directions.atom';
+import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isMapLoadedAtom from '../../atoms/isMapLoaded.atom';
+import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
+import timeRangeAtom from '../../atoms/timeRange.atom';
+import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
+import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
+import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
+import mapStyle from '../../styles/googleMapStyle';
+import LoadingPage from '../../views/LoadingPage';
+import CurrentLocationMarker from '../markers/CurrentLocationMarker';
+import NewMarker from '../markers/NewMarker';
+import ParkingMarker from '../markers/ParkingMarker';
 
 const libraries = ['places'];
 
-const Map = () => {
+const MainMap = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
     // @ts-ignore
@@ -50,7 +50,6 @@ const Map = () => {
     (map: google.maps.Map) => {
       const bounds = new window.google.maps.LatLngBounds(currentLocation);
       map.fitBounds(bounds);
-      map.setCenter(currentLocation);
 
       setMap(map);
       setIsMapLoaded(true);
@@ -118,4 +117,4 @@ const Map = () => {
   );
 };
 
-export default memo(Map);
+export default memo(MainMap);

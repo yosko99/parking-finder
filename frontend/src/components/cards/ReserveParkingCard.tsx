@@ -47,9 +47,16 @@ const ReserverParkingCard = ({ parking }: Props) => {
           <div style={{ textAlign: 'right' }}>
             <p>${parking.hourlyPrice.toFixed(2)}</p>
             <p>${totalPrice.toFixed(2)}</p>
-            <p>${TRANSACTION_FEE.toFixed(2)}</p>
+            <p>
+              $
+              {totalPrice !== 0
+                ? TRANSACTION_FEE.toFixed(2)
+                : totalPrice.toFixed(2)}
+            </p>
             <p className="fs-4" style={{ fontWeight: 'bold' }}>
-              ${(totalPrice + TRANSACTION_FEE).toFixed(2)}
+              {totalPrice !== 0
+                ? `${(totalPrice + TRANSACTION_FEE).toFixed(2)}`
+                : 'FREE'}
             </p>
           </div>
         </Card.Text>

@@ -81,13 +81,17 @@ const ReserveParkingForm = ({ parking }: Props) => {
         registrationNumber={registrationNumber}
         setRegistrationNumber={setRegistrationNumber}
       />
-      <PaymentInformation />
+      {totalPrice !== 0 && <PaymentInformation />}
       <Button
         type="submit"
         className="mt-3 w-100 rounded fs-4 mt-2 mb-2 text-capitalize"
         variant="success"
       >
-        ${(totalPrice + TRANSACTION_FEE).toFixed(2)} - Pay now and reserve
+        {totalPrice !== 0
+          ? `$${(totalPrice + TRANSACTION_FEE).toFixed(
+              2
+            )} - Pay now and reserve`
+          : 'Reserve your parking'}
       </Button>
       <div>
         {alert}

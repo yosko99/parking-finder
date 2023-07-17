@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAtom } from 'jotai';
-import { Card } from 'react-bootstrap';
+import { Alert, Card } from 'react-bootstrap';
 
 import ReserveParkingIMG from '../../assets/reserve-parking.webp';
 import timeRangeAtom from '../../atoms/timeRange.atom';
@@ -12,9 +12,10 @@ import CustomRating from '../utils/CustomRating';
 
 interface Props {
   parking: IParking;
+  freeSpaces: number;
 }
 
-const ReserverParkingCard = ({ parking }: Props) => {
+const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
   const [timeRange] = useAtom(timeRangeAtom);
 
   const totalPrice = calculateTotalPrice(
@@ -27,7 +28,14 @@ const ReserverParkingCard = ({ parking }: Props) => {
     <Card className="px-2 shadow-sm border">
       <Card.Img variant="top" src={ReserveParkingIMG} />
       <Card.Body>
+        <Alert
+          variant={freeSpaces !== 0 ? 'info' : 'danger'}
+          className="text-center p-2"
+        >
+          Free spaces: {freeSpaces}
+        </Alert>
         <Card.Title>{parking.address}</Card.Title>
+
         <CustomRating
           ratingRate={3}
           readonly

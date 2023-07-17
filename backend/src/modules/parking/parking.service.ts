@@ -1,6 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
+import {
+  CreateParkingDto,
+  ParkingFreeSpacesDto,
+  ParkingsWithinRangeDto,
+} from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
 import IParking from 'src/interfaces/IParking';
 import { DistanceService } from '../utils/distance/distance.service';
@@ -95,14 +99,32 @@ export class ParkingService {
     }
   }
 
-  deleteParking(id: string) {
+  async getParkingById(id: string) {
+    return await this.retrieveParkingById(id, false);
+  }
+
+  async getParkingFreeSpacesWithinTimeFrame(
+    id: string,
+    { endTime, startTime }: ParkingFreeSpacesDto,
+  ) {
+    const parking = await this.retrieveParkingById(id, true);
+    const takenSpaces = getNumberOfOverlappingReservations(
+      startTime,
+      endTime,
+      parking.reservations,
+    );
+
+    return parking.parkingSize - takenSpaces;
+  }
+
+  deleteParkingById(id: string) {
     throw new Error('Method not implemented.');
   }
 
-  async retrieveParkingById(id: string) {
+  async retrieveParkingById(id: string, includeReservations: boolean) {
     const parking = await this.prisma.parking.findUnique({
       where: { id },
-      include: { reservations: true },
+      include: { reservations: includeReservations },
     });
 
     if (parking === null) {

@@ -66,3 +66,15 @@ export class ParkingsWithinRangeDto {
   @ApiProperty()
   endTime: string;
 }
+
+export class ParkingFreeSpacesDto {
+  @IsNotEmpty()
+  @IsDateString()
+  @ApiProperty()
+  startTime: string;
+
+  @IsNotEmpty()
+  @IsDateString()
+  @ApiProperty()
+  endTime: string;
+}

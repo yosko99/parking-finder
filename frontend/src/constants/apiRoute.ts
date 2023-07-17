@@ -14,6 +14,17 @@ export const getCurrentUserRoute = () => getUsersRoute() + '/current';
 // PARKINGS
 export const getParkingsRoute = () => API_PREFIX + 'parkings';
 
+// PARKINGS
+export const getParkingRoute = (id: string) => API_PREFIX + `parkings/${id}`;
+
+export const getParkingFreeSpacesWithinTimeFrame = (
+  id: string,
+  startTimeISOString: string,
+  endTimeISOString: string
+) =>
+  API_PREFIX +
+  `parkings/${id}/free-spaces?startTime=${startTimeISOString}&endTime=${endTimeISOString}`;
+
 export const getParkingsWithinRangeRoute = (
   lat: number,
   lng: number,

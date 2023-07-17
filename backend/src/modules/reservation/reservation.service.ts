@@ -25,7 +25,10 @@ export class ReservationService {
     }: CreateReservationDto,
     { email }: IToken,
   ) {
-    const parking = await this.parkingService.retrieveParkingById(parkingId);
+    const parking = await this.parkingService.retrieveParkingById(
+      parkingId,
+      true,
+    );
 
     if (new Date(startTime) > new Date(endTime)) {
       throw new HttpException('End date cannot be before start date!', 400);

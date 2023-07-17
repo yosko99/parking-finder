@@ -29,7 +29,7 @@ const DatePicker = () => {
 
   return (
     <div className="d-flex flex-column px-2 pt-2 text-dark">
-      <Form.Group className="">
+      <Form.Group className="mb-3">
         <Form.Label>Start date</Form.Label>
         <Form.Control
           onChange={handleChange}

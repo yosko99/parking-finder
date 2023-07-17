@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useState } from 'react';
 
 import { useAtom } from 'jotai';
@@ -13,7 +14,6 @@ import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import ICarRegistration from '../../interfaces/ICarRegistration';
 import IParking from '../../interfaces/IParking';
-import BookingDetails from '../containers/BookingDetails';
 import PaymentInformation from '../containers/PaymentInformation';
 import VehicleInformation from '../containers/VehicleInformation';
 import CustomAlert from '../utils/CustomAlert';
@@ -21,9 +21,10 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 
 interface Props {
   parking: IParking;
+  canReserve: boolean;
 }
 
-const ReserveParkingForm = ({ parking }: Props) => {
+const ReserveParkingForm = ({ parking, canReserve }: Props) => {
   const navigate = useNavigate();
 
   const [registrationNumber, setRegistrationNumber] =
@@ -76,7 +77,6 @@ const ReserveParkingForm = ({ parking }: Props) => {
       className="mb-5"
       onSubmit={handleCreateReservation}
     >
-      <BookingDetails />
       <VehicleInformation
         registrationNumber={registrationNumber}
         setRegistrationNumber={setRegistrationNumber}
@@ -84,10 +84,13 @@ const ReserveParkingForm = ({ parking }: Props) => {
       {totalPrice !== 0 && <PaymentInformation />}
       <Button
         type="submit"
+        disabled={!canReserve}
         className="mt-3 w-100 rounded fs-4 mt-2 mb-2 text-capitalize"
-        variant="success"
+        variant={canReserve ? 'success' : 'danger'}
       >
-        {totalPrice !== 0
+        {!canReserve
+          ? 'No empty spaces at selected time frame'
+          : totalPrice !== 0
           ? `$${(totalPrice + TRANSACTION_FEE).toFixed(
               2
             )} - Pay now and reserve`

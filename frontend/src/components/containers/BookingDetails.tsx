@@ -7,6 +7,7 @@ import { TbCalendarUp, TbCalendarX } from 'react-icons/tb';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import getDurationInWords from '../../functions/getDurationInWords';
 import getFormattedISODate from '../../functions/getFormattedISODate';
+import BookingInformationDateModal from '../modals/BookingInformationDateModal';
 
 const BookingDetails = () => {
   const [timeRange] = useAtom(timeRangeAtom);
@@ -27,10 +28,12 @@ const BookingDetails = () => {
           </p>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <p className="fs-4 my-2">
-            {getFormattedISODate(timeRange.startTime)}
-          </p>
-          <p className="fs-4 my-2">{getFormattedISODate(timeRange.endTime)}</p>
+          <BookingInformationDateModal
+            date={getFormattedISODate(timeRange.startTime)}
+          />
+          <BookingInformationDateModal
+            date={getFormattedISODate(timeRange.endTime)}
+          />
           <p className="fs-4 my-2">
             {getDurationInWords(timeRange.startTime, timeRange.endTime)}
           </p>

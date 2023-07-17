@@ -2,13 +2,18 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateParkingDto, ParkingsWithinRangeDto } from 'src/dto/parking.dto';
+import {
+  CreateParkingDto,
+  ParkingFreeSpacesDto,
+  ParkingsWithinRangeDto,
+} from 'src/dto/parking.dto';
 import IToken from 'src/interfaces/IToken';
 import { RequestData } from 'src/decorators/requestData.decorator';
 import { ParkingService } from './parking.service';
@@ -38,7 +43,10 @@ export class ParkingController {
 
   @Get()
   @ApiOperation({ summary: 'Get parkings within range' })
-  @ApiResponse({ status: 200, description: 'Receive user data' })
+  @ApiResponse({
+    status: 200,
+    description: 'Receive parkings with free spaces within range',
+  })
   @ApiResponse({ status: 400, description: 'Invalid params' })
   @UsePipes(ValidationPipe)
   getParkingsWithinRange(
@@ -46,5 +54,29 @@ export class ParkingController {
     query: ParkingsWithinRangeDto,
   ) {
     return this.parkingService.getParkingsWithinRange(query);
+  }
+
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get parking by id' })
+  @ApiResponse({ status: 200, description: 'Receive parking data' })
+  @ApiResponse({ status: 404, description: 'Parking not found' })
+  getParkingById(@Param('id') id: string) {
+    return this.parkingService.getParkingById(id);
+  }
+
+  @Get('/:id/free-spaces')
+  @ApiOperation({ summary: 'Get parking free spaces' })
+  @ApiResponse({
+    status: 200,
+    description: 'Receive number parking free spaces',
+  })
+  @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
+  @ApiResponse({ status: 404, description: 'Parking not found' })
+  @UsePipes(ValidationPipe)
+  getParkingFreeSpacesWithinTimeFrame(
+    @Param('id') id: string,
+    @Query() dto: ParkingFreeSpacesDto,
+  ) {
+    return this.parkingService.getParkingFreeSpacesWithinTimeFrame(id, dto);
   }
 }

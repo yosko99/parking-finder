@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
-import { useQueryClient } from 'react-query';
 
 import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
@@ -12,8 +11,6 @@ import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 const AddMarkerForm = () => {
-  const queryClient = useQueryClient();
-
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
     isAddMarkerToggledAtom
@@ -23,10 +20,10 @@ const AddMarkerForm = () => {
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
     getParkingsRoute(),
     false,
+    true,
     () => {
       setIsAddMarkerToggled(false);
       setNewMarkerAddress(null);
-      queryClient.refetchQueries();
     }
   );
 

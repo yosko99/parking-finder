@@ -17,6 +17,7 @@ const LoginPage = () => {
 
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
     getLoginRoute(),
+    true,
     true
   );
   const { formData, handleChange } = useFormUpdate();

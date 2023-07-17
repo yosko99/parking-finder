@@ -10,6 +10,7 @@ import ExtendedAxiosError from '../types/ExtendedAxiosError';
 const useAuthenticatedFormSubmit = (
   routeURL: string,
   setToken: boolean,
+  resetQueries: boolean,
   onSuccess?: () => any
 ) => {
   const [alert, setAlert] = useState<React.ReactNode>(null);
@@ -23,7 +24,9 @@ const useAuthenticatedFormSubmit = (
       { ...data },
       {
         onSuccess: async (response) => {
-          queryClient.resetQueries();
+          if (resetQueries) {
+            queryClient.resetQueries();
+          }
 
           setAlert(<CustomAlert variant="success" text={response.message} />);
 

@@ -19,6 +19,7 @@ const RegisterPage = () => {
 
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
     getUsersRoute(),
+    true,
     true
   );
   const { formData, handleChange } = useFormUpdate();

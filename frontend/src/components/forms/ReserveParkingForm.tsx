@@ -33,10 +33,9 @@ const ReserveParkingForm = ({ parking, canReserve }: Props) => {
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
     getReservationsRoute(),
     false,
+    false,
     () => {
-      setTimeout(() => {
-        navigate('/my-reservations');
-      }, 1000);
+      navigate('/reservation-complete', { state: {} });
     }
   );
   const [registrationNumberAlert, setRegistrationNumberAlert] =

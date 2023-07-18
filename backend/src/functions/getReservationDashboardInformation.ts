@@ -52,6 +52,7 @@ const getReservationDashboardInformation = (
     value,
   }));
 
+  const currentDate = new Date();
   const freeSpaces = [
     { name: 'Total spaces', value: parkingSize },
     {
@@ -59,8 +60,8 @@ const getReservationDashboardInformation = (
       value:
         parkingSize -
         getNumberOfOverlappingReservations(
-          timeBoundary.toISOString(),
-          new Date().toISOString(),
+          currentDate.setDate(currentDate.getDate() - 1).toString(),
+          currentDate.toISOString(),
           reservations,
         ),
     },

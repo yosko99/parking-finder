@@ -11,10 +11,10 @@ import CenteredItems from '../../styles/CenteredItems';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 interface Props {
-  handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  setSelectedParking: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ParkingsInput = ({ handleChange }: Props) => {
+const ParkingsInput = ({ setSelectedParking }: Props) => {
   const { data, isLoading } = useFetch(
     'current-user-parkings',
     getCurrentUserParkingsRoute(),
@@ -23,6 +23,10 @@ const ParkingsInput = ({ handleChange }: Props) => {
   );
 
   const parkings = data as IParking[];
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedParking(e.target.value);
+  };
 
   return isLoading ? (
     <LoadingSpinner />

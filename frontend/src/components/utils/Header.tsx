@@ -1,15 +1,31 @@
+/* eslint-disable multiline-ternary */
 import React from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import LoadingSpinner from './LoadingSpinner';
+import { getCurrentUserRoute } from '../../constants/apiRoute';
+import useFetch from '../../hooks/useFetch';
+import IUser from '../../interfaces/IUser';
 import AddMarkerToggleButton from '../buttons/AddMarkerToggleButton';
 import CurrentLocationInput from '../inputs/CurrentLocationInput';
 
 const Header = () => {
   const navigate = useNavigate();
+  const { data, isLoading, error } = useFetch(
+    'current-user',
+    getCurrentUserRoute(),
+    true,
+    true
+  );
+
+  if (error) {
+    navigate('/404');
+  }
 
   const pathname = window.location.pathname;
+  const user = data as IUser;
 
   return (
     <Navbar
@@ -30,16 +46,33 @@ const Header = () => {
           >
             Home
           </Nav.Link>
-          <Nav.Link
-            disabled={pathname === '/profile'}
-            className={
-              pathname === '/profile' ? 'text-white' : 'text-muted' + ' me-1'
-            }
-            onClick={() => navigate('/profile')}
-          >
-            Profile
-          </Nav.Link>
-          {pathname === '/' && <AddMarkerToggleButton />}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <Nav.Link
+              disabled={
+                user.isCompany
+                  ? pathname === '/dashboard'
+                  : pathname === '/my-reservations'
+              }
+              className={
+                pathname ===
+                (user.isCompany ? '/dashboard' : '/my-reservations')
+                  ? 'text-white'
+                  : 'text-muted' + ' me-1'
+              }
+              onClick={() =>
+                navigate(user.isCompany ? '/dashboard' : '/my-reservations')
+              }
+            >
+              {user.isCompany ? 'Dashboard' : 'My reservations'}
+            </Nav.Link>
+          )}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            pathname === '/' && user.isCompany && <AddMarkerToggleButton />
+          )}
         </Nav>
         <Nav className="mx-5">
           {pathname === '/' && <CurrentLocationInput />}

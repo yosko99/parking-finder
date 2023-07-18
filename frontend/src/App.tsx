@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import useSetToken from './hooks/useSetToken';
 import GlobalCSS from './styles/global.css';
+import DashboardPage from './views/DashboardPage';
 import ErrorPage from './views/ErrorPage';
 import LoginPage from './views/LoginPage';
 import MainPage from './views/MainPage';
@@ -30,6 +31,7 @@ const App = () => {
             path="/reservation-complete"
             element={<ReservationCompletePage />}
           />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </div>

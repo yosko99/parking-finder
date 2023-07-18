@@ -35,7 +35,10 @@ const BookingDetails = () => {
             date={getFormattedISODate(timeRange.endTime)}
           />
           <p className="fs-4 my-2">
-            {getDurationInWords(timeRange.startTime, timeRange.endTime)}
+            {getDurationInWords(
+              new Date(timeRange.startTime).valueOf() -
+                new Date(timeRange.endTime).valueOf()
+            )}
           </p>
         </div>
       </div>

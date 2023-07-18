@@ -1,8 +1,4 @@
-const getDurationInWords = (startDate: string, endDate: string): string => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const duration = end.getTime() - start.getTime();
-
+const getDurationInWords = (duration: number): string => {
   const milliseconds = duration % 1000;
   const seconds = Math.floor((duration / 1000) % 60);
   const minutes = Math.floor((duration / (1000 * 60)) % 60);

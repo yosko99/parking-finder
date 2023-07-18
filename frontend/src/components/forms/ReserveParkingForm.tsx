@@ -64,7 +64,9 @@ const ReserveParkingForm = ({ parking, canReserve }: Props) => {
         ...formData,
         startTime,
         endTime,
-        totalDuration: getDurationInWords(startTime, endTime),
+        totalDuration: getDurationInWords(
+          new Date(startTime).valueOf() - new Date(endTime).valueOf()
+        ),
         parkingId: parking.id
       });
     }

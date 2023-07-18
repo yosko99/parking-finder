@@ -1,3 +1,5 @@
+import TimeFrameType from '../types/TimeFrameType';
+
 const API_PREFIX = '/api/';
 
 export const PROXY_URL = 'http://localhost:5000';
@@ -10,6 +12,16 @@ export const getUsersRoute = () => API_PREFIX + 'users';
 export const getLoginRoute = () => getUsersRoute() + '/login';
 
 export const getCurrentUserRoute = () => getUsersRoute() + '/current';
+
+export const getCurrentUserParkingsRoute = () =>
+  getUsersRoute() + '/current/parkings';
+
+export const getCurrentUserDashboardRoute = (
+  parkingTitle: string,
+  timeFrame: TimeFrameType
+) =>
+  getUsersRoute() +
+  `/current/dashboard?parkingTitle=${parkingTitle}&timeRange=${timeFrame}`;
 
 // PARKINGS
 export const getParkingsRoute = () => API_PREFIX + 'parkings';

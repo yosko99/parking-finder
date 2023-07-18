@@ -88,32 +88,24 @@ export class UserService {
       `Fetching dashboard information of user with email (${email})`,
     );
 
-    const currentUser = (await this.retrieveUser({
-      where: { email },
-      select: {
-        ownedParkings: {
-          where: { title: parkingTitle },
-          select: {
-            reservations: {
-              select: { startTime: true, endTime: true, country: true },
-            },
-            parkingSize: true,
-            hourlyPrice: true,
-          },
-        },
-        isCompany: true,
-      },
-    })) as unknown as IUser;
+    const currentUser = await this.retrieveUserWithDashboardInfo(
+      email,
+      parkingTitle,
+    );
 
     this.checkIsUserCompany(currentUser);
 
-    const reservations = currentUser.ownedParkings[0]?.reservations ?? [];
-    const hourlyPrice = currentUser.ownedParkings[0]?.hourlyPrice ?? 0;
+    const {
+      reservations = [],
+      hourlyPrice = 0,
+      parkingSize = 0,
+    } = currentUser.ownedParkings[0] || {};
 
     return getReservationDashboardInformation(
       reservations,
       hourlyPrice,
       timeRange,
+      parkingSize,
     );
   }
 
@@ -149,6 +141,32 @@ export class UserService {
     }
 
     return user;
+  }
+
+  private async retrieveUserWithDashboardInfo(email, parkingTitle) {
+    const currentUser = await this.retrieveUser({
+      where: { email },
+      select: {
+        ownedParkings: {
+          where: { title: parkingTitle },
+          select: {
+            reservations: {
+              select: {
+                startTime: true,
+                endTime: true,
+                country: true,
+                isActive: true,
+              },
+            },
+            parkingSize: true,
+            hourlyPrice: true,
+          },
+        },
+        isCompany: true,
+      },
+    });
+
+    return currentUser as unknown as IUser;
   }
 
   private checkIsUserCompany(user: IUser) {

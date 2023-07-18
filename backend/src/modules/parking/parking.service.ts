@@ -77,30 +77,16 @@ export class ParkingService {
     try {
       this.logger.log('Fetching parkings within range');
 
-      const parkings = (await this.prisma.parking.findMany({
-        where: {
-          lat: {
-            gte:
-              Number(lat) - this.distanceService.convertToLat(DISTANCE_IN_KM),
-            lte:
-              Number(lat) + this.distanceService.convertToLat(DISTANCE_IN_KM),
-          },
-          lng: {
-            gte:
-              Number(lng) -
-              this.distanceService.convertToLng(Number(lat), DISTANCE_IN_KM),
-            lte:
-              Number(lng) +
-              this.distanceService.convertToLng(Number(lat), DISTANCE_IN_KM),
-          },
-        },
-        include: {
-          reservations: true,
-          reviews: true,
-        },
-      })) as unknown as IParking[];
+      const parkingsWithingRange = await this.fetchParkingsWithinRange(
+        Number(lat),
+        Number(lng),
+      );
 
-      return this.getParkingsWithOpenSpaces(beginTime, exitTime, parkings);
+      return this.getParkingsWithOpenSpaces(
+        beginTime,
+        exitTime,
+        parkingsWithingRange,
+      );
     } catch (error) {
       this.logger.error(
         `Fetching parkings withing range failed ${error.message}`,
@@ -164,10 +150,7 @@ export class ParkingService {
           parking.reservations,
         );
 
-      if (
-        numberOfOverlappingReservations < parking.parkingSize &&
-        parking.parkingSize >= parking.reservations.length
-      ) {
+      if (numberOfOverlappingReservations < parking.parkingSize) {
         parkingsWithSpaces.push({
           ...parking,
           freeSpaces: parking.parkingSize - numberOfOverlappingReservations,
@@ -176,5 +159,24 @@ export class ParkingService {
     });
 
     return parkingsWithSpaces;
+  }
+
+  private async fetchParkingsWithinRange(lat: number, lng: number) {
+    return (await this.prisma.parking.findMany({
+      where: {
+        lat: {
+          gte: lat - this.distanceService.convertToLat(DISTANCE_IN_KM),
+          lte: lat + this.distanceService.convertToLat(DISTANCE_IN_KM),
+        },
+        lng: {
+          gte: lng - this.distanceService.convertToLng(lat, DISTANCE_IN_KM),
+          lte: lng + this.distanceService.convertToLng(lat, DISTANCE_IN_KM),
+        },
+      },
+      include: {
+        reservations: true,
+        reviews: true,
+      },
+    })) as unknown as IParking[];
   }
 }

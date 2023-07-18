@@ -10,6 +10,7 @@ interface IReservation {
   parking: IParking;
   parkingId: number;
   isActive: boolean;
+  country?: string;
 }
 
 export default IReservation;

@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -34,4 +35,9 @@ export class CreateReservationDto {
   @IsString()
   @ApiProperty()
   parkingId: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  country: string;
 }

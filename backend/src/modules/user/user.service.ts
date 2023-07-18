@@ -10,6 +10,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Prisma } from '@prisma/client';
 import IUser from 'src/interfaces/IUser';
+import getReservationDashboardInformation from 'src/functions/getReservationDashboardInformation';
 
 @Injectable()
 export class UserService {
@@ -80,13 +81,40 @@ export class UserService {
   }
 
   async getCurrentUserDashboard(
-    { timeRange }: UserDashboardDto,
+    { timeRange, parkingTitle }: UserDashboardDto,
     { email }: IToken,
   ) {
     this.logger.log(
       `Fetching dashboard information of user with email (${email})`,
     );
-    // TODO: Implement this method
+
+    const currentUser = (await this.retrieveUser({
+      where: { email },
+      select: {
+        ownedParkings: {
+          where: { title: parkingTitle },
+          select: {
+            reservations: {
+              select: { startTime: true, endTime: true, country: true },
+            },
+            parkingSize: true,
+            hourlyPrice: true,
+          },
+        },
+        isCompany: true,
+      },
+    })) as unknown as IUser;
+
+    this.checkIsUserCompany(currentUser);
+
+    const reservations = currentUser.ownedParkings[0]?.reservations ?? [];
+    const hourlyPrice = currentUser.ownedParkings[0]?.hourlyPrice ?? 0;
+
+    return getReservationDashboardInformation(
+      reservations,
+      hourlyPrice,
+      timeRange,
+    );
   }
 
   getCurrentUserReservations({ email }: IToken) {

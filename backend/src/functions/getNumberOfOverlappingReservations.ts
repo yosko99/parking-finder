@@ -1,23 +1,5 @@
 import IReservation from 'src/interfaces/IReservation';
-
-const dateRangeOverlaps = (
-  startTime: Date,
-  endTime: Date,
-  reservationStartTime: Date,
-  reservationEndTime: Date,
-) => {
-  if (startTime <= reservationStartTime && reservationStartTime <= endTime) {
-    return true;
-  }
-  if (startTime <= reservationEndTime && reservationEndTime <= endTime) {
-    return true;
-  }
-  if (reservationStartTime < startTime && endTime < reservationEndTime) {
-    return true;
-  }
-
-  return false;
-};
+import doDatesOverlap from './doDatesOverlap';
 
 const getNumberOfOverlappingReservations = (
   startTime: string,
@@ -30,12 +12,13 @@ const getNumberOfOverlappingReservations = (
     const reservation = reservations[i];
 
     if (
-      dateRangeOverlaps(
+      doDatesOverlap(
         new Date(startTime),
         new Date(endTime),
         new Date(reservation.startTime),
         new Date(reservation.endTime),
-      )
+      ) &&
+      reservation.isActive
     ) {
       collisionCount++;
     }

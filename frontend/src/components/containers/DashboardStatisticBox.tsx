@@ -8,14 +8,25 @@ interface Props {
   firstValue: number;
   secondValue: number;
   title: string;
+  isPrice: boolean;
 }
 
-const DashboardStatisticBox = ({ firstValue, secondValue, title }: Props) => {
+const DashboardStatisticBox = ({
+  firstValue,
+  secondValue,
+  title,
+  isPrice
+}: Props) => {
   return (
     <div>
       <p className="mb-2">{title}</p>
       <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-        $ <CountUp end={firstValue} decimals={2} duration={1} />{' '}
+        {isPrice && '$ '}
+        <CountUp
+          end={firstValue}
+          decimals={isPrice ? 2 : 0}
+          duration={1}
+        />{' '}
         <span className="ms-2">
           <CustomPercentage firstValue={firstValue} secondValue={secondValue} />
         </span>
@@ -23,7 +34,8 @@ const DashboardStatisticBox = ({ firstValue, secondValue, title }: Props) => {
       <hr className="m-0 my-1" />
       <p className="text-muted mb-2">Previous period</p>
       <p className="fs-4 mb-0 text-muted" style={{ fontWeight: 'bold' }}>
-        $ <CountUp end={secondValue} decimals={2} duration={1} />
+        {isPrice && '$ '}
+        <CountUp end={secondValue} decimals={isPrice ? 2 : 0} duration={1} />
       </p>
     </div>
   );

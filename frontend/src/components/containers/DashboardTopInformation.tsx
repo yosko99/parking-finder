@@ -16,12 +16,14 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
       <Col className="shadow-sm p-3 m-2 border">
         <DashboardStatisticBox
           title="Total Sales"
+          isPrice
           firstValue={dashboardResponse.totalSales.current}
           secondValue={dashboardResponse.totalSales.prev}
         />
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
         <DashboardStatisticBox
+          isPrice={false}
           title="Total Reservations"
           firstValue={dashboardResponse.totalReservations.current}
           secondValue={dashboardResponse.totalReservations.prev}
@@ -29,6 +31,7 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
         <DashboardStatisticBox
+          isPrice
           title="Average Sales"
           firstValue={dashboardResponse.averageSales.current}
           secondValue={dashboardResponse.averageSales.prev}

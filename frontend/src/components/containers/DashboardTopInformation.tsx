@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
+import DashboardStatisticBox from './DashboardStatisticBox';
 import getDurationInWords from '../../functions/getDurationInWords';
 import IDashboardResponse from '../../interfaces/IDashboardResponse';
 
@@ -13,42 +14,34 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
   return (
     <Row className="text-uppercase mt-4">
       <Col className="shadow-sm p-3 m-2 border">
-        <p>Total Sales</p>
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.totalSales.current.toFixed(2)}
-        </p>
-        <hr className="m-0 my-1" />
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.totalSales.prev.toFixed(2)}
-        </p>
+        <DashboardStatisticBox
+          title="Total Sales"
+          firstValue={dashboardResponse.totalSales.current}
+          secondValue={dashboardResponse.totalSales.prev}
+        />
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
-        <p>TOTAL RESERVATIONS</p>
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          {dashboardResponse.totalReservations.current}
-        </p>
-        <hr className="m-0 my-1" />
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          {dashboardResponse.totalReservations.prev}
-        </p>
+        <DashboardStatisticBox
+          title="Total Reservations"
+          firstValue={dashboardResponse.totalReservations.current}
+          secondValue={dashboardResponse.totalReservations.prev}
+        />
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
-        <p>Average Sales</p>
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.averageSales.current.toFixed(2)}
-        </p>
-        <hr className="m-0 my-1" />
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.averageSales.prev.toFixed(2)}
-        </p>
+        <DashboardStatisticBox
+          title="Average Sales"
+          firstValue={dashboardResponse.averageSales.current}
+          secondValue={dashboardResponse.averageSales.prev}
+        />
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
-        <p>Average Duration</p>
+        <p className="mb-2">Average Duration</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
           {getDurationInWords(dashboardResponse.averageDuration.current)}
         </p>
         <hr className="m-0 my-1" />
-        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
+        <p className="text-muted mb-2">Previous period</p>
+        <p className="fs-4 mb-0 text-muted" style={{ fontWeight: 'bold' }}>
           {getDurationInWords(dashboardResponse.averageDuration.prev)}
         </p>
       </Col>

@@ -36,6 +36,10 @@ export class UserModule implements NestModule {
         path: '/users/current/parkings',
         method: RequestMethod.GET,
       },
+      {
+        path: '/users/current/reservations',
+        method: RequestMethod.GET,
+      },
     );
   }
 }

@@ -109,8 +109,24 @@ export class UserService {
     );
   }
 
-  getCurrentUserReservations({ email }: IToken) {
-    throw new Error('Method not implemented.');
+  async getCurrentUserReservations({ email }: IToken) {
+    const user = (await this.retrieveUser({
+      where: { email },
+      select: {
+        reservations: {
+          select: {
+            registrationNumber: true,
+            totalPrice: true,
+            startTime: true,
+            endTime: true,
+            totalDuration: true,
+            isActive: true,
+          },
+        },
+      },
+    })) as unknown as IUser;
+
+    return user.reservations;
   }
 
   async getCurrentUserParkings({ email }: IToken) {

@@ -16,6 +16,9 @@ export const getCurrentUserRoute = () => getUsersRoute() + '/current';
 export const getCurrentUserParkingsRoute = () =>
   getUsersRoute() + '/current/parkings';
 
+export const getCurrentUserReservationsRoute = () =>
+  getUsersRoute() + '/current/reservations';
+
 export const getCurrentUserDashboardRoute = (
   parkingTitle: string,
   timeFrame: TimeFrameType

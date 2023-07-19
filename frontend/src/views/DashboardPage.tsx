@@ -85,7 +85,10 @@ const DashboardPage = () => {
           </Col>
         </Row>
         <p className="fs-1 mt-4">Parking reservations</p>
-        <ReservationsTable reservations={dashboardResponse.reservations} />
+        <ReservationsTable
+          isPersonal={false}
+          reservations={dashboardResponse.reservations}
+        />
       </Container>
       <Footer />
     </div>

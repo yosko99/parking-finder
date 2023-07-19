@@ -49,29 +49,26 @@ const Header = () => {
           {isLoading ? (
             <LoadingSpinner />
           ) : (
-            <Nav.Link
-              disabled={
-                user.isCompany
-                  ? pathname === '/dashboard'
-                  : pathname === '/my-reservations'
-              }
-              className={
-                pathname ===
-                (user.isCompany ? '/dashboard' : '/my-reservations')
-                  ? 'text-white'
-                  : 'text-muted' + ' me-1'
-              }
-              onClick={() =>
-                navigate(user.isCompany ? '/dashboard' : '/my-reservations')
-              }
-            >
-              {user.isCompany ? 'Dashboard' : 'My reservations'}
-            </Nav.Link>
-          )}
-          {isLoading ? (
-            <LoadingSpinner />
-          ) : (
-            pathname === '/' && user.isCompany && <AddMarkerToggleButton />
+            <>
+              <Nav.Link
+                disabled={
+                  user.isCompany
+                    ? pathname === '/dashboard'
+                    : pathname === '/reservations'
+                }
+                className={
+                  pathname === (user.isCompany ? '/dashboard' : '/reservations')
+                    ? 'text-white'
+                    : 'text-muted' + ' me-1'
+                }
+                onClick={() =>
+                  navigate(user.isCompany ? '/dashboard' : '/reservations')
+                }
+              >
+                {user.isCompany ? 'Dashboard' : 'My reservations'}
+              </Nav.Link>
+              {pathname === '/' && user.isCompany && <AddMarkerToggleButton />}
+            </>
           )}
         </Nav>
         <Nav className="mx-5">

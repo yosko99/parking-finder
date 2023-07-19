@@ -8,12 +8,13 @@ import IReservation from '../../interfaces/IReservation';
 
 interface Props {
   reservations: IReservation[];
+  isPersonal: boolean;
 }
 
-const ReservationsTable = ({ reservations }: Props) => {
+const ReservationsTable = ({ reservations, isPersonal }: Props) => {
   return reservations.length === 0 ? (
     <Alert variant="info" className="mb-5">
-      Currently this parking does not have any reservations
+      No reservations at this moment
     </Alert>
   ) : (
     <div style={{ overflow: 'auto' }}>
@@ -26,28 +27,30 @@ const ReservationsTable = ({ reservations }: Props) => {
       >
         <thead>
           <tr>
-            <th>Customer name</th>
+            {!isPersonal && <th>Customer name</th>}
             <th>Plate number</th>
             <th>Total cost</th>
             <th>Date from</th>
             <th>Date to</th>
             <th>Total duration</th>
-            <th>Country</th>
+            {!isPersonal && <th>Country</th>}
             <th>Is active?</th>
           </tr>
         </thead>
         <tbody>
           {reservations.map((reservation, index) => (
             <tr key={index}>
-              <td>{reservation.user.name}</td>
+              {!isPersonal && <td>{reservation.user.name}</td>}
               <td>{reservation.registrationNumber}</td>
               <td>$ {reservation.totalPrice.toFixed(2)}</td>
               <td>{getFormattedISODate(reservation.startTime)}</td>
               <td>{getFormattedISODate(reservation.endTime)}</td>
               <td>{reservation.totalDuration}</td>
-              <td>
-                {reservation.country ? reservation.country : 'Not specified'}
-              </td>
+              {!isPersonal && (
+                <td>
+                  {reservation.country ? reservation.country : 'Not specified'}
+                </td>
+              )}
               <td>{reservation.isActive ? 'Yes' : 'No'}</td>
             </tr>
           ))}

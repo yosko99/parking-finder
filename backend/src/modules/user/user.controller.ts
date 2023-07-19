@@ -55,6 +55,19 @@ export class UserController {
     return this.userService.getCurrentUserParkings(tokenData);
   }
 
+  @Get('/current/reservations')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Get current user reservations' })
+  @ApiResponse({ status: 200, description: 'Receive user reservations' })
+  @ApiResponse({ status: 404, description: 'Non existent user' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  getCurrentUserReservations(
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.userService.getCurrentUserReservations(tokenData);
+  }
+
   @Get('/current/dashboard')
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiOperation({ summary: 'Get current user dashboard' })

@@ -29,7 +29,7 @@ const getReservationDashboardInformation = (
       new Date(reservation.startTime) > selectedTimeFrame;
     const isPreviousTimeFrame =
       new Date(reservation.startTime) > prevTimeFrame &&
-      new Date(reservation.endTime) > selectedTimeFrame;
+      new Date(reservation.endTime) < selectedTimeFrame;
 
     const reservationSales = getReservationSales(hourlyPrice, reservation);
     const reservationDuration =

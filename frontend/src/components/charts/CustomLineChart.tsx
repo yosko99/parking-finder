@@ -10,11 +10,14 @@ import {
   YAxis
 } from 'recharts';
 
+import getRandomColor from '../../functions/getRandomColor';
+
 interface Props {
   data: any;
+  lines: string[];
 }
 
-const CustomLineChart = ({ data }: Props) => {
+const CustomLineChart = ({ data, lines }: Props) => {
   return (
     <ResponsiveContainer width={'100%'} height={400}>
       <LineChart
@@ -30,13 +33,16 @@ const CustomLineChart = ({ data }: Props) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line
-          type="monotone"
-          dataKey="value"
-          name="sales"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-        />
+        {lines.map((line, index) => (
+          <Line
+            key={index}
+            type="monotone"
+            dataKey={line}
+            name={line}
+            stroke={getRandomColor()}
+            activeDot={{ r: 8 }}
+          />
+        ))}
       </LineChart>
     </ResponsiveContainer>
   );

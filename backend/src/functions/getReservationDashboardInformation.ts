@@ -5,7 +5,9 @@ import calculateTotalPrice from './calculateTotalPrice';
 import getTimeBoundary from './getTimeBoundary';
 import getReservationSales from './getReservationSales';
 import setMapValue from './setMapValue';
-import getNumberOfOverlappingReservations from './getNumberOfOverlappingReservations';
+import ISales from 'src/interfaces/ISales';
+import calculateAverage from './calculateAverage';
+import getDashboardFreeSpaces from './getDashboardFreeSpaces';
 
 const getReservationDashboardInformation = (
   reservations: IReservation[],
@@ -13,68 +15,93 @@ const getReservationDashboardInformation = (
   timeFrame: TimeFrameEnum,
   parkingSize: number,
 ): IDashboardResponse => {
-  const timeBoundary = getTimeBoundary(timeFrame);
-  const sales: any[] = [];
+  const { prevTimeFrame, selectedTimeFrame } = getTimeBoundary(timeFrame);
+  const sales: ISales[] = [];
   const locationsMap: Map<string, number> = new Map();
   let totalSales = 0;
   let totalDuration = 0;
 
-  reservations
-    .filter((reservation) => new Date(reservation.startTime) > timeBoundary)
-    .forEach((reservation, index) => {
-      sales.push({
-        value: getReservationSales(hourlyPrice, reservation),
-        name: index,
-      });
+  let totalSalesPrev = 0;
+  let totalDurationPrev = 0;
+  let reservationCountPrev = 0;
 
-      totalSales += calculateTotalPrice(
-        reservation.startTime,
-        reservation.endTime,
-        hourlyPrice,
-      );
+  reservations.forEach((reservation, index) => {
+    const isCurrentTimeFrame =
+      new Date(reservation.startTime) > selectedTimeFrame;
+    const isPreviousTimeFrame =
+      new Date(reservation.startTime) > prevTimeFrame &&
+      new Date(reservation.endTime) > selectedTimeFrame;
+
+    const totalPrice = calculateTotalPrice(
+      reservation.startTime,
+      reservation.endTime,
+      hourlyPrice,
+    );
+    const reservationSales = getReservationSales(hourlyPrice, reservation);
+    const reservationDuration =
+      new Date(reservation.endTime).valueOf() -
+      new Date(reservation.startTime).valueOf();
+
+    let currentSales = 0;
+    let prevSales = 0;
+
+    if (isCurrentTimeFrame) {
+      currentSales = reservationSales;
+
+      totalSales += totalPrice;
 
       setMapValue(reservation.country, locationsMap);
 
-      totalDuration +=
-        new Date(reservation.endTime).valueOf() -
-        new Date(reservation.startTime).valueOf();
-    });
+      totalDuration += reservationDuration;
+    } else if (isPreviousTimeFrame) {
+      prevSales = reservationSales;
+
+      totalSalesPrev += totalPrice;
+
+      totalDurationPrev += reservationDuration;
+
+      reservationCountPrev++;
+    }
+
+    if (currentSales !== 0 || prevSales !== 0) {
+      sales.push({
+        current: currentSales,
+        prev: prevSales,
+        name: index,
+      });
+    }
+  });
 
   const reservationCount = reservations.length;
 
-  const averageDuration =
-    reservationCount !== 0 ? totalDuration / reservationCount : 0;
-  const averageSales =
-    reservationCount !== 0 ? totalSales / reservationCount : 0;
+  const averageDuration = calculateAverage(reservationCount, totalDuration);
+  const averageSales = calculateAverage(reservationCount, totalSales);
+
+  const averageDurationPrev = calculateAverage(
+    reservationCountPrev,
+    totalDurationPrev,
+  );
+  const averageSalesPrev = calculateAverage(
+    reservationCountPrev,
+    totalSalesPrev,
+  );
 
   const locations = Array.from(locationsMap).map(([key, value]) => ({
     name: key,
     value,
   }));
 
-  const currentDate = new Date();
-  const freeSpaces = [
-    { name: 'Total spaces', value: parkingSize },
-    {
-      name: 'Free spaces',
-      value:
-        parkingSize -
-        getNumberOfOverlappingReservations(
-          currentDate.setDate(currentDate.getDate() - 1).toString(),
-          currentDate.toISOString(),
-          reservations,
-        ),
-    },
-  ];
-
   return {
-    totalSales,
+    totalSales: { current: totalSales, prev: totalSalesPrev },
     sales,
-    averageDuration,
-    averageSales,
-    totalReservations: reservationCount,
+    averageDuration: { current: averageDuration, prev: averageDurationPrev },
+    averageSales: { current: averageSales, prev: averageSalesPrev },
+    totalReservations: {
+      current: reservationCount,
+      prev: reservationCountPrev,
+    },
     locations,
-    freeSpaces,
+    freeSpaces: getDashboardFreeSpaces(parkingSize, reservations),
   };
 };
 

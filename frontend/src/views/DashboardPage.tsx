@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Alert, Col, Container, Row } from 'react-bootstrap';
 
 import tokenAtom from '../atoms/token.atom';
 import CustomLineChart from '../components/charts/CustomLineChart';
@@ -56,7 +56,15 @@ const DashboardPage = () => {
         <Row className="mt-4">
           <Col className="w-100 h-100">
             <p className="fs-2 text-center">Sales amount</p>
-            <CustomLineChart data={dashboardResponse.sales} />
+            {dashboardResponse.sales.length <= 1 && (
+              <Alert variant="info" className="text-center">
+                More data needed to visualize the information
+              </Alert>
+            )}
+            <CustomLineChart
+              data={dashboardResponse.sales}
+              lines={['current', 'prev']}
+            />
           </Col>
           <Col className="">
             <CenteredItems flexColumn>

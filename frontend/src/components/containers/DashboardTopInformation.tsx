@@ -15,25 +15,41 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
       <Col className="shadow-sm p-3 m-2 border">
         <p>Total Sales</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.totalSales.toFixed(2)}
+          $ {dashboardResponse.totalSales.current.toFixed(2)}
+        </p>
+        <hr className="m-0 my-1" />
+        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
+          $ {dashboardResponse.totalSales.prev.toFixed(2)}
         </p>
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
         <p>TOTAL RESERVATIONS</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          {dashboardResponse.totalReservations}
+          {dashboardResponse.totalReservations.current}
+        </p>
+        <hr className="m-0 my-1" />
+        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
+          {dashboardResponse.totalReservations.prev}
         </p>
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
         <p>Average Sales</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          $ {dashboardResponse.averageSales.toFixed(2)}
+          $ {dashboardResponse.averageSales.current.toFixed(2)}
+        </p>
+        <hr className="m-0 my-1" />
+        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
+          $ {dashboardResponse.averageSales.prev.toFixed(2)}
         </p>
       </Col>
       <Col className="shadow-sm p-3 m-2 border">
         <p>Average Duration</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
-          {getDurationInWords(dashboardResponse.averageDuration)}
+          {getDurationInWords(dashboardResponse.averageDuration.current)}
+        </p>
+        <hr className="m-0 my-1" />
+        <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
+          {getDurationInWords(dashboardResponse.averageDuration.prev)}
         </p>
       </Col>
     </Row>

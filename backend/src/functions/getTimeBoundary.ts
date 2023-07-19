@@ -1,24 +1,35 @@
 import TimeFrameEnum from 'src/enums/TimeFrameEnum';
 
-const getTimeBoundary = (timeFrame: TimeFrameEnum): Date => {
-  const currentDate = new Date();
+const getTimeBoundary = (timeFrame: TimeFrameEnum) => {
+  const selectedTimeFrame = new Date();
+  const prevTimeFrame = new Date();
+
+  const getTimeOffset = (days: number, months?: number) => {
+    selectedTimeFrame.setDate(selectedTimeFrame.getDate() - days);
+    prevTimeFrame.setDate(prevTimeFrame.getDate() - days * 2);
+
+    if (months > 0) {
+      selectedTimeFrame.setMonth(selectedTimeFrame.getMonth() - months);
+      prevTimeFrame.setMonth(prevTimeFrame.getMonth() - months * 2);
+    }
+  };
 
   switch (timeFrame) {
     case TimeFrameEnum.DAY:
-      currentDate.setDate(currentDate.getDate() - 1);
+      getTimeOffset(1);
       break;
     case TimeFrameEnum.WEEK:
-      currentDate.setDate(currentDate.getDate() - 7);
+      getTimeOffset(7);
       break;
     case TimeFrameEnum.MONTH:
-      currentDate.setMonth(currentDate.getMonth() - 1);
+      getTimeOffset(0, 1);
       break;
     case TimeFrameEnum.DAYS90:
-      currentDate.setDate(currentDate.getDate() - 90);
+      getTimeOffset(90, 0);
       break;
   }
 
-  return currentDate;
+  return { selectedTimeFrame, prevTimeFrame };
 };
 
 export default getTimeBoundary;

@@ -11,6 +11,9 @@ interface IReservation {
   parkingId: number;
   isActive: boolean;
   country?: string;
+  registrationNumber: string;
+  totalPrice: number;
+  totalDuration: string;
 }
 
 export default IReservation;

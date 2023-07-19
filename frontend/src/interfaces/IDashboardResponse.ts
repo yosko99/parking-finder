@@ -1,3 +1,4 @@
+import IReservation from './IReservation';
 import ISales from './ISales';
 
 interface IDashboardResponse {
@@ -8,6 +9,7 @@ interface IDashboardResponse {
   locations: { name: string; value: number }[];
   averageDuration: { current: number; prev: number };
   freeSpaces: { name: string; value: number }[];
+  reservations: IReservation[];
 }
 
 export default IDashboardResponse;

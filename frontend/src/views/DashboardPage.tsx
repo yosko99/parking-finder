@@ -11,6 +11,8 @@ import CustomPieChart from '../components/charts/CustomPieChart';
 import DashboardTopInformation from '../components/containers/DashboardTopInformation';
 import ParkingsInput from '../components/inputs/ParkingsInput';
 import TimeFrameSelectInput from '../components/inputs/TimeFrameSelectInput';
+import ReservationsTable from '../components/tables/ReservationsTable';
+import Footer from '../components/utils/Footer';
 import Header from '../components/utils/Header';
 import { getCurrentUserDashboardRoute } from '../constants/apiRoute';
 import defaultDashboardResponseData from '../data/defaultDashboardResponseData';
@@ -82,7 +84,10 @@ const DashboardPage = () => {
             </CenteredItems>
           </Col>
         </Row>
+        <p className="fs-1 mt-4">Parking reservations</p>
+        <ReservationsTable reservations={dashboardResponse.reservations} />
       </Container>
+      <Footer />
     </div>
   );
 };

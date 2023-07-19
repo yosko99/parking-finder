@@ -155,7 +155,13 @@ export class UserService {
                 startTime: true,
                 endTime: true,
                 country: true,
+                totalDuration: true,
+                totalPrice: true,
                 isActive: true,
+                registrationNumber: true,
+                user: {
+                  select: { name: true },
+                },
               },
             },
             parkingSize: true,

@@ -6,18 +6,25 @@ const getDashboardFreeSpaces = (
   reservations: IReservation[],
 ) => {
   const currentDate = new Date();
+  const updatedDate = new Date();
+  updatedDate.setHours(updatedDate.getHours() + 1);
+
+  const numberOfOverlappingReservations = getNumberOfOverlappingReservations(
+    updatedDate.toISOString(),
+    currentDate.toISOString(),
+    reservations,
+  );
+
+  const freeSpacesValue =
+    numberOfOverlappingReservations > parkingSize
+      ? 0
+      : parkingSize - numberOfOverlappingReservations;
 
   const freeSpaces = [
     { name: 'Total spaces', value: parkingSize },
     {
       name: 'Free spaces',
-      value:
-        parkingSize -
-        getNumberOfOverlappingReservations(
-          currentDate.setDate(currentDate.getDate() - 1).toString(),
-          currentDate.toISOString(),
-          reservations,
-        ),
+      value: freeSpacesValue,
     },
   ];
 

@@ -64,6 +64,7 @@ const ReserveParkingForm = ({ parking, canReserve }: Props) => {
         ...formData,
         startTime,
         endTime,
+        totalPrice: totalPrice !== 0 ? totalPrice + TRANSACTION_FEE : 0,
         totalDuration: getDurationInWords(
           new Date(startTime).valueOf() - new Date(endTime).valueOf()
         ),

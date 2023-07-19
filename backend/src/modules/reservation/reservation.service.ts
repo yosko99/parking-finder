@@ -26,6 +26,7 @@ export class ReservationService {
       startTime,
       totalDuration,
       country,
+      totalPrice,
     }: CreateReservationDto,
     { email }: IToken,
   ) {
@@ -50,6 +51,7 @@ export class ReservationService {
         registrationNumber,
         totalDuration,
         country,
+        totalPrice,
         parking: { connect: { id: parking.id } },
         user: { connect: { email } },
       },

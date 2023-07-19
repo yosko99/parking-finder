@@ -7,7 +7,8 @@ const defaultDashboardResponseData: IDashboardResponse = {
   totalReservations: { current: 0, prev: 0 },
   totalSales: { current: 0, prev: 0 },
   averageDuration: { current: 0, prev: 0 },
-  freeSpaces: []
+  freeSpaces: [],
+  reservations: []
 };
 
 export default defaultDashboardResponseData;

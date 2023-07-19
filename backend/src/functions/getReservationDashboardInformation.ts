@@ -1,7 +1,6 @@
 import TimeFrameEnum from 'src/enums/TimeFrameEnum';
 import IDashboardResponse from 'src/interfaces/IDashboardResponse';
 import IReservation from 'src/interfaces/IReservation';
-import calculateTotalPrice from './calculateTotalPrice';
 import getTimeBoundary from './getTimeBoundary';
 import getReservationSales from './getReservationSales';
 import setMapValue from './setMapValue';
@@ -32,11 +31,6 @@ const getReservationDashboardInformation = (
       new Date(reservation.startTime) > prevTimeFrame &&
       new Date(reservation.endTime) > selectedTimeFrame;
 
-    const totalPrice = calculateTotalPrice(
-      reservation.startTime,
-      reservation.endTime,
-      hourlyPrice,
-    );
     const reservationSales = getReservationSales(hourlyPrice, reservation);
     const reservationDuration =
       new Date(reservation.endTime).valueOf() -
@@ -48,7 +42,7 @@ const getReservationDashboardInformation = (
     if (isCurrentTimeFrame) {
       currentSales = reservationSales;
 
-      totalSales += totalPrice;
+      totalSales += reservation.totalPrice;
 
       setMapValue(reservation.country, locationsMap);
 
@@ -56,7 +50,7 @@ const getReservationDashboardInformation = (
     } else if (isPreviousTimeFrame) {
       prevSales = reservationSales;
 
-      totalSalesPrev += totalPrice;
+      totalSalesPrev += reservation.totalPrice;
 
       totalDurationPrev += reservationDuration;
 
@@ -102,6 +96,7 @@ const getReservationDashboardInformation = (
     },
     locations,
     freeSpaces: getDashboardFreeSpaces(parkingSize, reservations),
+    reservations,
   };
 };
 

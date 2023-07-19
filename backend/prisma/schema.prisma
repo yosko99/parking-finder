@@ -55,4 +55,5 @@ model Reservation {
     parkingId          String
     isActive           Boolean @default(true)
     country            String?
+    totalPrice         Float
 }

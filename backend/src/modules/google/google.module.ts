@@ -9,11 +9,12 @@ import { VerifyJWT } from 'src/middleware/utils/verifyJWT.middleware';
 import { GoogleController } from './google.controller';
 import { GoogleService } from './google.service';
 import { HttpModule } from '@nestjs/axios';
+import { CacheService } from '../cache/cache.service';
 
 @Module({
   imports: [HttpModule],
   controllers: [GoogleController],
-  providers: [GoogleService, PrismaService],
+  providers: [GoogleService, PrismaService, CacheService],
 })
 export class GoogleModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

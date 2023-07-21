@@ -58,4 +58,4 @@ export const getGeocodeRoute = (address: string) =>
   getGoogleRoute() + `/geocode?address=${address}`;
 
 export const getReverseGeocodeRoute = (lat: number, lng: number) =>
-  `reverse-geocode?lat=${lat}&lng=${lng}`;
+  getGoogleRoute() + `/reverse-geocode?lat=${lat}&lng=${lng}`;

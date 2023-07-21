@@ -1,16 +1,34 @@
 import TimeFrameEnum from 'src/enums/TimeFrameEnum';
 
-const getTimeBoundary = (timeFrame: TimeFrameEnum) => {
-  const selectedTimeFrame = new Date();
-  const prevTimeFrame = new Date();
+const getTimeBoundary = (
+  selectedDate: Date,
+  timeFrame: TimeFrameEnum,
+  isPast: boolean,
+) => {
+  const date = new Date(selectedDate);
+  const prevDate = new Date(selectedDate);
 
   const getTimeOffset = (days: number, months?: number) => {
-    selectedTimeFrame.setDate(selectedTimeFrame.getDate() - days);
-    prevTimeFrame.setDate(prevTimeFrame.getDate() - days * 2);
+    const updatedSelectedTime = isPast
+      ? date.getDate() - days
+      : date.getDate() + days;
+    const updatedPrevTime = isPast
+      ? prevDate.getDate() - days * 2
+      : prevDate.getDate() + days * 2;
+
+    date.setDate(updatedSelectedTime);
+    prevDate.setDate(updatedPrevTime);
 
     if (months > 0) {
-      selectedTimeFrame.setMonth(selectedTimeFrame.getMonth() - months);
-      prevTimeFrame.setMonth(prevTimeFrame.getMonth() - months * 2);
+      const updatedSelectedTime = isPast
+        ? date.getMonth() - months
+        : date.getMonth() + months;
+      const updatedPrevTime = isPast
+        ? prevDate.getMonth() - months * 2
+        : prevDate.getMonth() + months * 2;
+
+      date.setMonth(updatedSelectedTime);
+      prevDate.setMonth(updatedPrevTime);
     }
   };
 
@@ -29,7 +47,7 @@ const getTimeBoundary = (timeFrame: TimeFrameEnum) => {
       break;
   }
 
-  return { selectedTimeFrame, prevTimeFrame };
+  return { selectedTimeFrame: date, prevTimeFrame: prevDate };
 };
 
 export default getTimeBoundary;

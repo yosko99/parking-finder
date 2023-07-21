@@ -1,7 +1,7 @@
 interface ISales {
   current: number;
   prev: number;
-  name: number;
+  date: string;
 }
 
 export default ISales;

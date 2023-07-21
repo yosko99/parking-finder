@@ -7,17 +7,19 @@ import {
   Line,
   LineChart,
   ResponsiveContainer,
+  XAxis,
   YAxis
 } from 'recharts';
 
 import getRandomColor from '../../functions/getRandomColor';
+import ISales from '../../interfaces/ISales';
 
 interface Props {
-  data: any;
+  data: ISales[];
   lines: string[];
 }
 
-const CustomLineChart = ({ data, lines }: Props) => {
+const SalesChart = ({ data, lines }: Props) => {
   return (
     <ResponsiveContainer width={'100%'} height={400}>
       <LineChart
@@ -30,7 +32,15 @@ const CustomLineChart = ({ data, lines }: Props) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <YAxis />
+        <YAxis
+          label={{
+            value: '$',
+            style: { textAnchor: 'middle' },
+            position: 'left',
+            offset: 0
+          }}
+        />
+        <XAxis dataKey={'date'} />
         <Tooltip />
         <Legend />
         {lines.map((line, index) => (
@@ -48,4 +58,4 @@ const CustomLineChart = ({ data, lines }: Props) => {
   );
 };
 
-export default CustomLineChart;
+export default SalesChart;

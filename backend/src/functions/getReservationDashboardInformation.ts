@@ -7,6 +7,7 @@ import setMapValue from './setMapValue';
 import ISales from 'src/interfaces/ISales';
 import calculateAverage from './calculateAverage';
 import getDashboardFreeSpaces from './getDashboardFreeSpaces';
+import getSalesInfo from './getSalesInfo';
 
 const getReservationDashboardInformation = (
   reservations: IReservation[],
@@ -14,8 +15,13 @@ const getReservationDashboardInformation = (
   timeFrame: TimeFrameEnum,
   parkingSize: number,
 ): IDashboardResponse => {
-  const { prevTimeFrame, selectedTimeFrame } = getTimeBoundary(timeFrame);
-  const sales: ISales[] = [];
+  const { prevTimeFrame, selectedTimeFrame } = getTimeBoundary(
+    new Date(),
+    timeFrame,
+    true,
+  );
+
+  let sales: ISales[] = [];
   const locationsMap: Map<string, number> = new Map();
   let totalSales = 0;
   let totalDuration = 0;
@@ -24,7 +30,7 @@ const getReservationDashboardInformation = (
   let totalDurationPrev = 0;
   let reservationCountPrev = 0;
 
-  reservations.forEach((reservation, index) => {
+  reservations.forEach((reservation) => {
     const isCurrentTimeFrame =
       new Date(reservation.startTime) > selectedTimeFrame;
     const isPreviousTimeFrame =
@@ -58,11 +64,9 @@ const getReservationDashboardInformation = (
     }
 
     if (currentSales !== 0 || prevSales !== 0) {
-      sales.push({
-        current: currentSales,
-        prev: prevSales,
-        name: index,
-      });
+      sales.push(
+        getSalesInfo(reservation.startTime, timeFrame, currentSales, prevSales),
+      );
     }
   });
 
@@ -84,6 +88,10 @@ const getReservationDashboardInformation = (
     name: key,
     value,
   }));
+
+  sales = sales.sort((a, b) => {
+    return new Date(a.date).valueOf() - new Date(b.date).valueOf();
+  });
 
   return {
     totalSales: { current: totalSales, prev: totalSalesPrev },

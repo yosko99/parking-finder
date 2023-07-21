@@ -6,8 +6,8 @@ import { useAtom } from 'jotai';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
 
 import tokenAtom from '../atoms/token.atom';
-import CustomLineChart from '../components/charts/CustomLineChart';
 import CustomPieChart from '../components/charts/CustomPieChart';
+import SalesChart from '../components/charts/SalesChart';
 import DashboardTopInformation from '../components/containers/DashboardTopInformation';
 import ParkingsInput from '../components/inputs/ParkingsInput';
 import TimeFrameSelectInput from '../components/inputs/TimeFrameSelectInput';
@@ -63,7 +63,7 @@ const DashboardPage = () => {
                 More data needed to visualize the information
               </Alert>
             )}
-            <CustomLineChart
+            <SalesChart
               data={dashboardResponse.sales}
               lines={['current', 'prev']}
             />

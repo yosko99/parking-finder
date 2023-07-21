@@ -50,9 +50,9 @@ export class CreateParkingDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @Min(-90)
-  @Max(90)
-  @ApiProperty({ maximum: 90, minimum: -90 })
+  @Min(-180)
+  @Max(180)
+  @ApiProperty({ maximum: 180, minimum: -180 })
   lng: number;
 }
 
@@ -64,7 +64,7 @@ export class ParkingsWithinRangeDto {
 
   @IsNotEmpty()
   @IsNumberString()
-  @ApiProperty({ maximum: 90, minimum: -90 })
+  @ApiProperty({ maximum: 180, minimum: -180 })
   lng: number;
 
   @IsNotEmpty()

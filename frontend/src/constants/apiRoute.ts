@@ -29,7 +29,6 @@ export const getCurrentUserDashboardRoute = (
 // PARKINGS
 export const getParkingsRoute = () => API_PREFIX + 'parkings';
 
-// PARKINGS
 export const getParkingRoute = (id: string) => API_PREFIX + `parkings/${id}`;
 
 export const getParkingFreeSpacesWithinTimeFrame = (
@@ -53,8 +52,10 @@ export const getParkingsWithinRangeRoute = (
 export const getReservationsRoute = () => API_PREFIX + 'reservations';
 
 // GOOGLE
+export const getGoogleRoute = () => API_PREFIX + 'google';
+
 export const getGeocodeRoute = (address: string) =>
-  `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+  getGoogleRoute() + `/geocode?address=${address}`;
 
 export const getReverseGeocodeRoute = (lat: number, lng: number) =>
-  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+  `reverse-geocode?lat=${lat}&lng=${lng}`;

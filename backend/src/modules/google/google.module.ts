@@ -12,7 +12,12 @@ import { HttpModule } from '@nestjs/axios';
 import { CacheService } from '../cache/cache.service';
 
 @Module({
-  imports: [HttpModule],
+  imports: [
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
+  ],
   controllers: [GoogleController],
   providers: [GoogleService, PrismaService, CacheService],
 })

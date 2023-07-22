@@ -6,7 +6,7 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 import ICoordinate from '../../interfaces/ICoordinate';
 import mapStyle from '../../styles/googleMapStyle';
-import NewMarker from '../markers/NewMarker';
+import NewMarker from '../map-elements/NewMarker';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 const libraries = ['places'];

@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import useFetch from './useFetch';
 import currentLocationAtom from '../atoms/currentLocation.atom';
-import isMapLoadedAtom from '../atoms/isMapLoaded.atom';
+import mainMapAtom from '../atoms/mainMap.atom';
 import { getParkingsWithinRangeRoute } from '../constants/apiRoute';
 import IParking from '../interfaces/IParking';
 
@@ -19,7 +19,7 @@ const useFetchParkingInformation = (
     startTimeISOString,
     endTimeISOString
   );
-  const [isMapLoaded] = useAtom(isMapLoadedAtom);
+  const [mainMap] = useAtom(mainMapAtom);
   const { data, isLoading } = useFetch(fetchURL, fetchURL, true, false);
 
   const closestParkings = data as IParking[];
@@ -27,7 +27,7 @@ const useFetchParkingInformation = (
   const [parkings, setParkings] = useState<IParking[]>([]);
 
   useEffect(() => {
-    if (isMapLoaded && !isLoading) {
+    if (mainMap !== null && !isLoading) {
       const service = new window.google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {

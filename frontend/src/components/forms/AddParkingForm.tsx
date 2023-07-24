@@ -5,16 +5,18 @@ import { Button, Form } from 'react-bootstrap';
 
 import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
+import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import { getParkingsRoute } from '../../constants/apiRoute';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
-const AddMarkerForm = () => {
+const AddParkingForm = () => {
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
     isAddMarkerToggledAtom
   );
+  const [parkingSpaces] = useAtom(parkingSpacesAtom);
 
   const { formData, handleChange } = useFormUpdate();
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
@@ -34,7 +36,8 @@ const AddMarkerForm = () => {
       ...formData,
       lat: newMarkerAddress?.coords.lat,
       lng: newMarkerAddress?.coords.lng,
-      address: newMarkerAddress?.address
+      address: newMarkerAddress?.address,
+      parkingSize: parkingSpaces.length
     });
   };
   return (
@@ -53,11 +56,9 @@ const AddMarkerForm = () => {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>
-          Address <span className="text-muted">(Select on map)</span>
-        </Form.Label>
+        <Form.Label>Address</Form.Label>
         <Form.Control
-          required
+          readOnly
           type="text"
           value={newMarkerAddress?.address || ''}
           name="address"
@@ -88,11 +89,12 @@ const AddMarkerForm = () => {
       <Form.Group className="mb-3">
         <Form.Label>Parking size</Form.Label>
         <Form.Control
+          value={parkingSpaces.length}
+          readOnly
           required
           type="number"
           name="parkingSize"
           min={1}
-          placeholder="50"
         />
       </Form.Group>
       <Button type="submit" variant="success w-100">
@@ -104,4 +106,4 @@ const AddMarkerForm = () => {
   );
 };
 
-export default AddMarkerForm;
+export default AddParkingForm;

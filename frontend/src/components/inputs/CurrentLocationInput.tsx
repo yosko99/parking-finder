@@ -9,7 +9,7 @@ import { FaLocationArrow } from 'react-icons/fa';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
-import isMapLoadedAtom from '../../atoms/isMapLoaded.atom';
+import mainMapAtom from '../../atoms/mainMap.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
@@ -17,7 +17,7 @@ import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 const CurrentLocationInput = () => {
   const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
-  const [isMapLoaded] = useAtom(isMapLoadedAtom);
+  const [mainMap] = useAtom(mainMapAtom);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
 
@@ -45,7 +45,7 @@ const CurrentLocationInput = () => {
     getCurrentLocation().then((value) => setCurrentLocation(value));
   };
 
-  return isMapLoaded ? (
+  return mainMap !== null ? (
     <Autocomplete onPlaceChanged={handleInputChange}>
       <Form.Group className="d-flex">
         <Form.Control

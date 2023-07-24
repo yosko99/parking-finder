@@ -3,14 +3,14 @@ import React from 'react';
 
 import { useAtom } from 'jotai';
 
-import AddMarkerSideBar from './AddMarkerSideBar';
+import AddParkingSideBar from './AddParkingSideBar';
 import ParkingSideBar from './ParkingSideBar';
 import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
 
 const SideBar = () => {
   const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
 
-  return isAddMarkerToggled ? <AddMarkerSideBar /> : <ParkingSideBar />;
+  return isAddMarkerToggled ? <AddParkingSideBar /> : <ParkingSideBar />;
 };
 
 export default SideBar;

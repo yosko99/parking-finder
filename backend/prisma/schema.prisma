@@ -19,18 +19,19 @@ model User {
 }
 
 model Parking {
-    id           String        @id @default(uuid())
-    title        String
-    description  String
-    address      String
-    hourlyPrice  Float
-    lat          Float
-    lng          Float
-    parkingSize  Int
-    reviews      Review[]
-    reservations Reservation[]
-    owner        User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-    ownerId      String
+    id            String         @id @default(uuid())
+    title         String
+    description   String
+    address       String
+    hourlyPrice   Float
+    lat           Float
+    lng           Float
+    parkingSize   Int
+    reviews       Review[]
+    reservations  Reservation[]
+    owner         User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId       String
+    parkingSpaces ParkingSpace[]
 }
 
 model Review {
@@ -44,16 +45,26 @@ model Review {
 }
 
 model Reservation {
-    id                 String  @id @default(uuid())
+    id                 String       @id @default(uuid())
     registrationNumber String
     startTime          String
     endTime            String
     totalDuration      String
-    user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId             String
-    parking            Parking @relation(fields: [parkingId], references: [id], onDelete: Cascade)
+    parking            Parking      @relation(fields: [parkingId], references: [id], onDelete: Cascade)
     parkingId          String
-    isActive           Boolean @default(true)
+    parkingSpace       ParkingSpace @relation(fields: [parkingSpaceId], references: [id], onDelete: Cascade)
+    parkingSpaceId     String
+    isActive           Boolean      @default(true)
     country            String?
     totalPrice         Float
+}
+
+model ParkingSpace {
+    id           String        @id @default(uuid())
+    paths        Json
+    parking      Parking       @relation(fields: [parkingId], references: [id], onDelete: Cascade)
+    parkingId    String
+    reservations Reservation[]
 }

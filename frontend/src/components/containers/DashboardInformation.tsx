@@ -4,6 +4,7 @@ import { Alert, Col, Row } from 'react-bootstrap';
 
 import DashboardTopInformation from './DashboardTopInformation';
 import IDashboardResponse from '../../interfaces/IDashboardResponse';
+import IParking from '../../interfaces/IParking';
 import CenteredItems from '../../styles/CenteredItems';
 import TimeFrameType from '../../types/TimeFrameType';
 import CustomPieChart from '../charts/CustomPieChart';
@@ -16,19 +17,24 @@ interface Props {
   setSelectedParking: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTimeFrame: React.Dispatch<React.SetStateAction<TimeFrameType>>;
   dashboardResponse: IDashboardResponse;
+  parkings: IParking[];
 }
 
 const DashboardInformation = ({
   dashboardResponse,
   setSelectedParking,
-  setSelectedTimeFrame
+  setSelectedTimeFrame,
+  parkings
 }: Props) => {
   return (
     <>
       <p className="fs-1 text-center mt-3">Reservations analysis</p>
       <Row>
         <Col>
-          <ParkingsInput setSelectedParking={setSelectedParking} />
+          <ParkingsInput
+            parkings={parkings}
+            setSelectedParking={setSelectedParking}
+          />
         </Col>
         <Col>
           <TimeFrameSelectInput setSelectedTimeFrame={setSelectedTimeFrame} />

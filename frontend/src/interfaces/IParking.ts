@@ -1,4 +1,5 @@
 import ICoordinate from './ICoordinate';
+import IParkingSpace from './IParkingSpace';
 import IReview from './IReview';
 
 interface IParking {
@@ -16,6 +17,7 @@ interface IParking {
   lng?: number;
   coordinates: ICoordinate;
   reviews: IReview[];
+  parkingSpaces: IParkingSpace[];
 }
 
 export default IParking;

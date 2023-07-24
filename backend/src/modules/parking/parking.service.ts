@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
@@ -29,6 +30,7 @@ export class ParkingService {
       lng,
       parkingSize,
       title,
+      parkingSpaces,
     }: CreateParkingDto,
     { email }: IToken,
   ) {
@@ -52,6 +54,8 @@ export class ParkingService {
         lng,
         parkingSize,
         title,
+        // @ts-ignore
+        parkingSpaces: { createMany: { data: parkingSpaces } },
         owner: { connect: { email } },
       },
     });
@@ -176,6 +180,7 @@ export class ParkingService {
       include: {
         reservations: true,
         reviews: true,
+        parkingSpaces: true,
       },
     })) as unknown as IParking[];
   }

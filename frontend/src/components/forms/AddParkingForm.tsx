@@ -4,9 +4,11 @@ import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
+import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import { getParkingsRoute } from '../../constants/apiRoute';
+import handleMapLock from '../../functions/handleMapLock';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -16,7 +18,8 @@ const AddParkingForm = () => {
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
     isAddParkingToggledAtom
   );
-  const [parkingSpaces] = useAtom(parkingSpacesAtom);
+  const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
+  const [mainMap] = useAtom(mainMapAtom);
 
   const { formData, handleChange } = useFormUpdate();
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
@@ -26,20 +29,31 @@ const AddParkingForm = () => {
     () => {
       setIsAddMarkerToggled(false);
       setNewMarkerAddress(null);
+      setParkingSpaces([]);
+
+      if (mainMap !== null) {
+        handleMapLock(mainMap, true);
+      }
     }
   );
 
   const handleCreateMarker = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    handleSubmit({
-      ...formData,
-      lat: newMarkerAddress?.coords.lat,
-      lng: newMarkerAddress?.coords.lng,
-      address: newMarkerAddress?.address,
-      parkingSize: parkingSpaces.length
-    });
+    if (mainMap !== null) {
+      handleSubmit({
+        ...formData,
+        lat: mainMap.getCenter()?.lat(),
+        lng: mainMap.getCenter()?.lng(),
+        address: newMarkerAddress?.address,
+        parkingSize: parkingSpaces.length,
+        parkingSpaces: parkingSpaces.map((space) => {
+          return { paths: space.paths };
+        })
+      });
+    }
   };
+
   return (
     <Form
       onChange={handleChange}

@@ -39,6 +39,11 @@ export class CreateReservationDto {
   parkingId: string;
 
   @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  parkingSpaceId: string;
+
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   @ApiProperty()

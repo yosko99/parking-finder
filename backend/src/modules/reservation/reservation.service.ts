@@ -27,6 +27,7 @@ export class ReservationService {
       totalDuration,
       country,
       totalPrice,
+      parkingSpaceId,
     }: CreateReservationDto,
     { email }: IToken,
   ) {
@@ -48,6 +49,7 @@ export class ReservationService {
       data: {
         startTime,
         endTime,
+        parkingSpace: { connect: { id: parkingSpaceId } },
         registrationNumber,
         totalDuration,
         country,

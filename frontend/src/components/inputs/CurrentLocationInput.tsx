@@ -40,7 +40,7 @@ const CurrentLocationInput = () => {
           setCurrentLocation(data.results[0].geometry.location);
           setIsAddParkingToggled(false);
           if (mainMap !== null) {
-            handleMapLock(mainMap!, isAddParkingToggled);
+            handleMapLock(mainMap!, true);
           }
         }
       })
@@ -56,7 +56,7 @@ const CurrentLocationInput = () => {
     getCurrentLocation().then((value) => setCurrentLocation(value));
 
     if (mainMap !== null) {
-      handleMapLock(mainMap!, isAddParkingToggled);
+      handleMapLock(mainMap!, true);
     }
   };
 

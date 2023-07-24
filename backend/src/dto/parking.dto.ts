@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsDateString,
   IsNotEmpty,
   IsNumber,
@@ -8,7 +9,9 @@ import {
   Max,
   Min,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import ICoordinate from 'src/interfaces/ICoordinate';
 
 export class CreateParkingDto {
   @IsNotEmpty()
@@ -38,7 +41,7 @@ export class CreateParkingDto {
   @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
-  @Min(0)
+  @Min(1)
   parkingSize: number;
 
   @IsNotEmpty()
@@ -54,6 +57,12 @@ export class CreateParkingDto {
   @Max(180)
   @ApiProperty({ maximum: 180, minimum: -180 })
   lng: number;
+
+  @IsArray()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @ApiProperty()
+  parkingSpaces: ICoordinate[][];
 }
 
 export class ParkingsWithinRangeDto {

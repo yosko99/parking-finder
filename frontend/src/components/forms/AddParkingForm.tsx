@@ -45,6 +45,7 @@ const AddParkingForm = () => {
         ...formData,
         lat: mainMap.getCenter()?.lat(),
         lng: mainMap.getCenter()?.lng(),
+        mapZoomLevel: mainMap.getZoom(),
         address: newMarkerAddress?.address,
         parkingSize: parkingSpaces.length,
         parkingSpaces: parkingSpaces.map((space) => {

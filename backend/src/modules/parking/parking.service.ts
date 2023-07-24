@@ -31,6 +31,7 @@ export class ParkingService {
       parkingSize,
       title,
       parkingSpaces,
+      mapZoomLevel,
     }: CreateParkingDto,
     { email }: IToken,
   ) {
@@ -54,6 +55,7 @@ export class ParkingService {
         lng,
         parkingSize,
         title,
+        mapZoomLevel,
         // @ts-ignore
         parkingSpaces: { createMany: { data: parkingSpaces } },
         owner: { connect: { email } },

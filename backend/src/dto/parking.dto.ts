@@ -46,6 +46,13 @@ export class CreateParkingDto {
 
   @IsNotEmpty()
   @IsNumber()
+  @Min(1)
+  @Max(22)
+  @ApiProperty()
+  mapZoomLevel: number;
+
+  @IsNotEmpty()
+  @IsNumber()
   @Min(-90)
   @Max(90)
   @ApiProperty({ maximum: 90, minimum: -90 })

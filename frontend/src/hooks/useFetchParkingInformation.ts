@@ -45,22 +45,10 @@ const useFetchParkingInformation = (
             responseElements?.forEach((element, index) => {
               if (element.status === 'OK') {
                 tempParking.push({
-                  id: closestParkings[index].id,
-                  parkingSpaces: closestParkings[index].parkingSpaces,
-                  reviews: closestParkings[index].reviews,
-                  title: closestParkings[index].title,
-                  address: response?.destinationAddresses[index] || '',
-                  duration: element.duration.text,
-                  distance: element.distance.text,
-                  hourlyPrice: closestParkings[index].hourlyPrice,
+                  ...closestParkings[index],
                   reservable: true,
-                  description: closestParkings[index].description,
-                  freeSpaces: closestParkings[index].freeSpaces,
-                  parkingSize: closestParkings[index].parkingSize,
-                  coordinates: {
-                    lat: closestParkings[index].lat!,
-                    lng: closestParkings[index].lng!
-                  }
+                  duration: element.duration.text,
+                  distance: element.distance.text
                 });
               }
             });

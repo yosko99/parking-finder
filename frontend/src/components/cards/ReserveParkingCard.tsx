@@ -26,7 +26,9 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
 
   return (
     <Card className="px-2 shadow-sm border">
-      <ReserveParkingMap coordinates={parking.coordinates} />
+      <ReserveParkingMap
+        coordinates={{ lat: parking.lat!, lng: parking.lng! }}
+      />
       <Card.Body>
         <Alert
           variant={freeSpaces !== 0 ? 'info' : 'danger'}

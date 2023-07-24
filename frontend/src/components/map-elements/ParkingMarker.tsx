@@ -44,7 +44,7 @@ const ParkingMarker = ({
 
   return (
     <div role="button">
-      <InfoWindowF position={parking.coordinates}>
+      <InfoWindowF position={{ lat: parking.lat!, lng: parking.lng! }}>
         <div>
           {index === selectedDirectionIndex ? (
             <>

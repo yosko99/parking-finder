@@ -1,4 +1,3 @@
-import ICoordinate from './ICoordinate';
 import IParkingSpace from './IParkingSpace';
 import IReview from './IReview';
 
@@ -15,9 +14,9 @@ interface IParking {
   parkingSize: number;
   lat?: number;
   lng?: number;
-  coordinates: ICoordinate;
   reviews: IReview[];
   parkingSpaces: IParkingSpace[];
+  mapZoomLevel: number;
 }
 
 export default IParking;

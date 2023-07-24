@@ -9,15 +9,21 @@ import { FaLocationArrow } from 'react-icons/fa';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
+import handleMapLock from '../../functions/handleMapLock';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 
 const CurrentLocationInput = () => {
   const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
   const [mainMap] = useAtom(mainMapAtom);
+  const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
+    isAddParkingToggledAtom
+  );
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
 
@@ -32,6 +38,10 @@ const CurrentLocationInput = () => {
         if (data.status === 'OK') {
           setInputValue(data.formatted_address);
           setCurrentLocation(data.results[0].geometry.location);
+          setIsAddParkingToggled(false);
+          if (mainMap !== null) {
+            handleMapLock(mainMap!, isAddParkingToggled);
+          }
         }
       })
       .catch((err) => {
@@ -40,9 +50,14 @@ const CurrentLocationInput = () => {
   };
 
   const handleClick = () => {
+    setIsAddParkingToggled(false);
     setInputValue('');
     setDirections(null);
     getCurrentLocation().then((value) => setCurrentLocation(value));
+
+    if (mainMap !== null) {
+      handleMapLock(mainMap!, isAddParkingToggled);
+    }
   };
 
   return mainMap !== null ? (

@@ -3,7 +3,7 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 
-import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import { getParkingsRoute } from '../../constants/apiRoute';
@@ -14,7 +14,7 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 const AddParkingForm = () => {
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
-    isAddMarkerToggledAtom
+    isAddParkingToggledAtom
   );
   const [parkingSpaces] = useAtom(parkingSpacesAtom);
 

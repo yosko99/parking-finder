@@ -5,10 +5,10 @@ import { useAtom } from 'jotai';
 
 import AddParkingSideBar from './AddParkingSideBar';
 import ParkingSideBar from './ParkingSideBar';
-import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 
 const SideBar = () => {
-  const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+  const [isAddMarkerToggled] = useAtom(isAddParkingToggledAtom);
 
   return isAddMarkerToggled ? <AddParkingSideBar /> : <ParkingSideBar />;
 };

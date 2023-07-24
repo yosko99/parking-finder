@@ -11,7 +11,7 @@ import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
-import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
@@ -37,7 +37,7 @@ const MainMap = () => {
   const [map, setMap] = useAtom(mainMapAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
-  const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+  const [isAddMarkerToggled] = useAtom(isAddParkingToggledAtom);
   const [timeRange] = useAtom(timeRangeAtom);
   const { parkings } = useFetchParkingInformation(
     timeRange.startTime,

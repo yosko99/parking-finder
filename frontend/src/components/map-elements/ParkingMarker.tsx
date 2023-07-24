@@ -4,7 +4,7 @@ import React from 'react';
 import { InfoWindowF } from '@react-google-maps/api';
 import { useAtom } from 'jotai';
 
-import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
 import calculateDirections from '../../functions/calculateDirections';
 import ICoordinate from '../../interfaces/ICoordinate';
@@ -25,7 +25,7 @@ const ParkingMarker = ({
   parking,
   setDirections
 }: Props) => {
-  const [isAddMarkerToggled] = useAtom(isAddMarkerToggledAtom);
+  const [isAddMarkerToggled] = useAtom(isAddParkingToggledAtom);
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
     selectedDirectionIndexAtom
   );

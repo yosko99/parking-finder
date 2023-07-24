@@ -5,12 +5,13 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import directionsAtom from '../../atoms/directions.atom';
-import isAddMarkerToggledAtom from '../../atoms/isAddMarkerToggled.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
 import { getCurrentUserRoute } from '../../constants/apiRoute';
+import handleMapLock from '../../functions/handleMapLock';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetch from '../../hooks/useFetch';
 import CenteredItems from '../../styles/CenteredItems';
@@ -18,8 +19,8 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 
 const AddMarkerToggleButton = () => {
   const navigate = useNavigate();
-  const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
-    isAddMarkerToggledAtom
+  const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
+    isAddParkingToggledAtom
   );
   const [direction, setDirection] = useAtom(directionsAtom);
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
@@ -44,13 +45,6 @@ const AddMarkerToggleButton = () => {
     navigate('/404');
   }
 
-  const handleMapLock = () => {
-    mainMap?.setOptions({
-      draggable: isAddMarkerToggled,
-      zoomControl: isAddMarkerToggled
-    });
-  };
-
   const handleAddressUpdate = () => {
     updateNewMarkerAddress(
       mainMap!.getCenter()!.lat(),
@@ -60,16 +54,16 @@ const AddMarkerToggleButton = () => {
   };
 
   const handleClick = () => {
-    if (!isAddMarkerToggled) {
+    if (!isAddParkingToggled) {
       setDirection(null);
       setSelectedDirectionIndex(-1);
     } else {
       setNewMarkerAddress(null);
     }
-    setIsAddMarkerToggled((prev) => !prev);
+    setIsAddParkingToggled((prev) => !prev);
 
     if (mainMap !== null) {
-      handleMapLock();
+      handleMapLock(mainMap, isAddParkingToggled);
       handleAddressUpdate();
       setParkingSpaces([]);
     }
@@ -78,11 +72,11 @@ const AddMarkerToggleButton = () => {
   return (
     <CenteredItems role="button" className="justify-content-start">
       <Button
-        variant={`outline-${isAddMarkerToggled ? 'warning' : 'info'}`}
+        variant={`outline-${isAddParkingToggled ? 'warning' : 'info'}`}
         onClick={handleClick}
         className="p-1 px-2"
       >
-        Toggle {isAddMarkerToggled ? 'off' : 'on'} add parking
+        Toggle {isAddParkingToggled ? 'off' : 'on'} add parking
       </Button>
     </CenteredItems>
   );

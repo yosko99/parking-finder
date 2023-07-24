@@ -11,10 +11,9 @@ import { useAtom } from 'jotai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
-import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
-import timeRangeAtom from '../../atoms/timeRange.atom';
+import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
 import mapStyle from '../../styles/googleMapStyle';
@@ -37,12 +36,8 @@ const MainMap = () => {
   const [map, setMap] = useAtom(mainMapAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
-  const [isAddMarkerToggled] = useAtom(isAddParkingToggledAtom);
-  const [timeRange] = useAtom(timeRangeAtom);
-  const { parkings } = useFetchParkingInformation(
-    timeRange.startTime,
-    timeRange.endTime
-  );
+  const { parkings } = useFetchParkingInformation();
+  const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -63,7 +58,6 @@ const MainMap = () => {
     <>
       <GoogleMap
         options={{
-          zoomControl: !isAddMarkerToggled,
           streetViewControl: false,
           mapTypeControl: true,
           panControl: false,
@@ -97,6 +91,15 @@ const MainMap = () => {
         {parkingSpaces.map((space, index) => (
           <ParkingSpacePolygon index={index} parkingSpace={space} key={index} />
         ))}
+
+        {selectedParkingIndex !== -1 &&
+          parkings[selectedParkingIndex]?.parkingSpaces.map((space, index) => (
+            <ParkingSpacePolygon
+              parkingSpace={space}
+              index={index}
+              key={index}
+            />
+          ))}
       </GoogleMap>
     </>
   ) : (

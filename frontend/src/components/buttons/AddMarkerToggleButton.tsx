@@ -10,8 +10,9 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
+import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
 import { getCurrentUserRoute } from '../../constants/apiRoute';
-import handleMapLock from '../../functions/handleMapLock';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetch from '../../hooks/useFetch';
 import CenteredItems from '../../styles/CenteredItems';
@@ -29,6 +30,12 @@ const AddMarkerToggleButton = () => {
   );
   const [mainMap] = useAtom(mainMapAtom);
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
+  const [selectedParkingIndex, setSelectedParkingIndex] = useAtom(
+    selectedParkingIndexAtom
+  );
+  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+    selectedParkingSpaceAtom
+  );
 
   const { data, error, isLoading } = useFetch(
     'currentUser',
@@ -57,16 +64,21 @@ const AddMarkerToggleButton = () => {
     if (!isAddParkingToggled) {
       setDirection(null);
       setSelectedDirectionIndex(-1);
+      setSelectedParkingIndex(-1);
+      setSelectedParkingSpaceIndex(-1);
+      if (mainMap !== null) {
+        mainMap.setOptions({ draggable: false, zoomControl: false });
+      }
     } else {
+      if (mainMap !== null) {
+        mainMap.setOptions({ draggable: true, zoomControl: true });
+      }
       setNewMarkerAddress(null);
-    }
-    setIsAddParkingToggled((prev) => !prev);
-
-    if (mainMap !== null) {
-      handleMapLock(mainMap, isAddParkingToggled);
-      handleAddressUpdate();
       setParkingSpaces([]);
+      handleAddressUpdate();
     }
+
+    setIsAddParkingToggled((prev) => !prev);
   };
 
   return (

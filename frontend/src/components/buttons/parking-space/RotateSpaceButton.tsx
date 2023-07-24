@@ -4,8 +4,8 @@ import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 
 import parkingSpacesAtom from '../../../atoms/parkingSpaces.atom';
-import rotateParkingSpace from '../../../atoms/rotateCoordinates';
-import selectedParkingIndexAtom from '../../../atoms/selectedParkingIndex';
+import selectedParkingSpaceAtom from '../../../atoms/selectedParkingSpaceIndex.atom';
+import rotateParkingSpace from '../../../functions/rotateCoordinates';
 
 interface Props {
   isClockwise: boolean;
@@ -13,13 +13,13 @@ interface Props {
 
 const RotateSpaceButton = ({ isClockwise }: Props) => {
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
-  const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
+  const [selectedParkingSpaceIndex] = useAtom(selectedParkingSpaceAtom);
 
   const handleRotate = () => {
     const parkingIndex =
-      parkingSpaces.length !== 0 && selectedParkingIndex === -1
+      parkingSpaces.length !== 0 && selectedParkingSpaceIndex === -1
         ? 0
-        : selectedParkingIndex;
+        : selectedParkingSpaceIndex;
 
     const rotatedParking = rotateParkingSpace(
       parkingSpaces[parkingIndex],

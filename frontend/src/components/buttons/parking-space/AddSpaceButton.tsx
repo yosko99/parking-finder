@@ -3,9 +3,9 @@ import React from 'react';
 import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 
-import getPolygonCoords from '../../../atoms/getPolygonCoords';
 import mainMapAtom from '../../../atoms/mainMap.atom';
 import parkingSpacesAtom from '../../../atoms/parkingSpaces.atom';
+import getPolygonCoords from '../../../functions/getPolygonCoords';
 
 const AddSpaceButton = () => {
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);

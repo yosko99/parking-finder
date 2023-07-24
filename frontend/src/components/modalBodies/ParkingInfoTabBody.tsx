@@ -5,7 +5,7 @@ import { Button, Tab, Tabs } from 'react-bootstrap';
 import { VscFeedback } from 'react-icons/vsc';
 
 import IParking from '../../interfaces/IParking';
-import ReserveParkingButton from '../buttons/ReserveParkingButton';
+import ReserveParkingButton from '../buttons/parking/ReserveParkingButton';
 
 interface Props {
   parking: IParking;
@@ -60,7 +60,7 @@ const ParkingInfoTabBody = ({ parking }: Props) => {
           )}
         </Tab>
       </Tabs>
-      <ReserveParkingButton className="w-100" parking={parking} />
+      <ReserveParkingButton index={-1} className="w-100" parking={parking} />
     </>
   );
 };

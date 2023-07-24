@@ -6,10 +6,11 @@ import { useAtom } from 'jotai';
 
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
+import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import calculateDirections from '../../functions/calculateDirections';
 import ICoordinate from '../../interfaces/ICoordinate';
 import IParking from '../../interfaces/IParking';
-import ReserveParkingButton from '../buttons/ReserveParkingButton';
+import ReserveParkingButton from '../buttons/parking/ReserveParkingButton';
 import ParkingInfoModal from '../modals/ParkingInfoModal';
 
 interface Props {
@@ -29,6 +30,7 @@ const ParkingMarker = ({
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
     selectedDirectionIndexAtom
   );
+  const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
 
   const handleChangeDirection = () => {
     if (!isAddMarkerToggled) {
@@ -44,25 +46,27 @@ const ParkingMarker = ({
 
   return (
     <div role="button">
-      <InfoWindowF position={{ lat: parking.lat!, lng: parking.lng! }}>
-        <div>
-          {index === selectedDirectionIndex ? (
-            <>
-              <div className="d-flex flex-column">
-                <span className="text-center fs-5 mb-2">{parking.title}</span>
-                <div className="d-flex">
-                  <ParkingInfoModal parking={parking} />
-                  <ReserveParkingButton parking={parking} />
+      {selectedParkingIndex !== index && (
+        <InfoWindowF position={{ lat: parking.lat!, lng: parking.lng! }}>
+          <div>
+            {index === selectedDirectionIndex ? (
+              <>
+                <div className="d-flex flex-column">
+                  <span className="text-center fs-5 mb-2">{parking.title}</span>
+                  <div className="d-flex">
+                    <ParkingInfoModal parking={parking} />
+                    <ReserveParkingButton index={index} parking={parking} />
+                  </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <span role="button" onClick={handleChangeDirection}>
-              {parking.hourlyPrice.toString()}$
-            </span>
-          )}
-        </div>
-      </InfoWindowF>
+              </>
+            ) : (
+              <span role="button" onClick={handleChangeDirection}>
+                {parking.hourlyPrice.toString()}$
+              </span>
+            )}
+          </div>
+        </InfoWindowF>
+      )}
     </div>
   );
 };

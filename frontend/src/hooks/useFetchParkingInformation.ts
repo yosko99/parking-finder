@@ -5,19 +5,19 @@ import { useAtom } from 'jotai';
 import useFetch from './useFetch';
 import currentLocationAtom from '../atoms/currentLocation.atom';
 import mainMapAtom from '../atoms/mainMap.atom';
+import timeRangeAtom from '../atoms/timeRange.atom';
 import { getParkingsWithinRangeRoute } from '../constants/apiRoute';
 import IParking from '../interfaces/IParking';
 
-const useFetchParkingInformation = (
-  startTimeISOString: string,
-  endTimeISOString: string
-) => {
+const useFetchParkingInformation = () => {
   const [currentLocation] = useAtom(currentLocationAtom);
+  const [timeRange] = useAtom(timeRangeAtom);
+
   const fetchURL = getParkingsWithinRangeRoute(
     currentLocation.lat,
     currentLocation.lng,
-    startTimeISOString,
-    endTimeISOString
+    timeRange.startTime,
+    timeRange.endTime
   );
   const [mainMap] = useAtom(mainMapAtom);
   const { data, isLoading } = useFetch(fetchURL, fetchURL, true, false);
@@ -61,12 +61,7 @@ const useFetchParkingInformation = (
         }
       );
     }
-  }, [
-    currentLocation,
-    closestParkings?.length,
-    startTimeISOString,
-    endTimeISOString
-  ]);
+  }, [currentLocation, closestParkings?.length]);
 
   return { parkings, setParkings };
 };

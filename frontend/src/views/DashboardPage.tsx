@@ -6,7 +6,6 @@ import { useAtom } from 'jotai';
 import { Container, Image } from 'react-bootstrap';
 
 import noParkingImg from '../assets/no-parking.png';
-import isAddParkingToggledAtom from '../atoms/isAddParkingToggledAtom.atom';
 import tokenAtom from '../atoms/token.atom';
 import DashboardInformation from '../components/containers/DashboardInformation';
 import Footer from '../components/utils/Footer';
@@ -18,19 +17,18 @@ import {
 } from '../constants/apiRoute';
 import defaultDashboardResponseData from '../data/defaultDashboardResponseData';
 import useFetch from '../hooks/useFetch';
+import useResetParkingIndexes from '../hooks/useResetParkingIndexes';
 import IDashboardResponse from '../interfaces/IDashboardResponse';
 import IParking from '../interfaces/IParking';
 import CenteredItems from '../styles/CenteredItems';
 import TimeFrameType from '../types/TimeFrameType';
 
 const DashboardPage = () => {
+  useResetParkingIndexes();
   const [token] = useAtom(tokenAtom);
   const [selectedParking, setSelectedParking] = useState('');
   const [selectedTimeFrame, setSelectedTimeFrame] =
     useState<TimeFrameType>('DAY');
-  const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
-    isAddParkingToggledAtom
-  );
 
   const { data, isLoading } = useFetch(
     'current-user-parkings',
@@ -55,10 +53,6 @@ const DashboardPage = () => {
         });
     }
   }, [selectedParking, selectedTimeFrame]);
-
-  useEffect(() => {
-    setIsAddMarkerToggled(false);
-  }, []);
 
   return (
     <div>

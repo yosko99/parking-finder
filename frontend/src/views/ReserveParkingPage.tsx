@@ -15,9 +15,11 @@ import Header from '../components/utils/Header';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getParkingFreeSpacesWithinTimeFrame } from '../constants/apiRoute';
 import useFetch from '../hooks/useFetch';
+import useResetParkingIndexes from '../hooks/useResetParkingIndexes';
 import IParking from '../interfaces/IParking';
 
 const ReserveParkingPage = () => {
+  useResetParkingIndexes();
   const [timeRange] = useAtom(timeRangeAtom);
   const location = useLocation();
   const navigate = useNavigate();

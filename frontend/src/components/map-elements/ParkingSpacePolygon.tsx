@@ -3,9 +3,10 @@ import React from 'react';
 import { Polygon } from '@react-google-maps/api';
 import { useAtom } from 'jotai';
 
-import getPolygonCoords from '../../atoms/getPolygonCoords';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
-import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex';
+import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import getPolygonCoords from '../../functions/getPolygonCoords';
 import IParkingSpace from '../../interfaces/IParkingSpace';
 
 interface Props {
@@ -14,9 +15,10 @@ interface Props {
 }
 
 const ParkingSpacePolygon = ({ index, parkingSpace }: Props) => {
-  const [selectedParkingIndex, setSelectedParkingIndex] = useAtom(
-    selectedParkingIndexAtom
+  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+    selectedParkingSpaceAtom
   );
+  const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
 
   // eslint-disable-next-line no-undef
@@ -27,25 +29,25 @@ const ParkingSpacePolygon = ({ index, parkingSpace }: Props) => {
     const tempCoords = getPolygonCoords(
       lat,
       lng,
-      parkingSpaces[selectedParkingIndex].angle
+      parkingSpaces[selectedParkingSpaceIndex].angle
     );
 
     const updatedParkingSpaces = [...parkingSpaces];
 
-    updatedParkingSpaces[selectedParkingIndex] = {
+    updatedParkingSpaces[selectedParkingSpaceIndex] = {
       paths: tempCoords,
-      angle: parkingSpaces[selectedParkingIndex].angle
+      angle: parkingSpaces[selectedParkingSpaceIndex].angle
     };
 
     setParkingSpaces(updatedParkingSpaces);
   };
 
   const handleClick = (index: number) => {
-    setSelectedParkingIndex(index);
+    setSelectedParkingSpaceIndex(index);
   };
 
   const handleDragStart = (index: number) => {
-    setSelectedParkingIndex(index);
+    setSelectedParkingSpaceIndex(index);
   };
 
   return (
@@ -56,9 +58,9 @@ const ParkingSpacePolygon = ({ index, parkingSpace }: Props) => {
       path={parkingSpace.paths}
       onClick={() => handleClick(index)}
       options={{
-        strokeColor: selectedParkingIndex === index ? 'red' : 'black'
+        strokeColor: selectedParkingSpaceIndex === index ? 'red' : 'black'
       }}
-      draggable
+      draggable={selectedParkingIndex === -1}
     />
   );
 };

@@ -4,15 +4,15 @@ import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 
 import parkingSpacesAtom from '../../../atoms/parkingSpaces.atom';
-import selectedParkingIndexAtom from '../../../atoms/selectedParkingIndex';
+import selectedParkingSpaceAtom from '../../../atoms/selectedParkingSpaceIndex.atom';
 
 const DeleteSpaceButton = () => {
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
-  const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
+  const [selectedParkingSpaceIndex] = useAtom(selectedParkingSpaceAtom);
 
   const handleDeleteSpace = () => {
     const updatedParkingSpaces = parkingSpaces;
-    updatedParkingSpaces.splice(selectedParkingIndex, 1);
+    updatedParkingSpaces.splice(selectedParkingSpaceIndex, 1);
 
     setParkingSpaces([...updatedParkingSpaces]);
   };

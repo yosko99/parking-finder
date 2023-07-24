@@ -17,10 +17,7 @@ const ParkingsContainer = () => {
   const [currentLocation] = useAtom(currentLocationAtom);
   const [timeRange] = useAtom(timeRangeAtom);
 
-  const { parkings } = useFetchParkingInformation(
-    timeRange.startTime,
-    timeRange.endTime
-  );
+  const { parkings } = useFetchParkingInformation();
 
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 

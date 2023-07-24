@@ -11,9 +11,10 @@ import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
+import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
-import handleMapLock from '../../functions/handleMapLock';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 
 const CurrentLocationInput = () => {
@@ -23,9 +24,20 @@ const CurrentLocationInput = () => {
   const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
     isAddParkingToggledAtom
   );
+  const [selectedParkingIndex, setSelectedParkingIndex] = useAtom(
+    selectedParkingIndexAtom
+  );
+  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+    selectedParkingSpaceAtom
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
+
+  const resetIndexes = () => {
+    setSelectedParkingIndex(-1);
+    setSelectedParkingSpaceIndex(-1);
+  };
 
   const handleInputChange = () => {
     const address = inputRef.current?.value as string;
@@ -39,8 +51,9 @@ const CurrentLocationInput = () => {
           setInputValue(data.formatted_address);
           setCurrentLocation(data.results[0].geometry.location);
           setIsAddParkingToggled(false);
+          resetIndexes();
           if (mainMap !== null) {
-            handleMapLock(mainMap!, true);
+            mainMap.setOptions({ draggable: true, zoomControl: true });
           }
         }
       })
@@ -54,9 +67,10 @@ const CurrentLocationInput = () => {
     setInputValue('');
     setDirections(null);
     getCurrentLocation().then((value) => setCurrentLocation(value));
+    resetIndexes();
 
     if (mainMap !== null) {
-      handleMapLock(mainMap!, true);
+      mainMap.setOptions({ draggable: true, zoomControl: true });
     }
   };
 

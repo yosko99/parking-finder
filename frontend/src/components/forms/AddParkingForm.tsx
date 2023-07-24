@@ -8,7 +8,6 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import { getParkingsRoute } from '../../constants/apiRoute';
-import handleMapLock from '../../functions/handleMapLock';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -32,7 +31,7 @@ const AddParkingForm = () => {
       setParkingSpaces([]);
 
       if (mainMap !== null) {
-        handleMapLock(mainMap, true);
+        mainMap.setOptions({ draggable: true, zoomControl: true });
       }
     }
   );

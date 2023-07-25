@@ -12,3 +12,9 @@
 
 ### Reservations analysis page
 ![Web capture_19-7-2023_155943_localhost](https://github.com/yosko99/parking-finder/assets/80975936/a21ae7bc-09ed-468e-a666-bafd874daef5)
+
+### Selecting parking space
+![Screenshot from 2023-07-25 11-08-03](https://github.com/yosko99/parking-finder/assets/80975936/51922737-9141-46bc-b000-0475549be2b5)
+![Screenshot from 2023-07-25 11-08-26](https://github.com/yosko99/parking-finder/assets/80975936/8bd1be28-a588-4bd8-b26a-40997bce211d)
+
+

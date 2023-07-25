@@ -3,6 +3,7 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateParkingDto,
+  CreateParkingReviewDto,
   ParkingFreeSpacesDto,
   ParkingsWithinRangeDto,
 } from 'src/dto/parking.dto';
@@ -157,6 +158,30 @@ export class ParkingService {
     }
 
     return parkingSpace;
+  }
+
+  async createParkingReview(
+    id: string,
+    { comment, rating }: CreateParkingReviewDto,
+    { email }: IToken,
+  ) {
+    this.logger.log(`Creating parking review for parking with id (${id})`);
+    await this.retrieveParkingById(id, false);
+
+    const newReview = await this.prisma.review.create({
+      data: {
+        comment,
+        rating,
+        user: { connect: { email } },
+        parking: { connect: { id } },
+      },
+    });
+
+    this.logger.log('Review created');
+    return {
+      message: 'Review created successfully',
+      review: newReview,
+    };
   }
 
   private getParkingsWithOpenSpaces(

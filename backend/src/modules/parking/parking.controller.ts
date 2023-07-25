@@ -11,6 +11,7 @@ import {
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   CreateParkingDto,
+  CreateParkingReviewDto,
   ParkingFreeSpacesDto,
   ParkingsWithinRangeDto,
 } from 'src/dto/parking.dto';
@@ -27,7 +28,6 @@ export class ParkingController {
   @ApiHeader({ name: 'Authorization', required: true })
   @ApiOperation({ summary: 'Create parking' })
   @ApiResponse({ status: 201, description: 'Parking created' })
-  @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
   @ApiResponse({ status: 409, description: 'Title already taken' })
   @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
@@ -39,6 +39,27 @@ export class ParkingController {
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
     return this.parkingService.createParking(createParkingDto, tokenData);
+  }
+
+  @Post('/:id/reviews')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Add a review to parking' })
+  @ApiResponse({ status: 201, description: 'Review created' })
+  @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  @UsePipes(ValidationPipe)
+  createParkingReview(
+    @Body()
+    createParkingReviewDto: CreateParkingReviewDto,
+    @RequestData('userDataFromToken') tokenData: IToken,
+    @Param('id') id: string,
+  ) {
+    return this.parkingService.createParkingReview(
+      id,
+      createParkingReviewDto,
+      tokenData,
+    );
   }
 
   @Get()

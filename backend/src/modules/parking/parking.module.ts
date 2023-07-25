@@ -17,9 +17,15 @@ import { DistanceService } from '../utils/distance/distance.service';
 })
 export class ParkingModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(VerifyJWT).forRoutes({
-      path: '/parkings',
-      method: RequestMethod.POST,
-    });
+    consumer.apply(VerifyJWT).forRoutes(
+      {
+        path: '/parkings',
+        method: RequestMethod.POST,
+      },
+      {
+        path: '/parkings/:id/reviews',
+        method: RequestMethod.POST,
+      },
+    );
   }
 }

@@ -1,11 +1,14 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import { Button, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 import { VscFeedback } from 'react-icons/vsc';
 
 import IParking from '../../interfaces/IParking';
+import CenteredItems from '../../styles/CenteredItems';
 import ReserveParkingButton from '../buttons/parking/ReserveParkingButton';
+import Review from '../containers/Review';
+import AddReviewForm from '../forms/AddReviewForm';
 
 interface Props {
   parking: IParking;
@@ -35,15 +38,20 @@ const ParkingInfoTabBody = ({ parking }: Props) => {
               <p>{parking.freeSpaces}</p>
             </div>
           </div>
+          <ReserveParkingButton
+            index={-1}
+            className="w-100"
+            parking={parking}
+          />
         </Tab>
         <Tab eventKey="description" title="Description">
           <p className="text-center fs-3">Description</p>
           <p className="mx-3">{parking.description}</p>
         </Tab>
         <Tab eventKey="reviews" title="Reviews">
-          <p className="text-center fs-3">Reviews</p>
+          <p className="text-center fs-2">Reviews</p>
           {parking.reviews.length === 0 ? (
-            <div className="text-center fs-2 mx-3 text-dark mb-3">
+            <div className="text-center fs-3 mx-3 text-dark mb-3">
               <p>
                 Currently, this parking does not have any reviews. Be the first
                 one to make one!
@@ -51,16 +59,23 @@ const ParkingInfoTabBody = ({ parking }: Props) => {
               <div>
                 <VscFeedback size={60} />
               </div>
-              <Button variant="warning">Add a review</Button>
             </div>
           ) : (
-            parking.reviews.map((review, index) => (
-              <div key={index}>{review.comment}</div>
-            ))
+            <div style={{ height: '300px', overflow: 'overlay' }}>
+              {parking.reviews.map((review, index) => (
+                <Review
+                  comment={review.comment}
+                  rating={review.rating}
+                  key={index}
+                />
+              ))}
+            </div>
           )}
+          <CenteredItems className="my-3">
+            <AddReviewForm parking={parking} />
+          </CenteredItems>
         </Tab>
       </Tabs>
-      <ReserveParkingButton index={-1} className="w-100" parking={parking} />
     </>
   );
 };

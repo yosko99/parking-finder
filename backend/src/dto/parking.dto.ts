@@ -105,3 +105,18 @@ export class ParkingFreeSpacesDto {
   @ApiProperty()
   endTime: string;
 }
+
+export class CreateParkingReviewDto {
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @ApiProperty({ minLength: 3 })
+  comment: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(0)
+  @Max(5)
+  @ApiProperty()
+  rating: number;
+}

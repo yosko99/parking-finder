@@ -36,7 +36,7 @@ const CustomRating: FC<Props> = ({
         className={className}
       />
       <span className="text-muted ms-2">
-        {ratingRate} out of {ratingCount}
+        average {ratingRate} out of {ratingCount}
       </span>
     </>
   );

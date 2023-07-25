@@ -24,6 +24,12 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
     parking.hourlyPrice
   );
 
+  const totalReviews =
+    parking.reviews.length === 0 ? 1 : parking.reviews.length;
+  const averageReviewRate = Math.round(
+    parking.reviews.reduce((a, b) => a + b.rating, 0) / totalReviews
+  );
+
   return (
     <Card className="px-2 shadow-sm border">
       <ReserveParkingMap
@@ -38,9 +44,9 @@ const ReserverParkingCard = ({ parking, freeSpaces }: Props) => {
         </Alert>
         <Card.Title>{parking.address}</Card.Title>
         <CustomRating
-          ratingRate={3}
+          ratingRate={averageReviewRate}
           readonly
-          ratingCount={10}
+          ratingCount={parking.reviews.length}
           starSize={20}
           className="mb-2"
         />

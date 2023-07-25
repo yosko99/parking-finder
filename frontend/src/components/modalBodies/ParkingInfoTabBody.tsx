@@ -38,11 +38,6 @@ const ParkingInfoTabBody = ({ parking }: Props) => {
               <p>{parking.freeSpaces}</p>
             </div>
           </div>
-          <ReserveParkingButton
-            index={-1}
-            className="w-100"
-            parking={parking}
-          />
         </Tab>
         <Tab eventKey="description" title="Description">
           <p className="text-center fs-3">Description</p>

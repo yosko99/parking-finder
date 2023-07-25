@@ -9,16 +9,14 @@ const getDashboardFreeSpaces = (
   const updatedDate = new Date();
   updatedDate.setHours(updatedDate.getHours() + 1);
 
-  const numberOfOverlappingReservations = getNumberOfOverlappingReservations(
+  const { collisionCount } = getNumberOfOverlappingReservations(
     updatedDate.toISOString(),
     currentDate.toISOString(),
     reservations,
   );
 
   const freeSpacesValue =
-    numberOfOverlappingReservations > parkingSize
-      ? 0
-      : parkingSize - numberOfOverlappingReservations;
+    collisionCount > parkingSize ? 0 : parkingSize - collisionCount;
 
   const freeSpaces = [
     { name: 'Total spaces', value: parkingSize },

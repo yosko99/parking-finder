@@ -33,6 +33,7 @@ export class ReservationService {
   ) {
     this.logger.log(`Creating reservation for (${registrationNumber})`);
 
+    await this.parkingService.retrieveParkingSpaceById(parkingSpaceId);
     const parking = await this.parkingService.retrieveParkingById(
       parkingId,
       true,
@@ -84,13 +85,13 @@ export class ReservationService {
     endTime: string,
     parking: IParking,
   ) {
-    if (
-      getNumberOfOverlappingReservations(
-        startTime,
-        endTime,
-        parking.reservations,
-      ) >= parking.parkingSize
-    ) {
+    const { collisionCount } = getNumberOfOverlappingReservations(
+      startTime,
+      endTime,
+      parking.reservations,
+    );
+
+    if (collisionCount >= parking.parkingSize) {
       this.logger.error('Parking is full of capacity');
       throw new HttpException(
         'We are really sorry, the parking is full at the moment.',

@@ -14,6 +14,7 @@ interface IReservation {
   registrationNumber: string;
   totalPrice: number;
   totalDuration: string;
+  parkingSpaceId: string;
 }
 
 export default IReservation;

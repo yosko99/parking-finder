@@ -1,3 +1,4 @@
+import IParkingSpace from './IParkingSpace';
 import IReservation from './IReservation';
 import IReview from './IReview';
 
@@ -13,6 +14,7 @@ interface IParking {
   reviews: IReview[];
   reservations: IReservation[];
   freeSpaces?: number;
+  parkingSpaces: IParkingSpace[];
 }
 
 export default IParking;

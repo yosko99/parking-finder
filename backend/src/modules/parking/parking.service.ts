@@ -10,7 +10,7 @@ import IToken from 'src/interfaces/IToken';
 import IParking from 'src/interfaces/IParking';
 import { DistanceService } from '../utils/distance/distance.service';
 import getNumberOfOverlappingReservations from 'src/functions/getNumberOfOverlappingReservations';
-import { DISTANCE_IN_KM } from 'src/constants/distance';
+import { RANGE_DISTANCE } from 'src/constants/distance';
 
 @Injectable()
 export class ParkingService {
@@ -112,13 +112,13 @@ export class ParkingService {
     this.logger.log(`Fetching free spaces of (${id})`);
 
     const parking = await this.retrieveParkingById(id, true);
-    const takenSpaces = getNumberOfOverlappingReservations(
+    const { collisionCount } = getNumberOfOverlappingReservations(
       startTime,
       endTime,
       parking.reservations,
     );
 
-    return parking.parkingSize - takenSpaces;
+    return parking.parkingSize - collisionCount;
   }
 
   deleteParkingById(id: string) {
@@ -141,6 +141,24 @@ export class ParkingService {
     return parking as unknown as IParking;
   }
 
+  async retrieveParkingSpaceById(id: string) {
+    this.logger.log(`Fetching parking space with id (${id})`);
+
+    const parkingSpace = await this.prisma.parkingSpace.findUnique({
+      where: { id },
+    });
+
+    if (parkingSpace === null) {
+      this.logger.error(`Could not find parking space with id (${id})`);
+      throw new HttpException(
+        'Could not find parking space with provided id',
+        404,
+      );
+    }
+
+    return parkingSpace;
+  }
+
   private getParkingsWithOpenSpaces(
     startTime: string,
     endTime: string,
@@ -149,17 +167,25 @@ export class ParkingService {
     const parkingsWithSpaces: IParking[] = [];
 
     parkings.forEach((parking) => {
-      const numberOfOverlappingReservations =
+      const { collisionCount, takenParkingSpaces } =
         getNumberOfOverlappingReservations(
           startTime,
           endTime,
           parking.reservations,
         );
 
-      if (numberOfOverlappingReservations < parking.parkingSize) {
+      if (collisionCount < parking.parkingSize) {
+        const parkingSpaces = parking.parkingSpaces.map((parkingSpace) => {
+          return {
+            ...parkingSpace,
+            isCurrentlyTaken: takenParkingSpaces.includes(parkingSpace.id),
+          };
+        });
+
         parkingsWithSpaces.push({
           ...parking,
-          freeSpaces: parking.parkingSize - numberOfOverlappingReservations,
+          parkingSpaces,
+          freeSpaces: parking.parkingSize - collisionCount,
         });
       }
     });
@@ -171,16 +197,23 @@ export class ParkingService {
     return (await this.prisma.parking.findMany({
       where: {
         lat: {
-          gte: lat - this.distanceService.convertToLat(DISTANCE_IN_KM),
-          lte: lat + this.distanceService.convertToLat(DISTANCE_IN_KM),
+          gte: lat - this.distanceService.convertToLat(RANGE_DISTANCE),
+          lte: lat + this.distanceService.convertToLat(RANGE_DISTANCE),
         },
         lng: {
-          gte: lng - this.distanceService.convertToLng(lat, DISTANCE_IN_KM),
-          lte: lng + this.distanceService.convertToLng(lat, DISTANCE_IN_KM),
+          gte: lng - this.distanceService.convertToLng(lat, RANGE_DISTANCE),
+          lte: lng + this.distanceService.convertToLng(lat, RANGE_DISTANCE),
         },
       },
       include: {
-        reservations: true,
+        reservations: {
+          select: {
+            startTime: true,
+            endTime: true,
+            parkingSpaceId: true,
+            isActive: true,
+          },
+        },
         reviews: true,
         parkingSpaces: true,
       },

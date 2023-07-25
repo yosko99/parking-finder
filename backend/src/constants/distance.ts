@@ -1,1 +1,1 @@
-export const DISTANCE_IN_KM = 5;
+export const RANGE_DISTANCE = 5;

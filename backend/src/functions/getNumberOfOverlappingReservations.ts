@@ -7,6 +7,7 @@ const getNumberOfOverlappingReservations = (
   reservations: IReservation[],
 ) => {
   let collisionCount = 0;
+  const takenParkingSpaces: string[] = [];
 
   for (let i = 0; i < reservations.length; i++) {
     const reservation = reservations[i];
@@ -21,10 +22,11 @@ const getNumberOfOverlappingReservations = (
       reservation.isActive
     ) {
       collisionCount++;
+      takenParkingSpaces.push(reservations[i].parkingSpaceId);
     }
   }
 
-  return collisionCount;
+  return { collisionCount, takenParkingSpaces };
 };
 
 export default getNumberOfOverlappingReservations;

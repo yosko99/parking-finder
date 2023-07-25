@@ -58,7 +58,11 @@ const ParkingSpacePolygon = ({ index, parkingSpace }: Props) => {
       path={parkingSpace.paths}
       onClick={() => handleClick(index)}
       options={{
-        strokeColor: selectedParkingSpaceIndex === index ? 'red' : 'black'
+        strokeColor: selectedParkingSpaceIndex === index ? '#1f9bcf' : 'black',
+        fillColor: parkingSpace.isCurrentlyTaken ? '#ff0000' : 'white',
+        fillOpacity: 0.8,
+        clickable: !parkingSpace.isCurrentlyTaken,
+        strokeWeight: selectedParkingSpaceIndex === index ? 5 : 3
       }}
       draggable={selectedParkingIndex === -1}
     />

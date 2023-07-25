@@ -5,10 +5,14 @@ import { Button } from 'react-bootstrap';
 
 import mainMapAtom from '../../../atoms/mainMap.atom';
 import parkingSpacesAtom from '../../../atoms/parkingSpaces.atom';
+import selectedParkingSpaceIndexAtom from '../../../atoms/selectedParkingSpaceIndex.atom';
 import getPolygonCoords from '../../../functions/getPolygonCoords';
 
 const AddSpaceButton = () => {
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
+  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+    selectedParkingSpaceIndexAtom
+  );
   const [map] = useAtom(mainMapAtom);
 
   const handleAddSpace = () => {
@@ -25,6 +29,7 @@ const AddSpaceButton = () => {
         }
       ];
     });
+    setSelectedParkingSpaceIndex(parkingSpaces.length);
   };
 
   return (

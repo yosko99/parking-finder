@@ -69,7 +69,9 @@ const ReserveParkingPage = () => {
           </Col>
           <Col lg={8}>
             <Fade right>
-              <BookingDetails />
+              <BookingDetails
+                selectedParkingSpaceIndex={selectedParkingSpaceIndex}
+              />
               {isLoading ? (
                 <LoadingSpinner />
               ) : (

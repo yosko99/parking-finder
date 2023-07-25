@@ -22,9 +22,14 @@ import LoadingSpinner from '../utils/LoadingSpinner';
 interface Props {
   parking: IParking;
   canReserve: boolean;
+  selectedParkingSpaceIndex: number;
 }
 
-const ReserveParkingForm = ({ parking, canReserve }: Props) => {
+const ReserveParkingForm = ({
+  parking,
+  canReserve,
+  selectedParkingSpaceIndex
+}: Props) => {
   const navigate = useNavigate();
 
   const [registrationNumber, setRegistrationNumber] =
@@ -68,7 +73,8 @@ const ReserveParkingForm = ({ parking, canReserve }: Props) => {
         totalDuration: getDurationInWords(
           new Date(startTime).valueOf() - new Date(endTime).valueOf()
         ),
-        parkingId: parking.id
+        parkingId: parking.id,
+        parkingSpaceId: parking.parkingSpaces[selectedParkingSpaceIndex].id
       });
     }
   };

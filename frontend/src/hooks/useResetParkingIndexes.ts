@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 
 import isAddParkingToggledAtom from '../atoms/isAddParkingToggledAtom.atom';
 import selectedParkingIndexAtom from '../atoms/selectedParkingIndex.atom';
-import selectedParkingSpaceAtom from '../atoms/selectedParkingSpaceIndex.atom';
+import selectedParkingSpaceIndexAtom from '../atoms/selectedParkingSpaceIndex.atom';
 
 const useResetParkingIndexes = () => {
   const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
@@ -14,7 +14,7 @@ const useResetParkingIndexes = () => {
     selectedParkingIndexAtom
   );
   const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
-    selectedParkingSpaceAtom
+    selectedParkingSpaceIndexAtom
   );
 
   useEffect(() => {

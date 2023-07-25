@@ -11,7 +11,7 @@ import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
-import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
 import { getCurrentUserRoute } from '../../constants/apiRoute';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetch from '../../hooks/useFetch';
@@ -34,7 +34,7 @@ const AddMarkerToggleButton = () => {
     selectedParkingIndexAtom
   );
   const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
-    selectedParkingSpaceAtom
+    selectedParkingSpaceIndexAtom
   );
 
   const { data, error, isLoading } = useFetch(

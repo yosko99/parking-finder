@@ -6,12 +6,26 @@ const getPolygonCoords = (
   startLng: number,
   angle: number
 ): ICoordinate[] => {
-  // Define the coordinates of the rectangle relative to the center point
+  const widthMeters = 2.8;
+  const lengthMeters = 5.0;
+
   const rectangleCoordinatesRelative = [
-    { lat: 1.5 * METER_TO_LAT, lng: -1 * METER_TO_LNG }, // Top left corner
-    { lat: 1.5 * METER_TO_LAT, lng: 1 * METER_TO_LNG }, // Top right corner
-    { lat: -1.5 * METER_TO_LAT, lng: 1 * METER_TO_LNG }, // Bottom right corner
-    { lat: -1.5 * METER_TO_LAT, lng: -1 * METER_TO_LNG } // Bottom left corner
+    {
+      lat: (lengthMeters / 2) * METER_TO_LAT,
+      lng: (-widthMeters / 2) * METER_TO_LNG
+    }, // Top left corner
+    {
+      lat: (lengthMeters / 2) * METER_TO_LAT,
+      lng: (widthMeters / 2) * METER_TO_LNG
+    }, // Top right corner
+    {
+      lat: (-lengthMeters / 2) * METER_TO_LAT,
+      lng: (widthMeters / 2) * METER_TO_LNG
+    }, // Bottom right corner
+    {
+      lat: (-lengthMeters / 2) * METER_TO_LAT,
+      lng: (-widthMeters / 2) * METER_TO_LNG
+    } // Bottom left corner
   ];
 
   // Convert angle from degrees to radians

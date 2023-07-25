@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
 
-const selectedParkingSpaceAtom = atom(-1);
+const selectedParkingSpaceIndexAtom = atom(-1);
 
-export default selectedParkingSpaceAtom;
+export default selectedParkingSpaceIndexAtom;

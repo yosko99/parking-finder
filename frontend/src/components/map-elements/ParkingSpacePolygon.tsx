@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
-import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
 import getPolygonCoords from '../../functions/getPolygonCoords';
 import IParkingSpace from '../../interfaces/IParkingSpace';
 
@@ -16,7 +16,7 @@ interface Props {
 
 const ParkingSpacePolygon = ({ index, parkingSpace }: Props) => {
   const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
-    selectedParkingSpaceAtom
+    selectedParkingSpaceIndexAtom
   );
   const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);

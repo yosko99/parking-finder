@@ -12,7 +12,7 @@ import directionsAtom from '../../atoms/directions.atom';
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
-import selectedParkingSpaceAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
@@ -28,7 +28,7 @@ const CurrentLocationInput = () => {
     selectedParkingIndexAtom
   );
   const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
-    selectedParkingSpaceAtom
+    selectedParkingSpaceIndexAtom
   );
 
   const inputRef = useRef<HTMLInputElement>(null);

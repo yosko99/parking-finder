@@ -7,6 +7,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import Fade from 'react-reveal/Fade';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import selectedParkingSpaceIndexAtom from '../atoms/selectedParkingSpaceIndex.atom';
 import timeRangeAtom from '../atoms/timeRange.atom';
 import ReserverParkingCard from '../components/cards/ReserveParkingCard';
 import BookingDetails from '../components/containers/BookingDetails';
@@ -15,16 +16,20 @@ import Header from '../components/utils/Header';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getParkingFreeSpacesWithinTimeFrame } from '../constants/apiRoute';
 import useFetch from '../hooks/useFetch';
-import useResetParkingIndexes from '../hooks/useResetParkingIndexes';
 import IParking from '../interfaces/IParking';
 
 const ReserveParkingPage = () => {
-  useResetParkingIndexes();
+  const [selectedParkingSpaceIndex] = useAtom(selectedParkingSpaceIndexAtom);
   const [timeRange] = useAtom(timeRangeAtom);
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (location.state === null || location.state?.parking === null) {
+  if (
+    location.state === null ||
+    location.state?.parking === null ||
+    selectedParkingSpaceIndex === -1
+  ) {
     navigate('/');
   }
 
@@ -70,6 +75,7 @@ const ReserveParkingPage = () => {
               ) : (
                 <ReserveParkingForm
                   parking={parking}
+                  selectedParkingSpaceIndex={selectedParkingSpaceIndex}
                   canReserve={freeSpaces !== 0}
                 />
               )}

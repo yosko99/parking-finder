@@ -15,6 +15,7 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
+import useResetParkingIndexes from '../../hooks/useResetParkingIndexes';
 import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
 import mapStyle from '../../styles/googleMapStyle';
 import LoadingPage from '../../views/LoadingPage';
@@ -25,6 +26,8 @@ import ParkingSpacePolygon from '../map-elements/ParkingSpacePolygon';
 const libraries = ['places'];
 
 const MainMap = () => {
+  useResetParkingIndexes();
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
     // @ts-ignore

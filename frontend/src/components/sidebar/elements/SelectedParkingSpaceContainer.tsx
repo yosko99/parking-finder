@@ -17,13 +17,20 @@ const SelectedParkingSpaceContainer = () => {
   const { parkings } = useFetchParkingInformation();
 
   return (
-    <>
+    <div className="text-dark text-center">
+      <p className="display-5 p-3 pb-0 mb-0">
+        {parkings[selectedParkingIndex]?.title}
+      </p>
+      <p className="text-muted p-0">
+        Free spaces: {parkings[selectedParkingIndex]?.freeSpaces}/
+        {parkings[selectedParkingIndex]?.parkingSize}
+      </p>
       {selectedParkingSpaceIndex === -1 ? (
-        <p className="text-dark p-3 display-5 text-center">
+        <p className="p-3 px-5 fs-1">
           Please select a parking space to continue
         </p>
       ) : (
-        <p className="text-dark p-3 display-5 text-center">
+        <p className="p-3 px-5 fs-1">
           Selected parking number: {selectedParkingSpaceIndex}
         </p>
       )}
@@ -36,7 +43,7 @@ const SelectedParkingSpaceContainer = () => {
         )}
         <CancelReserveParkingButton />
       </CenteredItems>
-    </>
+    </div>
   );
 };
 

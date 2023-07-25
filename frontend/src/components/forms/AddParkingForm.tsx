@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
@@ -8,6 +8,7 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import { getParkingsRoute } from '../../constants/apiRoute';
+import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -53,6 +54,16 @@ const AddParkingForm = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (mainMap !== null) {
+      updateNewMarkerAddress(
+        mainMap.getCenter()!.lat(),
+        mainMap.getCenter()!.lng(),
+        setNewMarkerAddress
+      );
+    }
+  }, []);
 
   return (
     <Form

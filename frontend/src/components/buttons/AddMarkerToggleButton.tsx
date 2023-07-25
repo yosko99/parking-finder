@@ -18,7 +18,7 @@ import useFetch from '../../hooks/useFetch';
 import CenteredItems from '../../styles/CenteredItems';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
-const AddMarkerToggleButton = () => {
+const AddParkingToggleButton = () => {
   const navigate = useNavigate();
   const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
     isAddParkingToggledAtom
@@ -94,4 +94,4 @@ const AddMarkerToggleButton = () => {
   );
 };
 
-export default AddMarkerToggleButton;
+export default AddParkingToggleButton;

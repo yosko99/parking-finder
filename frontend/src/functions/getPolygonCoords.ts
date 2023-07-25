@@ -6,8 +6,8 @@ const getPolygonCoords = (
   startLng: number,
   angle: number
 ): ICoordinate[] => {
-  const widthMeters = 2.8;
-  const lengthMeters = 5.0;
+  const widthMeters = 2;
+  const lengthMeters = 6;
 
   const rectangleCoordinatesRelative = [
     {

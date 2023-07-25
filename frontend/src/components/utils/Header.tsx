@@ -8,7 +8,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { getCurrentUserRoute } from '../../constants/apiRoute';
 import useFetch from '../../hooks/useFetch';
 import IUser from '../../interfaces/IUser';
-import AddMarkerToggleButton from '../buttons/AddMarkerToggleButton';
+import AddParkingToggleButton from '../buttons/AddMarkerToggleButton';
 import CurrentLocationInput from '../inputs/CurrentLocationInput';
 
 const Header = () => {
@@ -67,7 +67,7 @@ const Header = () => {
               >
                 {user.isCompany ? 'Dashboard' : 'My reservations'}
               </Nav.Link>
-              {pathname === '/' && user.isCompany && <AddMarkerToggleButton />}
+              {pathname === '/' && user.isCompany && <AddParkingToggleButton />}
             </>
           )}
         </Nav>

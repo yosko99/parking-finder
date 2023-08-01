@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 
 import mainMapAtom from '../../../atoms/mainMap.atom';
@@ -10,7 +10,7 @@ import getPolygonCoords from '../../../functions/getPolygonCoords';
 
 const AddSpaceButton = () => {
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
-  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+  const setSelectedParkingSpaceIndex = useSetAtom(
     selectedParkingSpaceIndexAtom
   );
   const [map] = useAtom(mainMapAtom);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Alert, Form } from 'react-bootstrap';
 
 import directionsAtom from '../../../atoms/directions.atom';
@@ -8,7 +8,7 @@ import timeRangeAtom from '../../../atoms/timeRange.atom';
 import getFormattedCurrentDate from '../../../functions/getFormattedCurrentDate';
 
 const DatePicker = () => {
-  const [directions, setDirections] = useAtom(directionsAtom);
+  const setDirections = useSetAtom(directionsAtom);
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
 

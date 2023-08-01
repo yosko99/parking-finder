@@ -7,19 +7,23 @@ import {
   GoogleMap,
   DirectionsRenderer
 } from '@react-google-maps/api';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
+import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
+import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useResetParkingIndexes from '../../hooks/useResetParkingIndexes';
 import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
 import mapStyle from '../../styles/googleMapStyle';
 import LoadingPage from '../../views/LoadingPage';
 import CurrentLocationMarker from '../map-elements/CurrentLocationMarker';
+import NewMarker from '../map-elements/NewMarker';
 import ParkingMarker from '../map-elements/ParkingMarker';
 import ParkingSpacePolygon from '../map-elements/ParkingSpacePolygon';
 
@@ -37,10 +41,12 @@ const MainMap = () => {
 
   const [parkingSpaces] = useAtom(parkingSpacesAtom);
   const [map, setMap] = useAtom(mainMapAtom);
+  const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
   const { parkings } = useFetchParkingInformation();
   const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
+  const isAddParkingToggled = useAtomValue(isAddParkingToggledAtom);
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -52,6 +58,12 @@ const MainMap = () => {
     [currentLocation]
   );
 
+  const handleMapClick = (lat: number, lng: number) => {
+    if (isAddParkingToggled && map !== null) {
+      updateNewMarkerAddress(lat, lng, setNewMarkerAddress);
+    }
+  };
+
   const onUnmount = useCallback(() => {
     setDirections(null);
     setMap(null);
@@ -60,6 +72,7 @@ const MainMap = () => {
   return isLoaded ? (
     <>
       <GoogleMap
+        onClick={(e) => handleMapClick(e.latLng!.lat(), e.latLng!.lng())}
         options={{
           streetViewControl: false,
           mapTypeControl: true,
@@ -103,6 +116,9 @@ const MainMap = () => {
               key={index}
             />
           ))}
+        {newMarkerAddress !== null && (
+          <NewMarker position={newMarkerAddress.coords} />
+        )}
       </GoogleMap>
     </>
   ) : (

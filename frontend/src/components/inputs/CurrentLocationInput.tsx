@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 
 import { Autocomplete } from '@react-google-maps/api';
 import axios from 'axios';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import { FaLocationArrow } from 'react-icons/fa';
 
@@ -18,16 +18,12 @@ import getCurrentLocation from '../../functions/getCurrentLocation';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 
 const CurrentLocationInput = () => {
-  const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
-  const [directions, setDirections] = useAtom(directionsAtom);
+  const setCurrentLocation = useSetAtom(currentLocationAtom);
+  const setDirections = useSetAtom(directionsAtom);
   const [mainMap] = useAtom(mainMapAtom);
-  const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
-    isAddParkingToggledAtom
-  );
-  const [selectedParkingIndex, setSelectedParkingIndex] = useAtom(
-    selectedParkingIndexAtom
-  );
-  const [selectedParkingSpaceIndex, setSelectedParkingSpaceIndex] = useAtom(
+  const setIsAddParkingToggled = useSetAtom(isAddParkingToggledAtom);
+  const setSelectedParkingIndex = useSetAtom(selectedParkingIndexAtom);
+  const setSelectedParkingSpaceIndex = useSetAtom(
     selectedParkingSpaceIndexAtom
   );
 

@@ -6,7 +6,6 @@ import { VscFeedback } from 'react-icons/vsc';
 
 import IParking from '../../interfaces/IParking';
 import CenteredItems from '../../styles/CenteredItems';
-import ReserveParkingButton from '../buttons/parking/ReserveParkingButton';
 import Review from '../containers/Review';
 import AddReviewForm from '../forms/AddReviewForm';
 

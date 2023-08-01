@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,10 +22,8 @@ const ReserveParkingButton = ({ parking, className, index }: Props) => {
   const [selectedParkingIndex, setSelectedParkingIndex] = useAtom(
     selectedParkingIndexAtom
   );
-  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
-    selectedDirectionIndexAtom
-  );
-  const [direction, setDirection] = useAtom(directionsAtom);
+  const setSelectedDirectionIndex = useSetAtom(selectedDirectionIndexAtom);
+  const setDirection = useSetAtom(directionsAtom);
 
   const { parkings } = useFetchParkingInformation();
   const navigate = useNavigate();

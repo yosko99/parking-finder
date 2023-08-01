@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
@@ -11,13 +11,12 @@ import { getParkingsRoute } from '../../constants/apiRoute';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../../hooks/useFormUpdate';
+import ParkingAddressInput from '../inputs/ParkingAddressInput';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
 const AddParkingForm = () => {
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
-  const [isAddMarkerToggled, setIsAddMarkerToggled] = useAtom(
-    isAddParkingToggledAtom
-  );
+  const setIsAddMarkerToggled = useSetAtom(isAddParkingToggledAtom);
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
   const [mainMap] = useAtom(mainMapAtom);
 
@@ -80,16 +79,7 @@ const AddParkingForm = () => {
           placeholder="My parking"
         />
       </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Address</Form.Label>
-        <Form.Control
-          readOnly
-          type="text"
-          value={newMarkerAddress?.address || ''}
-          name="address"
-          placeholder="Rousse, Bulgaria"
-        />
-      </Form.Group>
+      <ParkingAddressInput address={newMarkerAddress?.address || ''} />
       <Form.Group className="mb-3">
         <Form.Label>Description about the parking</Form.Label>
         <Form.Control

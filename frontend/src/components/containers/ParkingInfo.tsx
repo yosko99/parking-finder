@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import React from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { AiFillCar } from 'react-icons/ai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
@@ -23,7 +23,7 @@ const ParkingInfo = ({
   parking,
   setHoveredIndex
 }: Props) => {
-  const [directions, setDirections] = useAtom(directionsAtom);
+  const setDirections = useSetAtom(directionsAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
     selectedDirectionIndexAtom

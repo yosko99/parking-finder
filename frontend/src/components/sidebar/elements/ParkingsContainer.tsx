@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import React, { useEffect, useState } from 'react';
 
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../../../atoms/currentLocation.atom';
@@ -11,9 +11,7 @@ import useFetchParkingInformation from '../../../hooks/useFetchParkingInformatio
 import ParkingInfo from '../../containers/ParkingInfo';
 
 const ParkingsContainer = () => {
-  const [selectedDirectionIndex, setSelectedDirectionIndex] = useAtom(
-    selectedDirectionIndexAtom
-  );
+  const setSelectedDirectionIndex = useSetAtom(selectedDirectionIndexAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [timeRange] = useAtom(timeRangeAtom);
 

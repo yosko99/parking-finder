@@ -26,6 +26,14 @@ export class ParkingModule implements NestModule {
         path: '/parkings/:id/reviews',
         method: RequestMethod.POST,
       },
+      {
+        path: '/parkings/:id',
+        method: RequestMethod.DELETE,
+      },
+      {
+        path: '/parkings',
+        method: RequestMethod.GET,
+      },
     );
   }
 }

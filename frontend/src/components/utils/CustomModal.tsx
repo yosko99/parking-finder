@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Modal } from 'react-bootstrap';
 

@@ -17,6 +17,7 @@ interface IParking {
   reviews: IReview[];
   parkingSpaces: IParkingSpace[];
   mapZoomLevel: number;
+  canUserEdit?: boolean;
 }
 
 export default IParking;

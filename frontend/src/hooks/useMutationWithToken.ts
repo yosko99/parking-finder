@@ -6,7 +6,7 @@ import tokenAtom from '../atoms/token.atom';
 
 const useMutationWithToken = (
   routeURL: string,
-  updateRequest: boolean,
+  requestType: 'post' | 'put' | 'delete',
   onMutate?: () => any
 ) => {
   const [token] = useAtom(tokenAtom);
@@ -15,12 +15,18 @@ const useMutationWithToken = (
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-    let response: AxiosResponse<any, any>;
-    if (!updateRequest) {
-      response = await axios.post(routeURL, data, config);
-    } else {
-      response = await axios.put(routeURL, data, config);
+    let response: AxiosResponse;
+
+    switch (requestType) {
+      case 'post':
+      case 'put':
+        response = await axios[requestType](routeURL, data, config);
+        break;
+      case 'delete':
+        response = await axios.delete(routeURL, config);
+        break;
     }
+
     return response.data;
   };
 

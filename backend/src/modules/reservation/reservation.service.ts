@@ -34,10 +34,9 @@ export class ReservationService {
     this.logger.log(`Creating reservation for (${registrationNumber})`);
 
     await this.parkingService.retrieveParkingSpaceById(parkingSpaceId);
-    const parking = await this.parkingService.retrieveParkingById(
-      parkingId,
-      true,
-    );
+    const parking = await this.parkingService.retrieveParkingById(parkingId, {
+      reservations: true,
+    });
 
     if (new Date(startTime) > new Date(endTime)) {
       this.logger.error('End date cannot be before start date!');

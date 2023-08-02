@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import IParking from '../../interfaces/IParking';
-import ParkingInfoTabBody from '../modalBodies/ParkingInfoTabBody';
+import ParkingInfoBody from '../modal-bodies/parking-info/ParkingInfoTabBody';
 import CustomModal from '../utils/CustomModal';
 
 interface Props {
@@ -15,7 +15,7 @@ const ParkingInfoModal = ({ parking }: Props) => {
     <CustomModal
       activateButtonElement={<Button variant="info">Info</Button>}
       modalHeader="Parking info"
-      modalBody={<ParkingInfoTabBody parking={parking} />}
+      modalBody={<ParkingInfoBody parking={parking} />}
     />
   );
 };

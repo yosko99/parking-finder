@@ -22,6 +22,24 @@ export class ParkingService {
 
   private readonly logger = new Logger(ParkingService.name);
 
+  async deleteParkingById(id: string, { email }: IToken) {
+    this.logger.log(`Deleting parking by id (${id})`);
+    const parking = await this.retrieveParkingById(id, { owner: true });
+
+    if (parking.owner.email !== email) {
+      this.logger.error('User not authorized to delete this parking');
+      throw new HttpException(
+        'Unauthorized user not the owner of parking',
+        401,
+      );
+    }
+
+    await this.prisma.parking.delete({ where: { id } });
+    this.logger.log(`Parking with id (${id}) deleted`);
+
+    return { message: 'Parking deleted' };
+  }
+
   async createParking(
     {
       address,
@@ -70,12 +88,10 @@ export class ParkingService {
     };
   }
 
-  async getParkingsWithinRange({
-    endTime,
-    lat,
-    lng,
-    startTime,
-  }: ParkingsWithinRangeDto) {
+  async getParkingsWithinRange(
+    { endTime, lat, lng, startTime }: ParkingsWithinRangeDto,
+    { email }: IToken,
+  ) {
     const beginTime = startTime || new Date().toISOString();
     const exitTime =
       endTime ||
@@ -89,10 +105,19 @@ export class ParkingService {
         Number(lng),
       );
 
+      const updatedParkingsWithEditBool = parkingsWithingRange.map(
+        (parking) => {
+          return {
+            ...parking,
+            canUserEdit: parking.owner.email === email,
+          };
+        },
+      );
+
       return this.getParkingsWithOpenSpaces(
         beginTime,
         exitTime,
-        parkingsWithingRange,
+        updatedParkingsWithEditBool,
       );
     } catch (error) {
       this.logger.error(
@@ -103,7 +128,7 @@ export class ParkingService {
   }
 
   async getParkingById(id: string) {
-    return await this.retrieveParkingById(id, false);
+    return await this.retrieveParkingById(id);
   }
 
   async getParkingFreeSpacesWithinTimeFrame(
@@ -112,7 +137,7 @@ export class ParkingService {
   ) {
     this.logger.log(`Fetching free spaces of (${id})`);
 
-    const parking = await this.retrieveParkingById(id, true);
+    const parking = await this.retrieveParkingById(id, { reservations: true });
     const { collisionCount } = getNumberOfOverlappingReservations(
       startTime,
       endTime,
@@ -122,16 +147,12 @@ export class ParkingService {
     return parking.parkingSize - collisionCount;
   }
 
-  deleteParkingById(id: string) {
-    throw new Error('Method not implemented.');
-  }
-
-  async retrieveParkingById(id: string, includeReservations: boolean) {
+  async retrieveParkingById(id: string, includedAttributes?: object) {
     this.logger.log(`Fetching parking with id (${id})`);
 
     const parking = await this.prisma.parking.findUnique({
       where: { id },
-      include: { reservations: includeReservations },
+      include: includedAttributes,
     });
 
     if (parking === null) {
@@ -166,7 +187,7 @@ export class ParkingService {
     { email }: IToken,
   ) {
     this.logger.log(`Creating parking review for parking with id (${id})`);
-    await this.retrieveParkingById(id, false);
+    await this.retrieveParkingById(id);
 
     const newReview = await this.prisma.review.create({
       data: {
@@ -241,6 +262,9 @@ export class ParkingService {
         },
         reviews: true,
         parkingSpaces: true,
+        owner: {
+          select: { email: true },
+        },
       },
     })) as unknown as IParking[];
   }

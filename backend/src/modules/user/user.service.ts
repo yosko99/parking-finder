@@ -74,6 +74,7 @@ export class UserService {
       select: {
         isCompany: true,
         name: true,
+        email: true,
       },
     });
 

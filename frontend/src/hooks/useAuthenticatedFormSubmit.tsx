@@ -16,7 +16,7 @@ const useAuthenticatedFormSubmit = (
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useMutationWithToken(routeURL, false);
+  const { mutate, isLoading } = useMutationWithToken(routeURL, 'post');
   const [loading, setLoading] = useState(isLoading);
 
   const handleSubmit = (data: any) => {

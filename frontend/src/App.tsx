@@ -2,7 +2,9 @@ import React from 'react';
 
 import './styles/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 
+import CustomToast from './components/utils/CustomToast';
 import useSetToken from './hooks/useSetToken';
 import GlobalCSS from './styles/global.css';
 import DashboardPage from './views/DashboardPage';
@@ -34,6 +36,7 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
+        <CustomToast />
       </div>
     </BrowserRouter>
   );

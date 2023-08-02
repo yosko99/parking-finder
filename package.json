@@ -15,8 +15,5 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.5.0"
-  },
-  "dependencies": {
-    "react-easy-crop": "^4.7.4"
   }
 }

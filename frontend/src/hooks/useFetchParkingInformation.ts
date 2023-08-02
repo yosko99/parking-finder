@@ -20,7 +20,7 @@ const useFetchParkingInformation = () => {
     timeRange.endTime
   );
   const [mainMap] = useAtom(mainMapAtom);
-  const { data, isLoading } = useFetch(fetchURL, fetchURL, true, false);
+  const { data, isLoading } = useFetch(fetchURL, fetchURL, true, true);
 
   const closestParkings = data as IParking[];
 

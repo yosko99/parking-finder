@@ -29,10 +29,10 @@ export const getCurrentUserDashboardRoute = (
 // PARKINGS
 export const getParkingsRoute = () => API_PREFIX + 'parkings';
 
+export const getParkingRoute = (id: string) => API_PREFIX + `parkings/${id}`;
+
 export const getParkingReviewsRoute = (id: string) =>
   getParkingsRoute() + `/${id}/reviews`;
-
-export const getParkingRoute = (id: string) => API_PREFIX + `parkings/${id}`;
 
 export const getParkingFreeSpacesWithinTimeFrame = (
   id: string,

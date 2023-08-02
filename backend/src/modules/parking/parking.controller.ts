@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -21,6 +22,7 @@ import { ParkingService } from './parking.service';
 
 @Controller('/parkings')
 @ApiTags('Parkings')
+@UsePipes(ValidationPipe)
 export class ParkingController {
   constructor(private readonly parkingService: ParkingService) {}
 
@@ -32,13 +34,29 @@ export class ParkingController {
   @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
-  @UsePipes(ValidationPipe)
   createParking(
     @Body()
     createParkingDto: CreateParkingDto,
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
     return this.parkingService.createParking(createParkingDto, tokenData);
+  }
+
+  @Delete('/:id')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Delete parking by id' })
+  @ApiResponse({ status: 202, description: 'Parking deleted' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized user not the owner of parking',
+  })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  deleteParkingById(
+    @RequestData('userDataFromToken') tokenData: IToken,
+    @Param('id') id: string,
+  ) {
+    return this.parkingService.deleteParkingById(id, tokenData);
   }
 
   @Post('/:id/reviews')
@@ -48,7 +66,6 @@ export class ParkingController {
   @ApiResponse({ status: 400, description: 'Invalid/missing fields' })
   @ApiResponse({ status: 401, description: 'Token not provided' })
   @ApiResponse({ status: 498, description: 'Provided invalid token' })
-  @UsePipes(ValidationPipe)
   createParkingReview(
     @Body()
     createParkingReviewDto: CreateParkingReviewDto,
@@ -68,13 +85,15 @@ export class ParkingController {
     status: 200,
     description: 'Receive parkings with free spaces within range',
   })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
   @ApiResponse({ status: 400, description: 'Invalid params' })
-  @UsePipes(ValidationPipe)
   getParkingsWithinRange(
     @Query()
     query: ParkingsWithinRangeDto,
+    @RequestData('userDataFromToken') tokenData: IToken,
   ) {
-    return this.parkingService.getParkingsWithinRange(query);
+    return this.parkingService.getParkingsWithinRange(query, tokenData);
   }
 
   @Get('/:id')
@@ -93,7 +112,6 @@ export class ParkingController {
   })
   @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
   @ApiResponse({ status: 404, description: 'Parking not found' })
-  @UsePipes(ValidationPipe)
   getParkingFreeSpacesWithinTimeFrame(
     @Param('id') id: string,
     @Query() dto: ParkingFreeSpacesDto,

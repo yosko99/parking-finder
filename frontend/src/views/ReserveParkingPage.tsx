@@ -12,7 +12,7 @@ import timeRangeAtom from '../atoms/timeRange.atom';
 import ReserverParkingCard from '../components/cards/ReserveParkingCard';
 import BookingDetails from '../components/containers/BookingDetails';
 import ReserveParkingForm from '../components/forms/ReserveParkingForm';
-import Header from '../components/utils/Header';
+import Header from '../components/navigation/Header';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getParkingFreeSpacesWithinTimeFrame } from '../constants/apiRoute';
 import useFetch from '../hooks/useFetch';

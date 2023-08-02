@@ -4,8 +4,8 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import Header from '../components/navigation/Header';
 import ReservationsTable from '../components/tables/ReservationsTable';
-import Header from '../components/utils/Header';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getCurrentUserReservationsRoute } from '../constants/apiRoute';
 import useFetch from '../hooks/useFetch';

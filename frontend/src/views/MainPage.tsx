@@ -3,8 +3,8 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import MainMap from '../components/maps/MainMap';
+import Header from '../components/navigation/Header';
 import SideBar from '../components/sidebar/SideBar';
-import Header from '../components/utils/Header';
 import useAuth from '../hooks/useAuth';
 
 const MainPage = () => {

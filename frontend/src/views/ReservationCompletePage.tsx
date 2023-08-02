@@ -4,7 +4,7 @@ import { Button, Container } from 'react-bootstrap';
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Header from '../components/utils/Header';
+import Header from '../components/navigation/Header';
 import CenteredItems from '../styles/CenteredItems';
 
 const ReservationCompletePage = () => {

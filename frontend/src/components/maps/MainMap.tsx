@@ -1,6 +1,6 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable no-undef */
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import {
   useJsApiLoader,
@@ -16,11 +16,11 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import mainMapOptions from '../../data/mainMapOptions';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useResetParkingIndexes from '../../hooks/useResetParkingIndexes';
 import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
-import mapStyle from '../../styles/googleMapStyle';
 import LoadingPage from '../../views/LoadingPage';
 import CurrentLocationMarker from '../map-elements/CurrentLocationMarker';
 import NewMarker from '../map-elements/NewMarker';
@@ -38,6 +38,9 @@ const MainMap = () => {
     libraries
   });
   useSetCurrentLocation();
+  const [mapHeight, setMapHeight] = useState(
+    window.innerWidth < 1000 ? '50vh' : '95vh'
+  );
 
   const [parkingSpaces] = useAtom(parkingSpacesAtom);
   const [map, setMap] = useAtom(mainMapAtom);
@@ -64,23 +67,29 @@ const MainMap = () => {
     }
   };
 
+  const updateMapHeight = () => {
+    setMapHeight(window.innerWidth < 1000 ? '50vh' : '95vh');
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', updateMapHeight);
+  }, []);
+
   const onUnmount = useCallback(() => {
     setDirections(null);
     setMap(null);
+    window.removeEventListener('resize', updateMapHeight);
   }, []);
 
   return isLoaded ? (
     <>
       <GoogleMap
         onClick={(e) => handleMapClick(e.latLng!.lat(), e.latLng!.lng())}
-        options={{
-          streetViewControl: false,
-          mapTypeControl: true,
-          panControl: false,
-          fullscreenControl: false,
-          styles: [mapStyle]
+        options={mainMapOptions}
+        mapContainerStyle={{
+          width: '100%',
+          height: mapHeight
         }}
-        mapContainerStyle={{ width: '100%', height: '95vh' }}
         center={currentLocation}
         zoom={9}
         onLoad={handleOnLoad}

@@ -1,3 +1,4 @@
+import ICoordinate from '../interfaces/ICoordinate';
 import IParkingSpace from '../interfaces/IParkingSpace';
 
 const checkAngle = (angle: number, doIncrementAngle: boolean) => {
@@ -8,20 +9,26 @@ const checkAngle = (angle: number, doIncrementAngle: boolean) => {
   }
 };
 
+const getCenter = (points: ICoordinate[]): ICoordinate => {
+  const sumX = points.reduce((acc, point) => acc + point.lng, 0);
+  const sumY = points.reduce((acc, point) => acc + point.lat, 0);
+  const centerX = sumX / points.length;
+  const centerY = sumY / points.length;
+  return { lat: centerY, lng: centerX };
+};
+
 const rotateParkingSpace = (
   parkingSpace: IParkingSpace,
   doIncrementAngle: boolean
 ): IParkingSpace => {
-  const radians = (doIncrementAngle ? 10 : -10 * Math.PI) / 180;
+  const radians = (doIncrementAngle ? 10 : -10) * (Math.PI / 180);
 
   const cosTheta = Math.cos(radians);
   const sinTheta = Math.sin(radians);
 
-  const center = parkingSpace.paths[0];
+  const center = getCenter(parkingSpace.paths);
 
-  const rotatedCoordinates = parkingSpace.paths.map((path, index) => {
-    if (index === 0) return path;
-
+  const rotatedCoordinates = parkingSpace.paths.map((path) => {
     const translatedX = path.lng - center.lng;
     const translatedY = path.lat - center.lat;
 

@@ -8,8 +8,8 @@ import { Container, Image } from 'react-bootstrap';
 import noParkingImg from '../assets/no-parking.png';
 import tokenAtom from '../atoms/token.atom';
 import DashboardInformation from '../components/containers/DashboardInformation';
+import Header from '../components/navigation/Header';
 import Footer from '../components/utils/Footer';
-import Header from '../components/utils/Header';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import {
   getCurrentUserDashboardRoute,

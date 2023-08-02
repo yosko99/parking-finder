@@ -4,12 +4,13 @@ import React from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import LoadingSpinner from './LoadingSpinner';
+import CompanyProfileNavigation from './CompanyProfileNavigation';
+import DefaultProfileNavigation from './DefaultProfileNavigation';
 import { getCurrentUserRoute } from '../../constants/apiRoute';
 import useFetch from '../../hooks/useFetch';
 import IUser from '../../interfaces/IUser';
-import AddParkingToggleButton from '../buttons/AddMarkerToggleButton';
 import CurrentLocationInput from '../inputs/CurrentLocationInput';
+import LoadingSpinner from '../utils/LoadingSpinner';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -50,24 +51,8 @@ const Header = () => {
             <LoadingSpinner />
           ) : (
             <>
-              <Nav.Link
-                disabled={
-                  user.isCompany
-                    ? pathname === '/dashboard'
-                    : pathname === '/reservations'
-                }
-                className={
-                  pathname === (user.isCompany ? '/dashboard' : '/reservations')
-                    ? 'text-white'
-                    : 'text-muted' + ' me-1'
-                }
-                onClick={() =>
-                  navigate(user.isCompany ? '/dashboard' : '/reservations')
-                }
-              >
-                {user.isCompany ? 'Dashboard' : 'My reservations'}
-              </Nav.Link>
-              {pathname === '/' && user.isCompany && <AddParkingToggleButton />}
+              <DefaultProfileNavigation />
+              <CompanyProfileNavigation isCompany={user.isCompany} />
             </>
           )}
         </Nav>

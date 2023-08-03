@@ -1,18 +1,5 @@
 version: "3.8"
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - 5000:5000
-    depends_on:
-      - database
-    volumes:
-      - ./backend:/app
-    networks:
-      - parking-finder-network
-
   adminer:
     image: adminer
     restart: always
@@ -21,7 +8,7 @@ services:
     networks:
       - parking-finder-network
 
-  database:
+  db:
     image: postgres:13
     ports:
       - 5432:5432
@@ -30,20 +17,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=example
       - POSTGRES_DB=postgres
-    networks:
-      - parking-finder-network
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
-    command: serve -d build -p 3000
     networks:
       - parking-finder-network
 

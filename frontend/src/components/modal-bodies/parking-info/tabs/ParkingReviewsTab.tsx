@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { VscFeedback } from 'react-icons/vsc';
 
@@ -13,6 +13,15 @@ interface Props {
 }
 
 const ParkingReviewsTab = ({ parking }: Props) => {
+  const reviewsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reviewsContainerRef.current) {
+      reviewsContainerRef.current.scrollTop =
+        reviewsContainerRef.current?.scrollHeight;
+    }
+  }, [parking]);
+
   return (
     <>
       <p className="text-center fs-2">Reviews</p>
@@ -27,7 +36,10 @@ const ParkingReviewsTab = ({ parking }: Props) => {
           </div>
         </div>
       ) : (
-        <div style={{ height: '300px', overflow: 'overlay' }}>
+        <div
+          ref={reviewsContainerRef}
+          style={{ height: '300px', overflow: 'overlay' }}
+        >
           {parking.reviews.map((review, index) => (
             <Review
               comment={review.comment}

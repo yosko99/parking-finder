@@ -13,7 +13,6 @@ import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
-import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
@@ -28,7 +27,6 @@ const CurrentLocationInput = () => {
   const setSelectedParkingSpaceIndex = useSetAtom(
     selectedParkingSpaceIndexAtom
   );
-  const [timeRange] = useAtom(timeRangeAtom);
   const { getParkingInfo } = useFetchParkingInformation();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -52,7 +50,7 @@ const CurrentLocationInput = () => {
           setCurrentLocation(data.results[0].geometry.location);
           setIsAddParkingToggled(false);
           resetIndexes();
-          getParkingInfo(timeRange, data.results[0].geometry.location);
+          getParkingInfo({ currentCoords: data.results[0].geometry.location });
           if (mainMap !== null) {
             mainMap.setOptions({ draggable: true, zoomControl: true });
           }
@@ -68,7 +66,7 @@ const CurrentLocationInput = () => {
     setInputValue('');
     setDirections(null);
     getCurrentLocation().then((value) => {
-      getParkingInfo(timeRange, value);
+      getParkingInfo({ currentCoords: value });
       setCurrentLocation(value);
     });
     resetIndexes();

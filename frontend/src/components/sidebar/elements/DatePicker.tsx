@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 import { Alert, Form } from 'react-bootstrap';
 
-import currentLocationAtom from '../../../atoms/currentLocation.atom';
 import directionsAtom from '../../../atoms/directions.atom';
 import timeRangeAtom from '../../../atoms/timeRange.atom';
 import getFormattedCurrentDate from '../../../functions/getFormattedCurrentDate';
@@ -14,7 +13,6 @@ const DatePicker = () => {
   const setDirections = useSetAtom(directionsAtom);
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
-  const [currentLocation] = useAtom(currentLocationAtom);
 
   const { getParkingInfo } = useFetchParkingInformation();
 
@@ -32,11 +30,10 @@ const DatePicker = () => {
           ...time,
           [e.target.name]: e.target.value
         };
-        getParkingInfo(timeRange, currentLocation);
         return tempTimeRange;
       }
     });
-    getParkingInfo(tempTimeRange, currentLocation);
+    getParkingInfo({ timeRange: tempTimeRange });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

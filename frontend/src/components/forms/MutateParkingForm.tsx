@@ -5,13 +5,11 @@ import { Button, Form } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
-import currentLocationAtom from '../../atoms/currentLocation.atom';
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingForEditAtom from '../../atoms/parkingForEdit.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
-import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getParkingRoute, getParkingsRoute } from '../../constants/apiRoute';
 import { MutateParkingDto } from '../../dtos/MutateParkingDto';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
@@ -30,8 +28,6 @@ const MutateParkingForm = () => {
   const [mainMap] = useAtom(mainMapAtom);
   const [parkingForEdit, setParkingForEdit] = useAtom(parkingForEditAtom);
   const queryClient = useQueryClient();
-  const [timeRange] = useAtom(timeRangeAtom);
-  const [currentLocation] = useAtom(currentLocationAtom);
 
   const { getParkingInfo } = useFetchParkingInformation();
 
@@ -76,7 +72,7 @@ const MutateParkingForm = () => {
             }
             toast.success(data.message);
             queryClient.refetchQueries();
-            getParkingInfo(timeRange, currentLocation);
+            getParkingInfo();
           },
           onError: (err) => {
             const error = err as IResponseError;

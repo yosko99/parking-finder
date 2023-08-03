@@ -5,7 +5,6 @@ import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import currentLocationAtom from '../../atoms/currentLocation.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getReservationsRoute } from '../../constants/apiRoute';
 import { TRANSACTION_FEE } from '../../constants/prices';
@@ -37,7 +36,6 @@ const ReserveParkingForm = ({
   const [registrationNumber, setRegistrationNumber] =
     useState<ICarRegistration>({ number: '', isSubmitted: false });
   const { formData, handleChange } = useFormUpdate<ReserveParkingDto>();
-  const [currentLocation] = useAtom(currentLocationAtom);
   const { getParkingInfo } = useFetchParkingInformation();
   const [registrationNumberAlert, setRegistrationNumberAlert] =
     useState<React.ReactNode>(null);
@@ -48,7 +46,7 @@ const ReserveParkingForm = ({
     false,
     () => {
       navigate('/reservation-complete', { state: {} });
-      getParkingInfo({ startTime, endTime }, currentLocation);
+      getParkingInfo({ timeRange: { endTime, startTime } });
     }
   );
 

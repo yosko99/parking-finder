@@ -5,6 +5,7 @@ import { Rating } from 'react-simple-star-rating';
 
 import { getParkingReviewsRoute } from '../../constants/apiRoute';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
+import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import IParking from '../../interfaces/IParking';
 
 interface Props {
@@ -15,10 +16,18 @@ const AddReviewForm = ({ parking }: Props) => {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
+  const { getParkingInfo } = useFetchParkingInformation();
+
+  const { alert, handleSubmit } = useAuthenticatedFormSubmit(
     getParkingReviewsRoute(parking.id),
     false,
-    true
+    true,
+    () => {
+      if (comment.length >= 3) {
+        getParkingInfo();
+        setComment('');
+      }
+    }
   );
 
   const handleRatingChange = (rate: number) => {

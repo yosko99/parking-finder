@@ -1,11 +1,8 @@
 import React from 'react';
 
-import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 
-import currentLocationAtom from '../../../atoms/currentLocation.atom';
-import timeRangeAtom from '../../../atoms/timeRange.atom';
 import { getParkingRoute } from '../../../constants/apiRoute';
 import emulateEscKeyPress from '../../../functions/emulateEscKeyPress';
 import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
@@ -20,8 +17,6 @@ const DeleteParkingButton = ({ parkingId }: Props) => {
   const { mutate } = useMutationWithToken(getParkingRoute(parkingId), 'delete');
   const { resetVariables } = useResetVariables();
   const queryClient = useQueryClient();
-  const [currentLocation] = useAtom(currentLocationAtom);
-  const [timeRange] = useAtom(timeRangeAtom);
 
   const { getParkingInfo } = useFetchParkingInformation();
 
@@ -34,7 +29,7 @@ const DeleteParkingButton = ({ parkingId }: Props) => {
             queryClient.refetchQueries();
             emulateEscKeyPress();
             resetVariables();
-            getParkingInfo(timeRange, currentLocation);
+            getParkingInfo();
           }
         }
       );

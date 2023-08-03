@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAtom } from 'jotai';
 
+import currentLocationAtom from '../atoms/currentLocation.atom';
 import mainMapAtom from '../atoms/mainMap.atom';
 import parkingsAtom from '../atoms/parkings.atom';
+import timeRangeAtom from '../atoms/timeRange.atom';
 import tokenAtom from '../atoms/token.atom';
 import { getParkingsWithinRangeRoute } from '../constants/apiRoute';
 import ICoordinate from '../interfaces/ICoordinate';
@@ -14,16 +16,25 @@ const useFetchParkingInformation = () => {
   const [mainMap] = useAtom(mainMapAtom);
   const [token] = useAtom(tokenAtom);
 
-  const getParkingInfo = (
-    timeRange: ITimeRange,
-    currentCoords: ICoordinate
-  ) => {
+  const [defaultTimeRange] = useAtom(timeRangeAtom);
+  const [defaultCurrentLocation] = useAtom(currentLocationAtom);
+
+  const getParkingInfo = ({
+    currentCoords,
+    timeRange
+  }: {
+    timeRange?: ITimeRange;
+    currentCoords?: ICoordinate;
+  } = {}) => {
+    const timeRangeMain = timeRange || defaultTimeRange;
+    const currentLocationMain = currentCoords || defaultCurrentLocation;
+
     if (mainMap !== null) {
       const fetchURL = getParkingsWithinRangeRoute(
-        currentCoords.lat,
-        currentCoords.lng,
-        timeRange.startTime,
-        timeRange.endTime
+        currentLocationMain.lat,
+        currentLocationMain.lng,
+        timeRangeMain.startTime,
+        timeRangeMain.endTime
       );
 
       axios
@@ -36,7 +47,7 @@ const useFetchParkingInformation = () => {
           const service = new window.google.maps.DistanceMatrixService();
           service.getDistanceMatrix(
             {
-              origins: [currentCoords],
+              origins: [currentLocationMain],
               // @ts-ignore
               destinations: closestParkings,
               // eslint-disable-next-line no-undef

@@ -18,6 +18,7 @@ import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import useMutationWithToken from '../../hooks/useMutationWithToken';
+import IResponseError from '../../interfaces/IResponseError';
 import RequestType from '../../types/RequestType';
 import ParkingAddressInput from '../inputs/ParkingAddressInput';
 import LoadingSpinner from '../utils/LoadingSpinner';
@@ -78,8 +79,13 @@ const MutateParkingForm = () => {
             getParkingInfo(timeRange, currentLocation);
           },
           onError: (err) => {
-            // @ts-ignore
-            toast.error(err.response.data.message);
+            const error = err as IResponseError;
+            const message = error.response.data.message;
+            if (Array.isArray(message)) {
+              toast.error(message[0]);
+            } else {
+              toast.error(message);
+            }
           }
         }
       );

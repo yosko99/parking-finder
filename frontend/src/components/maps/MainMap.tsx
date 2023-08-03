@@ -11,14 +11,12 @@ import { useAtom, useAtomValue } from 'jotai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
-import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
-import mainMapOptions from '../../data/mainMapOptions';
-import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
+import mapOptions from '../../data/mapOptions';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useResetParkingIndexes from '../../hooks/useResetParkingIndexes';
 import useSetCurrentLocation from '../../hooks/useSetCurrentLocation';
@@ -46,12 +44,12 @@ const MainMap = () => {
   const [parkingSpaces] = useAtom(parkingSpacesAtom);
   const [timeRange] = useAtom(timeRangeAtom);
   const [map, setMap] = useAtom(mainMapAtom);
-  const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
+  const newMarkerAddress = useAtomValue(newMarkerAddressAtom);
+
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
   const { parkings, getParkingInfo } = useFetchParkingInformation();
   const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
-  const isAddParkingToggled = useAtomValue(isAddParkingToggledAtom);
 
   const handleOnLoad = useCallback(
     (map: google.maps.Map) => {
@@ -62,12 +60,6 @@ const MainMap = () => {
     },
     [currentLocation]
   );
-
-  const handleMapClick = (lat: number, lng: number) => {
-    if (isAddParkingToggled && map !== null) {
-      updateNewMarkerAddress(lat, lng, setNewMarkerAddress);
-    }
-  };
 
   const updateMapHeight = () => {
     setMapHeight(window.innerWidth < 1000 ? '50vh' : '95vh');
@@ -87,8 +79,7 @@ const MainMap = () => {
   return isLoaded ? (
     <>
       <GoogleMap
-        onClick={(e) => handleMapClick(e.latLng!.lat(), e.latLng!.lng())}
-        options={mainMapOptions}
+        options={mapOptions}
         mapContainerStyle={{
           width: '100%',
           height: mapHeight

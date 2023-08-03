@@ -42,7 +42,7 @@ const DashboardInformation = ({
       </Row>
       <DashboardTopInformation dashboardResponse={dashboardResponse} />
       <Row className="mt-4">
-        <Col className="w-100 h-100">
+        <Col lg={6} xs={12}>
           <p className="fs-2 text-center">Sales amount</p>
           {dashboardResponse.sales.length <= 1 && (
             <Alert variant="info" className="text-center">
@@ -54,7 +54,7 @@ const DashboardInformation = ({
             lines={['current', 'prev']}
           />
         </Col>
-        <Col className="">
+        <Col lg={6} xs={12}>
           <CenteredItems flexColumn>
             <div className="w-100 shadow-sm border mb-3">
               <p className="fs-2 text-center">Locations</p>

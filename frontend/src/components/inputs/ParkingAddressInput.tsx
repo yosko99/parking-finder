@@ -9,7 +9,7 @@ interface Props {
 const ParkingAddressInput = ({ address }: Props) => {
   return (
     <Form.Group className="mb-3">
-      <Form.Label>Address (Select on map)</Form.Label>
+      <Form.Label>Address (move marker on map)</Form.Label>
       <Form.Control
         readOnly
         type="text"

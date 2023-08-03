@@ -12,8 +12,8 @@ interface Props {
 
 const DashboardTopInformation = ({ dashboardResponse }: Props) => {
   return (
-    <Row className="text-uppercase mt-4">
-      <Col className="shadow-sm p-3 m-2 border">
+    <Row className="text-uppercase mt-4 px-3">
+      <Col className="shadow-sm p-3 border" lg={3} md={6} xs={12}>
         <DashboardStatisticBox
           title="Total Sales"
           isPrice
@@ -21,7 +21,7 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
           secondValue={dashboardResponse.totalSales.prev}
         />
       </Col>
-      <Col className="shadow-sm p-3 m-2 border">
+      <Col className="shadow-sm p-3 border" lg={3} md={6} xs={12}>
         <DashboardStatisticBox
           isPrice={false}
           title="Total Reservations"
@@ -29,7 +29,7 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
           secondValue={dashboardResponse.totalReservations.prev}
         />
       </Col>
-      <Col className="shadow-sm p-3 m-2 border">
+      <Col className="shadow-sm p-3 border" lg={3} md={6} xs={12}>
         <DashboardStatisticBox
           isPrice
           title="Average Sales"
@@ -37,7 +37,7 @@ const DashboardTopInformation = ({ dashboardResponse }: Props) => {
           secondValue={dashboardResponse.averageSales.prev}
         />
       </Col>
-      <Col className="shadow-sm p-3 m-2 border">
+      <Col className="shadow-sm p-3 border" lg={3} md={6} xs={12}>
         <p className="mb-2">Average Duration</p>
         <p className="fs-4 mb-0" style={{ fontWeight: 'bold' }}>
           {getDurationInWords(dashboardResponse.averageDuration.current)}

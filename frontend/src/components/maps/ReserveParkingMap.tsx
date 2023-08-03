@@ -4,8 +4,8 @@ import React, { memo, useCallback, useState } from 'react';
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
+import mapOptions from '../../data/mapOptions';
 import ICoordinate from '../../interfaces/ICoordinate';
-import mapStyle from '../../styles/googleMapStyle';
 import NewMarker from '../map-elements/NewMarker';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
@@ -36,13 +36,7 @@ const ReserveParkingMap = ({ coordinates }: Props) => {
   }, []);
   return isLoaded ? (
     <GoogleMap
-      options={{
-        streetViewControl: false,
-        mapTypeControl: false,
-        fullscreenControl: false,
-        zoomControl: false,
-        styles: [mapStyle]
-      }}
+      options={mapOptions}
       mapContainerStyle={{ width: '100%', height: '25vh' }}
       center={coordinates}
       zoom={15}

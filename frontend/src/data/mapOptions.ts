@@ -1,6 +1,6 @@
 import mapStyle from '../styles/googleMapStyle';
 
-const mainMapOptions = {
+const mapOptions = {
   streetViewControl: false,
   mapTypeControl: true,
   panControl: false,
@@ -8,4 +8,4 @@ const mainMapOptions = {
   styles: [mapStyle]
 };
 
-export default mainMapOptions;
+export default mapOptions;

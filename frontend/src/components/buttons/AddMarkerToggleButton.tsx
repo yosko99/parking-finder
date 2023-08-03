@@ -1,49 +1,30 @@
 import React from 'react';
 
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 
-import directionsAtom from '../../atoms/directions.atom';
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
-import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
-import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
-import selectedDirectionIndexAtom from '../../atoms/selectedDirectionIndex.atom';
-import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
-import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import useResetVariables from '../../hooks/useResetVariables';
 import CenteredItems from '../../styles/CenteredItems';
 
 const AddParkingToggleButton = () => {
   const [isAddParkingToggled, setIsAddParkingToggled] = useAtom(
     isAddParkingToggledAtom
   );
-  const setDirection = useSetAtom(directionsAtom);
-  const setNewMarkerAddress = useSetAtom(newMarkerAddressAtom);
-  const setSelectedDirectionIndex = useSetAtom(selectedDirectionIndexAtom);
   const [mainMap] = useAtom(mainMapAtom);
-  const setParkingSpaces = useSetAtom(parkingSpacesAtom);
-  const setSelectedParkingIndex = useSetAtom(selectedParkingIndexAtom);
-  const setSelectedParkingSpaceIndex = useSetAtom(
-    selectedParkingSpaceIndexAtom
-  );
+  const { resetVariables } = useResetVariables();
 
   const handleClick = () => {
-    if (!isAddParkingToggled) {
-      setDirection(null);
-      setSelectedDirectionIndex(-1);
-      setSelectedParkingIndex(-1);
-      setSelectedParkingSpaceIndex(-1);
-      if (mainMap !== null) {
-        mainMap.setOptions({ draggable: false, zoomControl: false });
-      }
-    } else {
-      if (mainMap !== null) {
-        mainMap.setOptions({ draggable: true, zoomControl: true });
-      }
+    if (mainMap !== null) {
+      mainMap.setOptions({
+        draggable: isAddParkingToggled,
+        zoomControl: isAddParkingToggled
+      });
     }
-    setParkingSpaces([]);
-    setNewMarkerAddress(null);
+
     setIsAddParkingToggled((prev) => !prev);
+    resetVariables();
   };
 
   return (
@@ -53,7 +34,7 @@ const AddParkingToggleButton = () => {
         onClick={handleClick}
         className="p-1 px-2"
       >
-        Toggle {isAddParkingToggled ? 'off' : 'on'} add parking
+        Toggle {isAddParkingToggled ? 'off' : 'on'} edit mode
       </Button>
     </CenteredItems>
   );

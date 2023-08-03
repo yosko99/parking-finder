@@ -3,29 +3,40 @@ import React, { useState } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
 import { Alert, Form } from 'react-bootstrap';
 
+import currentLocationAtom from '../../../atoms/currentLocation.atom';
 import directionsAtom from '../../../atoms/directions.atom';
 import timeRangeAtom from '../../../atoms/timeRange.atom';
 import getFormattedCurrentDate from '../../../functions/getFormattedCurrentDate';
+import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
+import ITimeRange from '../../../interfaces/ITameRange';
 
 const DatePicker = () => {
   const setDirections = useSetAtom(directionsAtom);
   const [alert, setAlert] = useState<React.ReactNode>(null);
   const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
+  const [currentLocation] = useAtom(currentLocationAtom);
+
+  const { getParkingInfo } = useFetchParkingInformation();
 
   const setTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let tempTimeRange: ITimeRange = timeRange;
     setTimeRange((time) => {
       if (e.target.name === 'startTime') {
-        return {
+        tempTimeRange = {
           endTime: e.target.value,
           [e.target.name]: e.target.value
         };
+        return tempTimeRange;
       } else {
-        return {
+        tempTimeRange = {
           ...time,
           [e.target.name]: e.target.value
         };
+        getParkingInfo(timeRange, currentLocation);
+        return tempTimeRange;
       }
     });
+    getParkingInfo(tempTimeRange, currentLocation);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

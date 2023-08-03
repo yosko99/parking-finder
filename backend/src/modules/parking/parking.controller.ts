@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe,
@@ -40,6 +41,23 @@ export class ParkingController {
     @RequestData('userDataFromToken') tokenData: IToken,
   ) {
     return this.parkingService.createParking(createParkingDto, tokenData);
+  }
+
+  @Put('/:id')
+  @ApiHeader({ name: 'Authorization', required: true })
+  @ApiOperation({ summary: 'Update parking' })
+  @ApiResponse({ status: 200, description: 'Parking updated' })
+  @ApiResponse({ status: 409, description: 'Title already taken' })
+  @ApiResponse({ status: 400, description: 'Invalid or missing fields' })
+  @ApiResponse({ status: 401, description: 'Token not provided' })
+  @ApiResponse({ status: 498, description: 'Provided invalid token' })
+  updateParking(
+    @Body()
+    updateParkingDto: CreateParkingDto,
+    @Param('id') id: string,
+    @RequestData('userDataFromToken') tokenData: IToken,
+  ) {
+    return this.parkingService.updateParking(id, updateParkingDto, tokenData);
   }
 
   @Delete('/:id')

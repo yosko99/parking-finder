@@ -3,7 +3,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 
 interface Props {
-  address: string;
+  address?: string;
 }
 
 const ParkingAddressInput = ({ address }: Props) => {

@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 import directionsAtom from '../../../atoms/directions.atom';
 import mainMapAtom from '../../../atoms/mainMap.atom';
+import parkingsAtom from '../../../atoms/parkings.atom';
 import selectedDirectionIndexAtom from '../../../atoms/selectedDirectionIndex.atom';
 import selectedParkingIndexAtom from '../../../atoms/selectedParkingIndex.atom';
-import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 import IParking from '../../../interfaces/IParking';
 
 interface Props {
@@ -25,7 +25,7 @@ const ReserveParkingButton = ({ parking, className, index }: Props) => {
   const setSelectedDirectionIndex = useSetAtom(selectedDirectionIndexAtom);
   const setDirection = useSetAtom(directionsAtom);
 
-  const { parkings } = useFetchParkingInformation();
+  const [parkings] = useAtom(parkingsAtom);
   const navigate = useNavigate();
 
   const handleClick = () => {

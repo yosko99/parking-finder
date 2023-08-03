@@ -16,6 +16,7 @@ import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
+import timeRangeAtom from '../../atoms/timeRange.atom';
 import mainMapOptions from '../../data/mainMapOptions';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
@@ -43,11 +44,12 @@ const MainMap = () => {
   );
 
   const [parkingSpaces] = useAtom(parkingSpacesAtom);
+  const [timeRange] = useAtom(timeRangeAtom);
   const [map, setMap] = useAtom(mainMapAtom);
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
-  const { parkings } = useFetchParkingInformation();
+  const { parkings, getParkingInfo } = useFetchParkingInformation();
   const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
   const isAddParkingToggled = useAtomValue(isAddParkingToggledAtom);
 
@@ -73,6 +75,7 @@ const MainMap = () => {
 
   useEffect(() => {
     window.addEventListener('resize', updateMapHeight);
+    getParkingInfo(timeRange, currentLocation);
   }, []);
 
   const onUnmount = useCallback(() => {

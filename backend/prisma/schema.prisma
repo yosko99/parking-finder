@@ -67,5 +67,6 @@ model ParkingSpace {
     paths        Json
     parking      Parking       @relation(fields: [parkingId], references: [id], onDelete: Cascade)
     parkingId    String
+    angle        Int
     reservations Reservation[]
 }

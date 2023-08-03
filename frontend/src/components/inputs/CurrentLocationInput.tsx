@@ -13,8 +13,10 @@ import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import selectedParkingIndexAtom from '../../atoms/selectedParkingIndex.atom';
 import selectedParkingSpaceIndexAtom from '../../atoms/selectedParkingSpaceIndex.atom';
+import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getGeocodeRoute } from '../../constants/apiRoute';
 import getCurrentLocation from '../../functions/getCurrentLocation';
+import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import IGeocodingResponse from '../../interfaces/IGeocodingResponse';
 
 const CurrentLocationInput = () => {
@@ -26,6 +28,8 @@ const CurrentLocationInput = () => {
   const setSelectedParkingSpaceIndex = useSetAtom(
     selectedParkingSpaceIndexAtom
   );
+  const [timeRange] = useAtom(timeRangeAtom);
+  const { getParkingInfo } = useFetchParkingInformation();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
@@ -48,6 +52,7 @@ const CurrentLocationInput = () => {
           setCurrentLocation(data.results[0].geometry.location);
           setIsAddParkingToggled(false);
           resetIndexes();
+          getParkingInfo(timeRange, data.results[0].geometry.location);
           if (mainMap !== null) {
             mainMap.setOptions({ draggable: true, zoomControl: true });
           }
@@ -58,11 +63,14 @@ const CurrentLocationInput = () => {
       });
   };
 
-  const handleClick = () => {
+  const handleGetCurrentLocationClick = () => {
     setIsAddParkingToggled(false);
     setInputValue('');
     setDirections(null);
-    getCurrentLocation().then((value) => setCurrentLocation(value));
+    getCurrentLocation().then((value) => {
+      getParkingInfo(timeRange, value);
+      setCurrentLocation(value);
+    });
     resetIndexes();
 
     if (mainMap !== null) {
@@ -71,20 +79,22 @@ const CurrentLocationInput = () => {
   };
 
   return mainMap !== null ? (
-    <Autocomplete onPlaceChanged={handleInputChange}>
-      <Form.Group className="d-flex">
-        <Form.Control
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-          type="text"
-          ref={inputRef}
-          placeholder="Your location..."
-        />
-        <Button onClick={handleClick} variant="info">
-          <FaLocationArrow size={20} role="button" />
-        </Button>
-      </Form.Group>
-    </Autocomplete>
+    <>
+      <Autocomplete onPlaceChanged={handleInputChange}>
+        <Form.Group className="d-flex">
+          <Form.Control
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+            type="text"
+            ref={inputRef}
+            placeholder="Your location..."
+          />
+        </Form.Group>
+      </Autocomplete>
+      <Button onClick={handleGetCurrentLocationClick} variant="info">
+        <FaLocationArrow size={20} role="button" />
+      </Button>
+    </>
   ) : (
     <Spinner />
   );

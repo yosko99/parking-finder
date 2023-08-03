@@ -3,10 +3,11 @@ import { useAtom } from 'jotai';
 import { useMutation } from 'react-query';
 
 import tokenAtom from '../atoms/token.atom';
+import RequestType from '../types/RequestType';
 
 const useMutationWithToken = (
   routeURL: string,
-  requestType: 'post' | 'put' | 'delete',
+  requestType: RequestType,
   onMutate?: () => any
 ) => {
   const [token] = useAtom(tokenAtom);

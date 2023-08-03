@@ -40,21 +40,69 @@ export class ParkingService {
     return { message: 'Parking deleted' };
   }
 
-  async createParking(
-    {
-      address,
-      description,
-      hourlyPrice,
-      lat,
-      lng,
-      parkingSize,
-      title,
-      parkingSpaces,
-      mapZoomLevel,
-    }: CreateParkingDto,
+  async updateParking(
+    id: string,
+    updateParkingDto: CreateParkingDto,
     { email }: IToken,
   ) {
-    this.logger.log(`Creating parkings with title (${title})`);
+    const currentParking = await this.retrieveParkingById(id, {
+      reviews: true,
+    });
+    if (currentParking.title !== updateParkingDto.title) {
+      this.checkExistingParkingTitle(updateParkingDto.title);
+    }
+
+    const { parkingSpaces, ...parkingData } = updateParkingDto;
+    await this.prisma.parking.delete({ where: { id } });
+
+    const updatedParking = (await this.prisma.parking.create({
+      data: {
+        ...parkingData,
+        id: currentParking.id,
+        // @ts-ignore
+        parkingSpaces: { createMany: { data: parkingSpaces } },
+        owner: { connect: { email } },
+      },
+    })) as unknown as IParking;
+
+    return await this.generateParkingMutateResponse(updatedParking, 'update');
+  }
+
+  async createParking(createParkingDto: CreateParkingDto, { email }: IToken) {
+    this.checkExistingParkingTitle(createParkingDto.title);
+    const { parkingSpaces, ...parkingData } = createParkingDto;
+    const parking = (await this.prisma.parking.create({
+      data: {
+        ...parkingData,
+        // @ts-ignore
+        parkingSpaces: { createMany: { data: parkingSpaces } },
+        owner: { connect: { email } },
+      },
+    })) as unknown as IParking;
+
+    return await this.generateParkingMutateResponse(parking, 'create');
+  }
+
+  private async generateParkingMutateResponse(
+    parking: IParking,
+    mutationType: 'create' | 'update',
+  ) {
+    this.logger.log(
+      `${
+        mutationType === 'create' ? 'Creating' : 'Updating'
+      } parkings with title (${parking.title})`,
+    );
+
+    const mutationVerb = mutationType === 'create' ? 'created' : 'updated';
+
+    this.logger.log(`Parking ${mutationVerb}`);
+    return {
+      message: `Parking ${mutationVerb} successfully`,
+      parking,
+    };
+  }
+
+  private async checkExistingParkingTitle(title: string) {
     const doestParkingExist =
       (await this.prisma.parking.findFirst({
         where: { title },
@@ -64,28 +112,6 @@ export class ParkingService {
       this.logger.error(`Title already taken (${title})`);
       throw new HttpException('Title is already taken', 409);
     }
-
-    const newParking = await this.prisma.parking.create({
-      data: {
-        address,
-        description,
-        hourlyPrice,
-        lat,
-        lng,
-        parkingSize,
-        title,
-        mapZoomLevel,
-        // @ts-ignore
-        parkingSpaces: { createMany: { data: parkingSpaces } },
-        owner: { connect: { email } },
-      },
-    });
-
-    this.logger.log(`Parking created`);
-    return {
-      message: 'Parking created successfully',
-      parking: newParking,
-    };
   }
 
   async getParkingsWithinRange(

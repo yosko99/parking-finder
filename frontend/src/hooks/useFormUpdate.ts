@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
-interface FormData {
-  [key: string]: string | boolean | number;
-}
-
-const useFormUpdate = () => {
-  const [formData, setFormData] = useState<FormData>({});
+const useFormUpdate = (defaultObj?: any) => {
+  const [data, setData] = useState<any>(defaultObj || {});
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
 
-    setFormData((prevState) => {
+    setData((prevState: object) => {
       const isCheckBox = target.value === 'on' || target.value === 'off';
       const value = isCheckBox ? target.value === 'on' : target.value;
 
@@ -22,7 +18,7 @@ const useFormUpdate = () => {
   };
 
   return {
-    formData,
+    formData: data,
     handleChange
   };
 };

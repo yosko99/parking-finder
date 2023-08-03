@@ -29,7 +29,6 @@ const useAuthenticatedFormSubmit = (
           }
 
           setAlert(<CustomAlert variant="success" text={response.message} />);
-
           setLoading(false);
 
           setTimeout(() => {
@@ -42,7 +41,6 @@ const useAuthenticatedFormSubmit = (
         },
         onError: (err) => {
           const { response } = err as ExtendedAxiosError;
-
           setAlert(
             <CustomAlert variant="danger" text={response.data.message} />
           );

@@ -2,55 +2,83 @@ import React, { useEffect } from 'react';
 
 import { useAtom, useSetAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
+import { useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
 
+import currentLocationAtom from '../../atoms/currentLocation.atom';
 import isAddParkingToggledAtom from '../../atoms/isAddParkingToggledAtom.atom';
 import mainMapAtom from '../../atoms/mainMap.atom';
 import newMarkerAddressAtom from '../../atoms/newMarkerAddressAtom.atom';
+import parkingForEditAtom from '../../atoms/parkingForEdit.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
-import { getParkingsRoute } from '../../constants/apiRoute';
+import timeRangeAtom from '../../atoms/timeRange.atom';
+import { getParkingRoute, getParkingsRoute } from '../../constants/apiRoute';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
-import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
+import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useFormUpdate from '../../hooks/useFormUpdate';
+import useMutationWithToken from '../../hooks/useMutationWithToken';
+import RequestType from '../../types/RequestType';
 import ParkingAddressInput from '../inputs/ParkingAddressInput';
 import LoadingSpinner from '../utils/LoadingSpinner';
 
-const AddParkingForm = () => {
+const MutateParkingForm = () => {
   const [newMarkerAddress, setNewMarkerAddress] = useAtom(newMarkerAddressAtom);
   const setIsAddMarkerToggled = useSetAtom(isAddParkingToggledAtom);
   const [parkingSpaces, setParkingSpaces] = useAtom(parkingSpacesAtom);
   const [mainMap] = useAtom(mainMapAtom);
+  const [parkingForEdit, setParkingForEdit] = useAtom(parkingForEditAtom);
+  const queryClient = useQueryClient();
+  const [timeRange] = useAtom(timeRangeAtom);
+  const [currentLocation] = useAtom(currentLocationAtom);
+
+  const { getParkingInfo } = useFetchParkingInformation();
 
   const { formData, handleChange } = useFormUpdate();
-  const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
-    getParkingsRoute(),
-    false,
-    true,
-    () => {
-      setIsAddMarkerToggled(false);
-      setNewMarkerAddress(null);
-      setParkingSpaces([]);
 
-      if (mainMap !== null) {
-        mainMap.setOptions({ draggable: true, zoomControl: true });
-      }
-    }
-  );
+  const url =
+    parkingForEdit !== null
+      ? getParkingRoute(parkingForEdit.id)
+      : getParkingsRoute();
+  const requestType: RequestType = parkingForEdit !== null ? 'put' : 'post';
+  const { mutate, isLoading } = useMutationWithToken(url, requestType);
 
   const handleCreateMarker = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (mainMap !== null) {
-      handleSubmit({
-        ...formData,
-        lat: mainMap.getCenter()?.lat(),
-        lng: mainMap.getCenter()?.lng(),
-        mapZoomLevel: mainMap.getZoom(),
-        address: newMarkerAddress?.address,
-        parkingSize: parkingSpaces.length,
-        parkingSpaces: parkingSpaces.map((space) => {
-          return { paths: space.paths };
-        })
-      });
+      console.log(formData);
+      mutate(
+        {
+          ...formData,
+          lat: newMarkerAddress?.coords.lat,
+          lng: newMarkerAddress?.coords.lng,
+          mapZoomLevel: mainMap.getZoom(),
+          address: newMarkerAddress?.address,
+          parkingSize: parkingSpaces.length,
+          parkingSpaces: parkingSpaces.map((space) => {
+            return { paths: space.paths, angle: space.angle };
+          })
+        },
+        {
+          onSuccess: (data) => {
+            setIsAddMarkerToggled(false);
+            setNewMarkerAddress(null);
+            setParkingSpaces([]);
+            setParkingForEdit(null);
+
+            if (mainMap !== null) {
+              mainMap.setOptions({ draggable: true, zoomControl: true });
+            }
+            toast.success(data.message);
+            queryClient.refetchQueries();
+            getParkingInfo(timeRange, currentLocation);
+          },
+          onError: (err) => {
+            // @ts-ignore
+            toast.error(err.response.data.message[0]);
+          }
+        }
+      );
     }
   };
 
@@ -76,6 +104,7 @@ const AddParkingForm = () => {
           required
           type="text"
           name="title"
+          defaultValue={parkingForEdit !== null ? parkingForEdit.title : ''}
           placeholder="My parking"
         />
       </Form.Group>
@@ -86,6 +115,9 @@ const AddParkingForm = () => {
           required
           as="textarea"
           name="description"
+          defaultValue={
+            parkingForEdit !== null ? parkingForEdit.description : ''
+          }
           placeholder="Lorem ipsum"
           rows={3}
           minLength={10}
@@ -96,6 +128,9 @@ const AddParkingForm = () => {
         <Form.Control
           required
           type="number"
+          defaultValue={
+            parkingForEdit !== null ? parkingForEdit.hourlyPrice : 0
+          }
           name="hourlyPrice"
           min={0}
           placeholder="10"
@@ -115,10 +150,9 @@ const AddParkingForm = () => {
       <Button type="submit" variant="success w-100">
         Submit
       </Button>
-      {alert}
       {isLoading && <LoadingSpinner />}
     </Form>
   );
 };
 
-export default AddParkingForm;
+export default MutateParkingForm;

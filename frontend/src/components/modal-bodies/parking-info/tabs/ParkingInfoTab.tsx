@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import IParking from '../../../../interfaces/IParking';
 import DeleteParkingButton from '../../../buttons/parking/DeleteParkingButton';
+import EditParkingButton from '../../../buttons/parking/EditParkingButton';
 
 interface Props {
   parking: IParking;
@@ -34,9 +35,7 @@ const ParkingInfoTab = ({ parking }: Props) => {
       {parking.canUserEdit && (
         <Row>
           <Col>
-            <Button className="w-100" variant="warning">
-              Edit parking
-            </Button>
+            <EditParkingButton parking={parking} />
           </Col>
           <Col>
             <DeleteParkingButton parkingId={parking.id} />

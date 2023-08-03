@@ -34,6 +34,10 @@ export class ParkingModule implements NestModule {
         path: '/parkings',
         method: RequestMethod.GET,
       },
+      {
+        path: '/parkings/:id',
+        method: RequestMethod.PUT,
+      },
     );
   }
 }

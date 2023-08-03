@@ -5,9 +5,9 @@ import { useAtom, useSetAtom } from 'jotai';
 import { BsFillSignNoParkingFill } from 'react-icons/bs';
 
 import currentLocationAtom from '../../../atoms/currentLocation.atom';
+import parkingsAtom from '../../../atoms/parkings.atom';
 import selectedDirectionIndexAtom from '../../../atoms/selectedDirectionIndex.atom';
 import timeRangeAtom from '../../../atoms/timeRange.atom';
-import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 import ParkingInfo from '../../containers/ParkingInfo';
 
 const ParkingsContainer = () => {
@@ -15,7 +15,7 @@ const ParkingsContainer = () => {
   const [currentLocation] = useAtom(currentLocationAtom);
   const [timeRange] = useAtom(timeRangeAtom);
 
-  const { parkings } = useFetchParkingInformation();
+  const [parkings] = useAtom(parkingsAtom);
 
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 

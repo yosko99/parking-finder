@@ -1,23 +1,29 @@
 import React from 'react';
 
+import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
 
+import currentLocationAtom from '../../../atoms/currentLocation.atom';
+import timeRangeAtom from '../../../atoms/timeRange.atom';
 import { getParkingRoute } from '../../../constants/apiRoute';
 import emulateEscKeyPress from '../../../functions/emulateEscKeyPress';
+import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 import useMutationWithToken from '../../../hooks/useMutationWithToken';
+import useResetVariables from '../../../hooks/useResetVariables';
 
 interface Props {
   parkingId: string;
 }
 
 const DeleteParkingButton = ({ parkingId }: Props) => {
+  const { mutate } = useMutationWithToken(getParkingRoute(parkingId), 'delete');
+  const { resetVariables } = useResetVariables();
   const queryClient = useQueryClient();
-  const { mutate, data } = useMutationWithToken(
-    getParkingRoute(parkingId),
-    'delete'
-  );
+  const [currentLocation] = useAtom(currentLocationAtom);
+  const [timeRange] = useAtom(timeRangeAtom);
+
+  const { getParkingInfo } = useFetchParkingInformation();
 
   const handleClick = () => {
     if (window.confirm('Are you sure you want to delete this parking?')) {
@@ -26,8 +32,9 @@ const DeleteParkingButton = ({ parkingId }: Props) => {
         {
           onSuccess: () => {
             queryClient.refetchQueries();
-            toast.success(data.message);
             emulateEscKeyPress();
+            resetVariables();
+            getParkingInfo(timeRange, currentLocation);
           }
         }
       );

@@ -5,12 +5,14 @@ import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import currentLocationAtom from '../../atoms/currentLocation.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getReservationsRoute } from '../../constants/apiRoute';
 import { TRANSACTION_FEE } from '../../constants/prices';
 import calculateTotalPrice from '../../functions/calculateTotalPrice';
 import getDurationInWords from '../../functions/getDurationInWords';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
+import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useFormUpdate from '../../hooks/useFormUpdate';
 import ICarRegistration from '../../interfaces/ICarRegistration';
 import IParking from '../../interfaces/IParking';
@@ -35,17 +37,20 @@ const ReserveParkingForm = ({
   const [registrationNumber, setRegistrationNumber] =
     useState<ICarRegistration>({ number: '', isSubmitted: false });
   const { formData, handleChange } = useFormUpdate();
+  const [currentLocation] = useAtom(currentLocationAtom);
+  const { getParkingInfo } = useFetchParkingInformation();
+  const [registrationNumberAlert, setRegistrationNumberAlert] =
+    useState<React.ReactNode>(null);
+  const [{ startTime, endTime }] = useAtom(timeRangeAtom);
   const { alert, handleSubmit, isLoading } = useAuthenticatedFormSubmit(
     getReservationsRoute(),
     false,
     false,
     () => {
       navigate('/reservation-complete', { state: {} });
+      getParkingInfo({ startTime, endTime }, currentLocation);
     }
   );
-  const [registrationNumberAlert, setRegistrationNumberAlert] =
-    useState<React.ReactNode>(null);
-  const [{ startTime, endTime }] = useAtom(timeRangeAtom);
 
   const totalPrice = calculateTotalPrice(
     startTime,

@@ -3,9 +3,9 @@ import React from 'react';
 
 import { useAtom } from 'jotai';
 
+import parkingsAtom from '../../../atoms/parkings.atom';
 import selectedParkingIndexAtom from '../../../atoms/selectedParkingIndex.atom';
 import selectedParkingSpaceIndexAtom from '../../../atoms/selectedParkingSpaceIndex.atom';
-import useFetchParkingInformation from '../../../hooks/useFetchParkingInformation';
 import CenteredItems from '../../../styles/CenteredItems';
 import CancelReserveParkingButton from '../../buttons/parking/CancelReserveParkingButton';
 import ReserveParkingButton from '../../buttons/parking/ReserveParkingButton';
@@ -14,7 +14,7 @@ const SelectedParkingSpaceContainer = () => {
   const [selectedParkingSpaceIndex] = useAtom(selectedParkingSpaceIndexAtom);
   const [selectedParkingIndex] = useAtom(selectedParkingIndexAtom);
 
-  const { parkings } = useFetchParkingInformation();
+  const [parkings] = useAtom(parkingsAtom);
 
   return (
     <div className="text-dark text-center">

@@ -49,7 +49,7 @@ export class ParkingService {
       reviews: true,
     });
     if (currentParking.title !== updateParkingDto.title) {
-      this.checkExistingParkingTitle(updateParkingDto.title);
+      await this.checkExistingParkingTitle(updateParkingDto.title);
     }
 
     const { parkingSpaces, ...parkingData } = updateParkingDto;
@@ -69,7 +69,7 @@ export class ParkingService {
   }
 
   async createParking(createParkingDto: CreateParkingDto, { email }: IToken) {
-    this.checkExistingParkingTitle(createParkingDto.title);
+    await this.checkExistingParkingTitle(createParkingDto.title);
     const { parkingSpaces, ...parkingData } = createParkingDto;
     const parking = (await this.prisma.parking.create({
       data: {

@@ -13,6 +13,7 @@ import parkingForEditAtom from '../../atoms/parkingForEdit.atom';
 import parkingSpacesAtom from '../../atoms/parkingSpaces.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getParkingRoute, getParkingsRoute } from '../../constants/apiRoute';
+import { MutateParkingDto } from '../../dtos/MutateParkingDto';
 import updateNewMarkerAddress from '../../functions/updateNewMarkerAddress';
 import useFetchParkingInformation from '../../hooks/useFetchParkingInformation';
 import useFormUpdate from '../../hooks/useFormUpdate';
@@ -33,20 +34,23 @@ const MutateParkingForm = () => {
 
   const { getParkingInfo } = useFetchParkingInformation();
 
-  const { formData, handleChange } = useFormUpdate();
-
   const url =
     parkingForEdit !== null
       ? getParkingRoute(parkingForEdit.id)
       : getParkingsRoute();
+
+  const { formData, handleChange } = useFormUpdate<MutateParkingDto>({
+    description: parkingForEdit?.description || '',
+    title: parkingForEdit?.title || '',
+    hourlyPrice: parkingForEdit?.hourlyPrice || 0
+  });
   const requestType: RequestType = parkingForEdit !== null ? 'put' : 'post';
   const { mutate, isLoading } = useMutationWithToken(url, requestType);
 
-  const handleCreateMarker = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (mainMap !== null) {
-      console.log(formData);
       mutate(
         {
           ...formData,
@@ -75,7 +79,7 @@ const MutateParkingForm = () => {
           },
           onError: (err) => {
             // @ts-ignore
-            toast.error(err.response.data.message[0]);
+            toast.error(err.response.data.message);
           }
         }
       );
@@ -95,7 +99,7 @@ const MutateParkingForm = () => {
   return (
     <Form
       onChange={handleChange}
-      onSubmit={handleCreateMarker}
+      onSubmit={handleSubmit}
       className="p-4 text-dark"
     >
       <Form.Group className="mb-3">

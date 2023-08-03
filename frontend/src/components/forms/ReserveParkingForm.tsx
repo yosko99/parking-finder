@@ -9,6 +9,7 @@ import currentLocationAtom from '../../atoms/currentLocation.atom';
 import timeRangeAtom from '../../atoms/timeRange.atom';
 import { getReservationsRoute } from '../../constants/apiRoute';
 import { TRANSACTION_FEE } from '../../constants/prices';
+import { ReserveParkingDto } from '../../dtos/ReserveParkingDto';
 import calculateTotalPrice from '../../functions/calculateTotalPrice';
 import getDurationInWords from '../../functions/getDurationInWords';
 import useAuthenticatedFormSubmit from '../../hooks/useAuthenticatedFormSubmit';
@@ -33,10 +34,9 @@ const ReserveParkingForm = ({
   selectedParkingSpaceIndex
 }: Props) => {
   const navigate = useNavigate();
-
   const [registrationNumber, setRegistrationNumber] =
     useState<ICarRegistration>({ number: '', isSubmitted: false });
-  const { formData, handleChange } = useFormUpdate();
+  const { formData, handleChange } = useFormUpdate<ReserveParkingDto>();
   const [currentLocation] = useAtom(currentLocationAtom);
   const { getParkingInfo } = useFetchParkingInformation();
   const [registrationNumberAlert, setRegistrationNumberAlert] =

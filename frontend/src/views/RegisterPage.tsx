@@ -9,6 +9,7 @@ import NameInput from '../components/inputs/NameInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getUsersRoute } from '../constants/apiRoute';
+import { RegisterDto, defaultRegisterDtoValues } from '../dtos/RegisterDto';
 import useAuth from '../hooks/useAuth';
 import useAuthenticatedFormSubmit from '../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../hooks/useFormUpdate';
@@ -22,7 +23,9 @@ const RegisterPage = () => {
     true,
     true
   );
-  const { formData, handleChange } = useFormUpdate();
+  const { formData, handleChange } = useFormUpdate<RegisterDto>(
+    defaultRegisterDtoValues
+  );
 
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +45,7 @@ const RegisterPage = () => {
         <EmailInput />
         <NameInput />
         <PasswordInput />
-        <IsCompanyInput />
+        <IsCompanyInput isChecked={formData.isCompany} />
 
         <Button variant="primary" className="w-100 mt-3" type="submit">
           Register

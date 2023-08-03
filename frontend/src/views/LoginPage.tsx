@@ -7,6 +7,7 @@ import EmailInput from '../components/inputs/EmailInput';
 import PasswordInput from '../components/inputs/PasswordInput';
 import LoadingSpinner from '../components/utils/LoadingSpinner';
 import { getLoginRoute } from '../constants/apiRoute';
+import { LoginDto } from '../dtos/LoginDto';
 import useAuth from '../hooks/useAuth';
 import useAuthenticatedFormSubmit from '../hooks/useAuthenticatedFormSubmit';
 import useFormUpdate from '../hooks/useFormUpdate';
@@ -20,7 +21,7 @@ const LoginPage = () => {
     true,
     true
   );
-  const { formData, handleChange } = useFormUpdate();
+  const { formData, handleChange } = useFormUpdate<LoginDto>();
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

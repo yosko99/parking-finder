@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 
-const useFormUpdate = (defaultObj?: any) => {
-  const [data, setData] = useState<any>(defaultObj || {});
+const useFormUpdate = <T>(defaultObj?: T) => {
+  const [data, setData] = useState<T>(defaultObj || ({} as T));
 
   const handleChange = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as HTMLInputElement;
 
-    setData((prevState: object) => {
+    setData((prevState) => {
       const isCheckBox = target.value === 'on' || target.value === 'off';
-      const value = isCheckBox ? target.value === 'on' : target.value;
+      let value: string | boolean;
+
+      if (isCheckBox) {
+        value = target.value === 'on';
+      } else {
+        value = target.value;
+      }
 
       return {
         ...prevState,

@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import ICoordinate from '../interfaces/ICoordinate';
 
 const getCurrentLocation = (): Promise<ICoordinate> => {
@@ -11,7 +13,7 @@ const getCurrentLocation = (): Promise<ICoordinate> => {
         },
         (error) => {
           console.error('Error getting current location:', error);
-          reject(error);
+          toast.error('Error getting current location');
         }
       );
     } else {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Tooltip } from 'react-bootstrap';
 import {
   CartesianGrid,
   Legend,
@@ -8,7 +7,8 @@ import {
   LineChart,
   ResponsiveContainer,
   XAxis,
-  YAxis
+  YAxis,
+  Tooltip
 } from 'recharts';
 
 import getRandomColor from '../../functions/getRandomColor';
@@ -41,7 +41,7 @@ const SalesChart = ({ data, lines }: Props) => {
           }}
         />
         <XAxis dataKey={'date'} />
-        <Tooltip />
+        <Tooltip active/>
         <Legend />
         {lines.map((line, index) => (
           <Line

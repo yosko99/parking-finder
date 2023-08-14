@@ -55,7 +55,7 @@ const DashboardPage = () => {
   }, [selectedParking, selectedTimeFrame]);
 
   return (
-    <div>
+    <>
       <Header />
       <Container>
         {isLoading ? (
@@ -70,6 +70,7 @@ const DashboardPage = () => {
         ) : (
           <DashboardInformation
             parkings={parkings}
+            selectedParking={selectedParking}
             dashboardResponse={dashboardResponse}
             setSelectedParking={setSelectedParking}
             setSelectedTimeFrame={setSelectedTimeFrame}
@@ -77,7 +78,7 @@ const DashboardPage = () => {
         )}
       </Container>
       <Footer />
-    </div>
+    </>
   );
 };
 

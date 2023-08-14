@@ -38,7 +38,7 @@ const ReservationsTable = ({ reservations, isPersonal }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {reservations.map((reservation, index) => (
+          {reservations?.map((reservation, index) => (
             <tr key={index}>
               {!isPersonal && <td>{reservation.user.name}</td>}
               <td>{reservation.registrationNumber}</td>

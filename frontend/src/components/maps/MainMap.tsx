@@ -7,7 +7,7 @@ import {
   GoogleMap,
   DirectionsRenderer
 } from '@react-google-maps/api';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import currentLocationAtom from '../../atoms/currentLocation.atom';
 import directionsAtom from '../../atoms/directions.atom';
@@ -40,9 +40,9 @@ const MainMap = () => {
     window.innerWidth < 1000 ? '50vh' : '95vh'
   );
 
-  const [parkingSpaces] = useAtom(parkingSpacesAtom);
-  const [map, setMap] = useAtom(mainMapAtom);
   const newMarkerAddress = useAtomValue(newMarkerAddressAtom);
+  const [parkingSpaces] = useAtom(parkingSpacesAtom);
+  const setMap = useSetAtom(mainMapAtom);
 
   const [currentLocation] = useAtom(currentLocationAtom);
   const [directions, setDirections] = useAtom(directionsAtom);
@@ -63,15 +63,19 @@ const MainMap = () => {
     setMapHeight(window.innerWidth < 1000 ? '50vh' : '95vh');
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', updateMapHeight);
-    getParkingInfo();
-  }, []);
-
   const onUnmount = useCallback(() => {
     setDirections(null);
     setMap(null);
     window.removeEventListener('resize', updateMapHeight);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', updateMapHeight);
+    getParkingInfo();
+
+    return () => {
+      onUnmount();
+    };
   }, []);
 
   return isLoaded ? (

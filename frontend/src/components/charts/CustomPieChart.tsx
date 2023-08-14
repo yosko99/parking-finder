@@ -1,7 +1,13 @@
 import React from 'react';
 
-import { Tooltip } from 'react-bootstrap';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip
+} from 'recharts';
 
 import getRandomColor from '../../functions/getRandomColor';
 

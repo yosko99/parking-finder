@@ -5,6 +5,7 @@ import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Header from '../components/navigation/Header';
+import ICoordinate from '../interfaces/ICoordinate';
 import CenteredItems from '../styles/CenteredItems';
 
 const ReservationCompletePage = () => {
@@ -14,6 +15,8 @@ const ReservationCompletePage = () => {
   if (location.state === null) {
     navigate('/');
   }
+
+  const coords = location.state as ICoordinate;
 
   return (
     <div>
@@ -37,8 +40,16 @@ const ReservationCompletePage = () => {
             </span>{' '}
             tab, or by pressing the button below.
           </p>
-          <Button onClick={() => navigate('/reservations')} variant="info">
-            My reservations
+          <Button variant="info">
+            <a
+              href={`https://www.google.com/maps?q=${coords.lat},${coords.lng}`}
+              target="_blank"
+              className="text-white"
+              style={{ textDecoration: 'none' }}
+              rel="noreferrer"
+            >
+              Show directions
+            </a>
           </Button>
         </CenteredItems>
       </Container>

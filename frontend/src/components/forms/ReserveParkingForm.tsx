@@ -45,7 +45,9 @@ const ReserveParkingForm = ({
     false,
     false,
     () => {
-      navigate('/reservation-complete', { state: {} });
+      navigate('/reservation-complete', {
+        state: { lat: parking.lat, lng: parking.lng }
+      });
       getParkingInfo({ timeRange: { endTime, startTime } });
     }
   );

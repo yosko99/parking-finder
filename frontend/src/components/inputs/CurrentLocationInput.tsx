@@ -79,7 +79,7 @@ const CurrentLocationInput = () => {
   return mainMap !== null ? (
     <>
       <Autocomplete onPlaceChanged={handleInputChange}>
-        <Form.Group className="d-flex">
+        <Form.Group className="d-flex mt-3 p-2">
           <Form.Control
             onChange={(e) => setInputValue(e.target.value)}
             value={inputValue}
@@ -87,11 +87,11 @@ const CurrentLocationInput = () => {
             ref={inputRef}
             placeholder="Your location..."
           />
+          <Button onClick={handleGetCurrentLocationClick} variant="info">
+            <FaLocationArrow size={20} role="button" />
+          </Button>
         </Form.Group>
       </Autocomplete>
-      <Button onClick={handleGetCurrentLocationClick} variant="info">
-        <FaLocationArrow size={20} role="button" />
-      </Button>
     </>
   ) : (
     <Spinner />

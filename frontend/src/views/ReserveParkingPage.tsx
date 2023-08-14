@@ -3,8 +3,6 @@ import React from 'react';
 
 import { useAtom } from 'jotai';
 import { Col, Container, Row } from 'react-bootstrap';
-// @ts-ignore
-import Fade from 'react-reveal/Fade';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import selectedParkingSpaceIndexAtom from '../atoms/selectedParkingSpaceIndex.atom';
@@ -56,32 +54,25 @@ const ReserveParkingPage = () => {
 
         <Row>
           <Col lg={4}>
-            <Fade left>
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <ReserverParkingCard
-                  parking={parking}
-                  freeSpaces={freeSpaces}
-                />
-              )}
-            </Fade>
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <ReserverParkingCard parking={parking} freeSpaces={freeSpaces} />
+            )}
           </Col>
           <Col lg={8}>
-            <Fade right>
-              <BookingDetails
+            <BookingDetails
+              selectedParkingSpaceIndex={selectedParkingSpaceIndex}
+            />
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <ReserveParkingForm
+                parking={parking}
                 selectedParkingSpaceIndex={selectedParkingSpaceIndex}
+                canReserve={freeSpaces !== 0}
               />
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <ReserveParkingForm
-                  parking={parking}
-                  selectedParkingSpaceIndex={selectedParkingSpaceIndex}
-                  canReserve={freeSpaces !== 0}
-                />
-              )}
-            </Fade>
+            )}
           </Col>
         </Row>
       </Container>
